@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journal &amp; Guest Reviews — Padharo House, Jaipur</title>
+  <meta name="description" content="Stories from Amer, travel guides to the Amber Fort and Jaipur, and reviews from guests of Padharo House boutique homestay." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { terra:'#A0472A', terradark:'#853a22', gold:'#C0923B', cream:'#FBF6EE', sand:'#EFE3D3', ink:'#2B2620', muted:'#6E645A' },
+      fontFamily: { serif:['"Playfair Display"','serif'], sans:['Inter','sans-serif'] }
+    }}};
+  </script>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+  <div id="protoRibbon" class="proto-ribbon fixed top-0 inset-x-0 z-[60] text-center py-1.5 px-4">
+    <span>Interactive prototype — content is sample, fully editable later &nbsp;·&nbsp; designed by <strong>Manish Kumawat</strong> &nbsp;·&nbsp; <a href="admin.html">Preview the Admin panel &rarr;</a></span>
+    <button id="ribbonClose" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white">✕</button>
+  </div>
+
+  <header class="site-header solid" style="top:30px">
+    <div class="max-w-7xl mx-auto px-5 flex items-center justify-between h-[74px]">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/logo.png" alt="Padharo House" class="h-11 w-auto" />
+        <span class="brand-name font-serif text-xl font-semibold tracking-wide hidden sm:block">Padharo House</span>
+      </a>
+      <nav class="hidden lg:flex items-center gap-8">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="index.html#rooms" class="nav-link">Rooms</a>
+        <a href="index.html#gallery" class="nav-link">Gallery</a>
+        <a href="index.html#experiences" class="nav-link">Experiences</a>
+        <a href="blog.html" class="nav-link active">Journal</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <a href="booking.html" class="btn btn-primary text-sm">Book Now</a>
+        <button id="burger" class="lg:hidden nav-ico text-2xl leading-none">☰</button>
+      </div>
+    </div>
+    <div id="mobileNav" class="hidden lg:hidden bg-white shadow-lg mx-4 rounded-xl overflow-hidden">
+      <a href="index.html" class="block px-5 py-3 border-b border-cream hover:bg-cream">Home</a>
+      <a href="index.html#gallery" class="block px-5 py-3 border-b border-cream hover:bg-cream">Gallery</a>
+      <a href="blog.html" class="block px-5 py-3 border-b border-cream hover:bg-cream">Journal</a>
+      <a href="booking.html" class="block px-5 py-3 border-b border-cream hover:bg-cream">Book Now</a>
+      <a href="admin.html" class="block px-5 py-3 hover:bg-cream text-terra font-semibold">Admin Preview</a>
+    </div>
+  </header>
+
+  <!-- banner -->
+  <section class="ribbon-offset bg-cream" style="padding-top:120px">
+    <div class="max-w-7xl mx-auto px-5 pb-12 text-center">
+      <div class="eyebrow mb-3">The Padharo Journal</div>
+      <h1 class="font-serif text-3xl md:text-4xl mb-3">Stories, guides &amp; guest love</h1>
+      <p class="text-muted max-w-xl mx-auto">Travel tips for Amer &amp; the Pink City, plus honest words from our guests. Fresh content like this helps you rank on Google.</p>
+    </div>
+  </section>
+
+  <!-- featured post -->
+  <section class="py-14 bg-white">
+    <div class="max-w-7xl mx-auto px-5">
+      <div class="grid md:grid-cols-2 gap-8 items-center bg-cream rounded-3xl overflow-hidden reveal">
+        <div class="zoom h-full min-h-[300px]"><img src="assets/img/p2.jpg" class="w-full h-full object-cover" alt="Amber Fort view" /></div>
+        <div class="p-8 md:p-10">
+          <span class="pill mb-4">Featured · Travel Guide</span>
+          <h2 class="font-serif text-2xl md:text-3xl mb-3 leading-snug">The perfect 48 hours in Amer: fort, food &amp; light</h2>
+          <p class="text-muted mb-5">From sunrise at the Amber Fort to a lantern-lit dinner — how to spend two unforgettable days around Padharo House, straight from your hosts.</p>
+          <div class="flex items-center gap-3 text-sm text-muted mb-6">
+            <span>By the Padharo House team</span><span>·</span><span>6 min read</span>
+          </div>
+          <a href="#" class="btn btn-outline text-sm">Read the guide →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- posts grid -->
+  <section class="pb-16 bg-white">
+    <div class="max-w-7xl mx-auto px-5">
+      <div class="flex items-center gap-3 mb-8 flex-wrap">
+        <span class="pill">All</span>
+        <span class="text-sm text-muted hover:text-terra cursor-pointer">Travel Guides</span>
+        <span class="text-sm text-muted hover:text-terra cursor-pointer">Heritage &amp; Culture</span>
+        <span class="text-sm text-muted hover:text-terra cursor-pointer">Food</span>
+        <span class="text-sm text-muted hover:text-terra cursor-pointer">Property News</span>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
+        <article class="card reveal">
+          <div class="zoom aspect-[16/10]"><img src="assets/img/p3.jpg" class="w-full h-full object-cover" alt="" /></div>
+          <div class="p-6">
+            <span class="pill mb-3">Heritage &amp; Culture</span>
+            <h3 class="font-serif text-lg mb-2 leading-snug">Stained glass &amp; jharokhas: the art in our windows</h3>
+            <p class="text-sm text-muted mb-4">A short story of the Rajasthani craft that colours every room at Padharo House.</p>
+            <div class="text-xs text-muted">12 Sep 2026 · 4 min read</div>
+          </div>
+        </article>
+        <article class="card reveal">
+          <div class="zoom aspect-[16/10]"><img src="assets/img/p9.jpg" class="w-full h-full object-cover" alt="" /></div>
+          <div class="p-6">
+            <span class="pill mb-3">Food</span>
+            <h3 class="font-serif text-lg mb-2 leading-snug">A royal Rajasthani thali, served on our terrace</h3>
+            <p class="text-sm text-muted mb-4">Dal baati churma, gatte ki sabzi and more — the flavours of a home-cooked Jaipur evening.</p>
+            <div class="text-xs text-muted">28 Aug 2026 · 3 min read</div>
+          </div>
+        </article>
+        <article class="card reveal">
+          <div class="zoom aspect-[16/10]"><img src="assets/img/p7.jpg" class="w-full h-full object-cover" alt="" /></div>
+          <div class="p-6">
+            <span class="pill mb-3">Travel Guides</span>
+            <h3 class="font-serif text-lg mb-2 leading-snug">Beyond Amber Fort: 5 quiet corners of Amer</h3>
+            <p class="text-sm text-muted mb-4">Skip the crowds — the stepwells, viewpoints and cafés our guests love most.</p>
+            <div class="text-xs text-muted">15 Aug 2026 · 5 min read</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- reviews -->
+  <section class="py-20 bg-ink text-white">
+    <div class="max-w-7xl mx-auto px-5">
+      <div class="text-center max-w-2xl mx-auto mb-14 reveal">
+        <div class="eyebrow mb-3">Guest Reviews</div>
+        <h2 class="font-serif text-3xl md:text-4xl mb-4">What our guests say</h2>
+        <div class="flex items-center justify-center gap-3">
+          <span class="text-gold text-2xl">★★★★★</span>
+          <span class="text-white/80">4.9 average · 128 reviews</span>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <figure class="bg-white/5 rounded-2xl p-7 reveal">
+          <div class="text-gold mb-3">★★★★★</div>
+          <blockquote class="mb-5 text-white/90">"Waking up to the Amber Fort from our window was unreal. The heritage details and the warmth of our hosts made it magical."</blockquote>
+          <figcaption class="flex items-center gap-3"><span class="w-10 h-10 rounded-full bg-terra grid place-items-center font-semibold">AK</span><div><div class="font-semibold text-sm">Ananya K.</div><div class="text-xs text-white/60">Mumbai · Sep 2026</div></div></figcaption>
+        </figure>
+        <figure class="bg-white/5 rounded-2xl p-7 reveal">
+          <div class="text-gold mb-3">★★★★★</div>
+          <blockquote class="mb-5 text-white/90">"The local guide package was worth every rupee. Felt like staying in a royal home, not a hotel. Spotlessly clean too."</blockquote>
+          <figcaption class="flex items-center gap-3"><span class="w-10 h-10 rounded-full bg-terra grid place-items-center font-semibold">RS</span><div><div class="font-semibold text-sm">Rahul &amp; Sneha</div><div class="text-xs text-white/60">Delhi · Aug 2026</div></div></figcaption>
+        </figure>
+        <figure class="bg-white/5 rounded-2xl p-7 reveal">
+          <div class="text-gold mb-3">★★★★★</div>
+          <blockquote class="mb-5 text-white/90">"A serene cultural retreat. The folk evening on the terrace was the highlight of our Jaipur trip. Highly recommend."</blockquote>
+          <figcaption class="flex items-center gap-3"><span class="w-10 h-10 rounded-full bg-terra grid place-items-center font-semibold">JM</span><div><div class="font-semibold text-sm">James M.</div><div class="text-xs text-white/60">London · Aug 2026</div></div></figcaption>
+        </figure>
+        <figure class="bg-white/5 rounded-2xl p-7 reveal">
+          <div class="text-gold mb-3">★★★★★</div>
+          <blockquote class="mb-5 text-white/90">"Beautiful property, incredible location and such thoughtful hosts. The stained-glass rooms are even better in person."</blockquote>
+          <figcaption class="flex items-center gap-3"><span class="w-10 h-10 rounded-full bg-terra grid place-items-center font-semibold">PT</span><div><div class="font-semibold text-sm">Priya T.</div><div class="text-xs text-white/60">Bengaluru · Jul 2026</div></div></figcaption>
+        </figure>
+        <figure class="bg-white/5 rounded-2xl p-7 reveal">
+          <div class="text-gold mb-3">★★★★★</div>
+          <blockquote class="mb-5 text-white/90">"Booked the romantic escape for our anniversary. The terrace dinner under the stars was unforgettable. Thank you!"</blockquote>
+          <figcaption class="flex items-center gap-3"><span class="w-10 h-10 rounded-full bg-terra grid place-items-center font-semibold">VD</span><div><div class="font-semibold text-sm">Vikram D.</div><div class="text-xs text-white/60">Pune · Jul 2026</div></div></figcaption>
+        </figure>
+        <figure class="bg-white/5 rounded-2xl p-7 reveal">
+          <div class="text-gold mb-3">★★★★☆</div>
+          <blockquote class="mb-5 text-white/90">"Gorgeous heritage stay so close to the fort. Loved the breakfast. Would happily return on our next Jaipur trip."</blockquote>
+          <figcaption class="flex items-center gap-3"><span class="w-10 h-10 rounded-full bg-terra grid place-items-center font-semibold">SN</span><div><div class="font-semibold text-sm">Sarah N.</div><div class="text-xs text-white/60">Singapore · Jun 2026</div></div></figcaption>
+        </figure>
+      </div>
+
+      <!-- leave a review (demo) -->
+      <div class="max-w-2xl mx-auto mt-14 bg-white/5 rounded-2xl p-8 reveal">
+        <h3 class="font-serif text-xl mb-1">Leave a review</h3>
+        <p class="text-sm text-white/60 mb-5">Guests can add reviews here — you approve them from the admin panel before they publish.</p>
+        <div class="flex gap-1 text-2xl text-gold mb-4" id="starPick">
+          <span class="cursor-pointer">★</span><span class="cursor-pointer">★</span><span class="cursor-pointer">★</span><span class="cursor-pointer">★</span><span class="cursor-pointer">★</span>
+        </div>
+        <textarea rows="3" placeholder="Tell us about your stay..." class="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 text-white placeholder-white/40 mb-4"></textarea>
+        <button class="btn btn-primary" onclick="alert('Prototype only — in the live site this review is saved and appears in the admin panel for approval before publishing.');">Submit review</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-ink text-white/75 pt-16 pb-8 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-5 flex flex-col sm:flex-row justify-between gap-2 text-xs">
+      <span>© 2026 Padharo House. All rights reserved.</span>
+      <span>Prototype designed by <b class="text-white/90">Manish Kumawat</b> · Forward Deployed AI Engineer</span>
+    </div>
+  </footer>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

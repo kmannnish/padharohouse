@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Your Stay — Padharo House</title>
+  <meta name="description" content="Check live availability at Padharo House, choose a package and see a transparent price breakdown before you pay." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { terra:'#A0472A', terradark:'#853a22', gold:'#C0923B', cream:'#FBF6EE', sand:'#EFE3D3', ink:'#2B2620', muted:'#6E645A' },
+      fontFamily: { serif:['"Playfair Display"','serif'], sans:['Inter','sans-serif'] }
+    }}};
+  </script>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+  <!-- prototype ribbon -->
+  <div id="protoRibbon" class="proto-ribbon fixed top-0 inset-x-0 z-[60] text-center py-1.5 px-4">
+    <span>Interactive prototype — this booking flow is a live demo &nbsp;·&nbsp; designed by <strong>Manish Kumawat</strong> &nbsp;·&nbsp; <a href="admin.html">Preview the Admin panel &rarr;</a></span>
+    <button id="ribbonClose" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white">✕</button>
+  </div>
+
+  <!-- header -->
+  <header class="site-header solid" style="top:30px">
+    <div class="max-w-7xl mx-auto px-5 flex items-center justify-between h-[74px]">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/logo.png" alt="Padharo House" class="h-11 w-auto" />
+        <span class="brand-name font-serif text-xl font-semibold tracking-wide hidden sm:block">Padharo House</span>
+      </a>
+      <nav class="hidden lg:flex items-center gap-8">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="index.html#rooms" class="nav-link">Rooms</a>
+        <a href="index.html#gallery" class="nav-link">Gallery</a>
+        <a href="index.html#experiences" class="nav-link">Experiences</a>
+        <a href="blog.html" class="nav-link">Journal</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <a href="booking.html" class="btn btn-primary text-sm">Book Now</a>
+        <button id="burger" class="lg:hidden nav-ico text-2xl leading-none">☰</button>
+      </div>
+    </div>
+    <div id="mobileNav" class="hidden lg:hidden bg-white shadow-lg mx-4 rounded-xl overflow-hidden">
+      <a href="index.html" class="block px-5 py-3 border-b border-cream hover:bg-cream">Home</a>
+      <a href="index.html#rooms" class="block px-5 py-3 border-b border-cream hover:bg-cream">Rooms</a>
+      <a href="index.html#gallery" class="block px-5 py-3 border-b border-cream hover:bg-cream">Gallery</a>
+      <a href="blog.html" class="block px-5 py-3 border-b border-cream hover:bg-cream">Journal</a>
+      <a href="admin.html" class="block px-5 py-3 hover:bg-cream text-terra font-semibold">Admin Preview</a>
+    </div>
+  </header>
+
+  <!-- page banner -->
+  <section class="ribbon-offset bg-cream" style="padding-top:120px">
+    <div class="max-w-7xl mx-auto px-5 pb-10 text-center">
+      <div class="eyebrow mb-3">Reserve Your Dates</div>
+      <h1 class="font-serif text-3xl md:text-4xl mb-3">Book your stay</h1>
+      <p class="text-muted max-w-xl mx-auto">Pick your dates, choose an experience, and see a fully transparent price — taxes and all — before you pay.</p>
+    </div>
+  </section>
+
+  <!-- booking engine -->
+  <section class="pb-24 bg-cream">
+    <div class="max-w-6xl mx-auto px-5 grid lg:grid-cols-[1.4fr_1fr] gap-8 items-start">
+
+      <!-- left: calendar + options -->
+      <div class="space-y-6">
+        <!-- calendar -->
+        <div class="bg-white rounded-2xl p-6 border border-[#efe6da]">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="font-serif text-xl">1 · Choose your dates</h2>
+            <div class="flex items-center gap-2">
+              <button id="calPrev" class="w-9 h-9 rounded-full border border-[#e6d8c6] hover:bg-cream">‹</button>
+              <span id="calMonth" class="font-semibold text-sm w-36 text-center"></span>
+              <button id="calNext" class="w-9 h-9 rounded-full border border-[#e6d8c6] hover:bg-cream">›</button>
+            </div>
+          </div>
+          <div id="calendar" class="grid grid-cols-7 gap-1"></div>
+          <div class="flex flex-wrap gap-4 mt-4 text-xs text-muted">
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-terra inline-block"></span> Selected</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-cream border border-[#e6d8c6] inline-block"></span> In range</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded inline-block" style="box-shadow:inset 0 0 0 1.5px var(--gold)"></span> Today</span>
+            <span class="flex items-center gap-1.5"><s>12</s> Booked</span>
+          </div>
+        </div>
+
+        <!-- packages -->
+        <div class="bg-white rounded-2xl p-6 border border-[#efe6da]">
+          <h2 class="font-serif text-xl mb-4">2 · Add an experience</h2>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <button data-pkg="room" class="text-left p-4 rounded-xl border border-[#e6d8c6] transition hover:bg-cream">
+              <div class="flex justify-between items-center"><span class="font-semibold">Room Only</span><span class="text-sm text-muted">included</span></div>
+              <p class="text-xs text-muted mt-1">Just the stay — full royal comfort.</p>
+            </button>
+            <button data-pkg="guide" class="text-left p-4 rounded-xl border border-[#e6d8c6] transition hover:bg-cream">
+              <div class="flex justify-between items-center"><span class="font-semibold">Stay + Local Guide</span><span class="text-sm text-terra font-semibold">+₹1,500</span></div>
+              <p class="text-xs text-muted mt-1">Expert guide for Amber Fort &amp; old city.</p>
+            </button>
+            <button data-pkg="romance" class="text-left p-4 rounded-xl border border-[#e6d8c6] transition hover:bg-cream">
+              <div class="flex justify-between items-center"><span class="font-semibold">Romantic Escape</span><span class="text-sm text-terra font-semibold">+₹2,500</span></div>
+              <p class="text-xs text-muted mt-1">Décor, candlelight dinner &amp; late checkout.</p>
+            </button>
+            <button data-pkg="culture" class="text-left p-4 rounded-xl border border-[#e6d8c6] transition hover:bg-cream">
+              <div class="flex justify-between items-center"><span class="font-semibold">Cultural Retreat</span><span class="text-sm text-terra font-semibold">+₹3,200</span></div>
+              <p class="text-xs text-muted mt-1">Folk music, puppet show &amp; Rajasthani thali.</p>
+            </button>
+          </div>
+        </div>
+
+        <!-- guests + promo -->
+        <div class="bg-white rounded-2xl p-6 border border-[#efe6da] grid sm:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-sm font-semibold mb-2">Guests</label>
+            <select id="guests" class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5 bg-white">
+              <option value="1">1 guest</option><option value="2" selected>2 guests</option>
+              <option value="3">3 guests</option><option value="4">4 guests</option>
+              <option value="5">5 guests</option><option value="6">6 guests</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-2">Promo code <span class="text-xs text-muted font-normal">(try GHAR10)</span></label>
+            <input id="promo" type="text" placeholder="Enter code" class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5 uppercase" />
+          </div>
+        </div>
+      </div>
+
+      <!-- right: sticky summary -->
+      <div class="lg:sticky lg:top-32">
+        <div class="bg-white rounded-2xl p-6 border border-[#efe6da] shadow-sm">
+          <h2 class="font-serif text-xl mb-4">3 · Price summary</h2>
+          <div id="summary"></div>
+          <button id="bookCta" class="btn btn-primary w-full justify-center mt-5">Proceed to Pay</button>
+          <p class="text-xs text-muted text-center mt-3">🔒 Secure payment via Razorpay / UPI · Cards · Netbanking</p>
+        </div>
+        <div class="bg-white/70 rounded-xl p-4 mt-4 text-xs text-muted border border-[#efe6da]">
+          <b class="text-ink">Request-to-Book:</b> your request reaches the host instantly (dashboard + WhatsApp). Pay the deposit to hold your dates — the calendar updates automatically.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- pay modal (mock) -->
+  <div id="payModal" class="hidden fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden">
+      <div class="bg-terra text-white px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-2"><img src="assets/logo.png" class="h-8 bg-white rounded p-0.5" alt="" /><span class="font-serif">Padharo House</span></div>
+        <button id="payClose" class="text-white/80 hover:text-white text-xl">✕</button>
+      </div>
+      <div class="p-6">
+        <p class="text-sm text-muted mb-1">Pay to reserve (demo)</p>
+        <div class="font-serif text-3xl text-terra mb-5">Secure Checkout</div>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 border border-[#e6d8c6] rounded-lg px-4 py-3"><span>📱</span><span class="text-sm">UPI — GPay / PhonePe / Paytm</span></div>
+          <div class="flex items-center gap-3 border border-[#e6d8c6] rounded-lg px-4 py-3"><span>💳</span><span class="text-sm">Credit / Debit Card</span></div>
+          <div class="flex items-center gap-3 border border-[#e6d8c6] rounded-lg px-4 py-3"><span>🏦</span><span class="text-sm">Netbanking</span></div>
+        </div>
+        <button class="btn btn-primary w-full justify-center mt-5" onclick="alert('This is a prototype — no real payment is taken. In the live site this completes securely via Razorpay and the booking is confirmed by WhatsApp + email.');">Pay &amp; Confirm</button>
+        <p class="text-[11px] text-muted text-center mt-3">Prototype only — no real payment is processed.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <footer class="bg-ink text-white/75 pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-5 grid md:grid-cols-4 gap-10">
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-3 mb-4">
+          <img src="assets/logo.png" alt="" class="h-11 bg-white/95 rounded-lg p-1" />
+          <span class="font-serif text-xl text-white">Padharo House</span>
+        </div>
+        <p class="text-sm max-w-md">A luxury boutique homestay in Amer, Jaipur — Rajasthani heritage charm with modern comfort, moments from the Amber Fort.</p>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Explore</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="index.html#rooms" class="hover:text-gold">Rooms &amp; Suites</a></li>
+          <li><a href="index.html#gallery" class="hover:text-gold">Gallery</a></li>
+          <li><a href="blog.html" class="hover:text-gold">Journal &amp; Reviews</a></li>
+          <li><a href="admin.html" class="hover:text-gold">Admin Preview</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Contact</h4>
+        <ul class="space-y-2 text-sm">
+          <li>Amer, Jaipur, Rajasthan</li>
+          <li><a href="#" class="hover:text-gold">hello@padharo.house</a></li>
+          <li><a href="#" class="hover:text-gold">+91 —— (your number)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-5 mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between gap-2 text-xs">
+      <span>© 2026 Padharo House. All rights reserved.</span>
+      <span>Prototype designed by <b class="text-white/90">Manish Kumawat</b> · Forward Deployed AI Engineer</span>
+    </div>
+  </footer>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel Preview — Padharo House</title>
+  <meta name="description" content="A preview of the admin dashboard that powers Padharo House — bookings, leads, content, pricing and media, all controlled by you." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { terra:'#A0472A', terradark:'#853a22', gold:'#C0923B', cream:'#FBF6EE', sand:'#EFE3D3', ink:'#2B2620', muted:'#6E645A' },
+      fontFamily: { serif:['"Playfair Display"','serif'], sans:['Inter','sans-serif'] }
+    }}};
+  </script>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body class="bg-[#f4efe8]">
+
+  <div id="protoRibbon" class="proto-ribbon fixed top-0 inset-x-0 z-[60] text-center py-1.5 px-4">
+    <span>Admin panel preview — this is what <strong>you</strong> control &nbsp;·&nbsp; designed by <strong>Manish Kumawat</strong> &nbsp;·&nbsp; <a href="index.html">← Back to the website</a></span>
+    <button id="ribbonClose" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white">✕</button>
+  </div>
+
+  <div class="flex min-h-screen" style="padding-top:30px">
+
+    <!-- sidebar -->
+    <aside class="admin-side hidden md:flex w-60 shrink-0 flex-col bg-ink text-white/80 p-4 fixed h-full" style="top:30px">
+      <div class="flex items-center gap-2 px-2 py-3 mb-3">
+        <img src="assets/logo.png" class="h-9 bg-white rounded-lg p-1" alt="" />
+        <div><div class="font-serif text-white text-sm leading-tight">Padharo House</div><div class="text-[11px] text-white/50">Admin Console</div></div>
+      </div>
+      <nav class="space-y-1 flex-1">
+        <a class="active" data-tab="dashboard">📊 Dashboard</a>
+        <a data-tab="bookings">📅 Bookings</a>
+        <a data-tab="leads">👥 Leads / CRM</a>
+        <a data-tab="content">📝 Content &amp; Pages</a>
+        <a data-tab="media">🖼️ Photos &amp; Reels</a>
+        <a data-tab="pricing">💰 Pricing &amp; Packages</a>
+        <a data-tab="reviews">⭐ Reviews</a>
+        <a data-tab="settings">⚙️ Settings</a>
+      </nav>
+      <div class="border-t border-white/10 pt-3 mt-3 flex items-center gap-2 px-2">
+        <span class="w-8 h-8 rounded-full bg-terra grid place-items-center text-white text-sm font-semibold">P</span>
+        <div class="text-xs"><div class="text-white">Owner</div><div class="text-white/50">Super Admin</div></div>
+      </div>
+    </aside>
+
+    <!-- main -->
+    <main class="flex-1 md:ml-60">
+      <!-- topbar -->
+      <div class="bg-white border-b border-[#e7ddd0] px-6 py-3.5 flex items-center justify-between sticky top-[30px] z-30">
+        <div>
+          <h1 id="pageTitle" class="font-serif text-xl">Dashboard</h1>
+          <p class="text-xs text-muted">Welcome back — here's your property at a glance.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <a href="index.html" target="_blank" class="text-sm text-terra hover:underline hidden sm:inline">View site ↗</a>
+          <span class="badge badge-green">● Live</span>
+        </div>
+      </div>
+
+      <div class="p-6 max-w-6xl">
+
+        <!-- DASHBOARD -->
+        <section data-panel="dashboard">
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="stat-card"><div class="text-xs text-muted mb-1">This month's revenue</div><div class="font-serif text-2xl text-terra">₹2,84,500</div><div class="text-xs text-green-600 mt-1">▲ 18% vs last month</div></div>
+            <div class="stat-card"><div class="text-xs text-muted mb-1">Bookings</div><div class="font-serif text-2xl">32</div><div class="text-xs text-green-600 mt-1">▲ 6 new this week</div></div>
+            <div class="stat-card"><div class="text-xs text-muted mb-1">Occupancy</div><div class="font-serif text-2xl">78%</div><div class="text-xs text-muted mt-1">Next 30 days</div></div>
+            <div class="stat-card"><div class="text-xs text-muted mb-1">New leads</div><div class="font-serif text-2xl">14</div><div class="text-xs text-amber-600 mt-1">5 awaiting reply</div></div>
+          </div>
+
+          <div class="grid lg:grid-cols-3 gap-5">
+            <!-- occupancy bar chart -->
+            <div class="bg-white rounded-xl border border-[#eee5d9] p-5 lg:col-span-2">
+              <div class="flex items-center justify-between mb-4"><h3 class="font-semibold">Bookings — last 6 months</h3><span class="text-xs text-muted">demo data</span></div>
+              <div class="flex items-end gap-3 h-40">
+                <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-cream rounded-t" style="height:45%"></div><span class="text-[11px] text-muted">Apr</span></div>
+                <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-cream rounded-t" style="height:58%"></div><span class="text-[11px] text-muted">May</span></div>
+                <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-gold/60 rounded-t" style="height:40%"></div><span class="text-[11px] text-muted">Jun</span></div>
+                <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-gold/60 rounded-t" style="height:52%"></div><span class="text-[11px] text-muted">Jul</span></div>
+                <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-terra/80 rounded-t" style="height:72%"></div><span class="text-[11px] text-muted">Aug</span></div>
+                <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-terra rounded-t" style="height:88%"></div><span class="text-[11px] text-muted">Sep</span></div>
+              </div>
+            </div>
+            <!-- recent bookings -->
+            <div class="bg-white rounded-xl border border-[#eee5d9] p-5">
+              <h3 class="font-semibold mb-4">Latest bookings</h3>
+              <ul class="space-y-3 text-sm">
+                <li class="flex items-center justify-between"><div><div class="font-medium">Ananya K.</div><div class="text-xs text-muted">3–6 Oct · Romantic</div></div><span class="badge badge-green">Confirmed</span></li>
+                <li class="flex items-center justify-between"><div><div class="font-medium">Rahul S.</div><div class="text-xs text-muted">10–12 Oct · Guide</div></div><span class="badge badge-amber">Deposit</span></li>
+                <li class="flex items-center justify-between"><div><div class="font-medium">James M.</div><div class="text-xs text-muted">18–21 Oct · Cultural</div></div><span class="badge badge-blue">Request</span></li>
+                <li class="flex items-center justify-between"><div><div class="font-medium">Priya T.</div><div class="text-xs text-muted">24–26 Oct · Room</div></div><span class="badge badge-green">Confirmed</span></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- BOOKINGS -->
+        <section data-panel="bookings" class="hidden">
+          <div class="bg-white rounded-xl border border-[#eee5d9] overflow-hidden">
+            <div class="px-5 py-4 border-b border-[#eee5d9] flex items-center justify-between">
+              <h3 class="font-semibold">All bookings</h3>
+              <div class="flex gap-2 text-xs">
+                <span class="badge badge-green">Confirmed 24</span><span class="badge badge-amber">Deposit 5</span><span class="badge badge-blue">Requests 3</span>
+              </div>
+            </div>
+            <table class="w-full text-sm">
+              <thead class="bg-cream text-muted text-xs uppercase"><tr>
+                <th class="text-left px-5 py-3">Guest</th><th class="text-left px-5 py-3">Dates</th><th class="text-left px-5 py-3 hidden sm:table-cell">Package</th><th class="text-left px-5 py-3">Total</th><th class="text-left px-5 py-3">Status</th></tr></thead>
+              <tbody class="divide-y divide-[#f0e8dd]">
+                <tr><td class="px-5 py-3 font-medium">Ananya K.</td><td class="px-5 py-3">3–6 Oct</td><td class="px-5 py-3 hidden sm:table-cell">Romantic Escape</td><td class="px-5 py-3">₹28,853</td><td class="px-5 py-3"><span class="badge badge-green">Confirmed</span></td></tr>
+                <tr><td class="px-5 py-3 font-medium">Rahul S.</td><td class="px-5 py-3">10–12 Oct</td><td class="px-5 py-3 hidden sm:table-cell">Stay + Guide</td><td class="px-5 py-3">₹17,920</td><td class="px-5 py-3"><span class="badge badge-amber">Deposit paid</span></td></tr>
+                <tr class="bg-cream/40"><td class="px-5 py-3 font-medium">James M.</td><td class="px-5 py-3">18–21 Oct</td><td class="px-5 py-3 hidden sm:table-cell">Cultural Retreat</td><td class="px-5 py-3">₹31,450</td><td class="px-5 py-3"><span class="badge badge-blue">Confirm / decline</span></td></tr>
+                <tr><td class="px-5 py-3 font-medium">Priya T.</td><td class="px-5 py-3">24–26 Oct</td><td class="px-5 py-3 hidden sm:table-cell">Room Only</td><td class="px-5 py-3">₹14,560</td><td class="px-5 py-3"><span class="badge badge-green">Confirmed</span></td></tr>
+                <tr><td class="px-5 py-3 font-medium">Vikram D.</td><td class="px-5 py-3">1–3 Nov</td><td class="px-5 py-3 hidden sm:table-cell">Romantic Escape</td><td class="px-5 py-3">₹27,300</td><td class="px-5 py-3"><span class="badge badge-green">Confirmed</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-xs text-muted mt-3">This is your "Booking Receiving &amp; confirmation" role — approve requests, block dates, and the website calendar updates instantly.</p>
+        </section>
+
+        <!-- LEADS -->
+        <section data-panel="leads" class="hidden">
+          <div class="grid md:grid-cols-4 gap-4">
+            <div class="bg-white rounded-xl border border-[#eee5d9] p-4">
+              <div class="text-sm font-semibold mb-3 flex justify-between">New <span class="badge badge-blue">4</span></div>
+              <div class="space-y-2">
+                <div class="border border-[#eee5d9] rounded-lg p-3 text-sm"><div class="font-medium">Meera J.</div><div class="text-xs text-muted">Wants Dec dates · WhatsApp</div></div>
+                <div class="border border-[#eee5d9] rounded-lg p-3 text-sm"><div class="font-medium">Arjun P.</div><div class="text-xs text-muted">Group of 6 · enquiry form</div></div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl border border-[#eee5d9] p-4">
+              <div class="text-sm font-semibold mb-3 flex justify-between">Contacted <span class="badge badge-amber">3</span></div>
+              <div class="space-y-2"><div class="border border-[#eee5d9] rounded-lg p-3 text-sm"><div class="font-medium">Sara N.</div><div class="text-xs text-muted">Sent quote · follow up 27 Sep</div></div></div>
+            </div>
+            <div class="bg-white rounded-xl border border-[#eee5d9] p-4">
+              <div class="text-sm font-semibold mb-3 flex justify-between">Quoted <span class="badge badge-amber">2</span></div>
+              <div class="space-y-2"><div class="border border-[#eee5d9] rounded-lg p-3 text-sm"><div class="font-medium">Deepak R.</div><div class="text-xs text-muted">₹22k · awaiting reply</div></div></div>
+            </div>
+            <div class="bg-white rounded-xl border border-[#eee5d9] p-4">
+              <div class="text-sm font-semibold mb-3 flex justify-between">Booked <span class="badge badge-green">5</span></div>
+              <div class="space-y-2"><div class="border border-[#eee5d9] rounded-lg p-3 text-sm"><div class="font-medium">Ananya K.</div><div class="text-xs text-muted">Converted · ₹28,853</div></div></div>
+            </div>
+          </div>
+          <p class="text-xs text-muted mt-3">Every enquiry &amp; callback request is captured here — drag through the pipeline, with WhatsApp &amp; email history on each lead.</p>
+        </section>
+
+        <!-- CONTENT -->
+        <section data-panel="content" class="hidden">
+          <div class="bg-white rounded-xl border border-[#eee5d9] p-6 max-w-3xl">
+            <h3 class="font-semibold mb-1">Edit: Home — Hero section</h3>
+            <p class="text-xs text-muted mb-5">Change any text on the site here. No coding — just type and save.</p>
+            <label class="block text-sm font-semibold mb-1">Headline</label>
+            <input class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5 mb-4" value="Wake up to the Amber Fort." />
+            <label class="block text-sm font-semibold mb-1">Description</label>
+            <textarea rows="3" class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5 mb-4">A truly royal experience in the Pink City — where Rajasthani heritage charm meets every modern comfort, framed by spectacular views of the historic Amber Fort.</textarea>
+            <div class="flex gap-3">
+              <button class="btn btn-primary text-sm" onclick="document.getElementById('savedToast').classList.remove('hidden'); setTimeout(function(){document.getElementById('savedToast').classList.add('hidden');},1800);">Save changes</button>
+              <button class="btn btn-outline text-sm">Preview</button>
+            </div>
+          </div>
+          <div class="mt-5 grid sm:grid-cols-3 gap-3 max-w-3xl">
+            <div class="bg-white rounded-lg border border-[#eee5d9] px-4 py-3 text-sm flex justify-between items-center">Home page <span class="text-xs text-terra">Edit</span></div>
+            <div class="bg-white rounded-lg border border-[#eee5d9] px-4 py-3 text-sm flex justify-between items-center">Rooms &amp; Suites <span class="text-xs text-terra">Edit</span></div>
+            <div class="bg-white rounded-lg border border-[#eee5d9] px-4 py-3 text-sm flex justify-between items-center">About / Location <span class="text-xs text-terra">Edit</span></div>
+          </div>
+        </section>
+
+        <!-- MEDIA -->
+        <section data-panel="media" class="hidden">
+          <div class="bg-white rounded-xl border border-[#eee5d9] p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-semibold">Photo gallery</h3>
+              <button class="btn btn-primary text-sm">+ Upload photos</button>
+            </div>
+            <p class="text-xs text-muted mb-4">Drag to reorder · click to remove · toggle which show on the site. Changes go live instantly.</p>
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3" id="mediaGrid"></div>
+          </div>
+          <div class="bg-white rounded-xl border border-[#eee5d9] p-6 mt-5">
+            <div class="flex items-center justify-between mb-4"><h3 class="font-semibold">Reel library</h3><button class="btn btn-outline text-sm">+ Add reel</button></div>
+            <div class="flex gap-3 overflow-x-auto no-scrollbar">
+              <div class="w-24 aspect-[9/16] rounded-lg overflow-hidden shrink-0"><img src="assets/img/p1.jpg" class="w-full h-full object-cover" alt=""></div>
+              <div class="w-24 aspect-[9/16] rounded-lg overflow-hidden shrink-0"><img src="assets/img/p8.jpg" class="w-full h-full object-cover" alt=""></div>
+              <div class="w-24 aspect-[9/16] rounded-lg overflow-hidden shrink-0"><img src="assets/img/p7.jpg" class="w-full h-full object-cover" alt=""></div>
+              <div class="w-24 aspect-[9/16] rounded-lg border-2 border-dashed border-[#e6d8c6] grid place-items-center text-2xl text-muted shrink-0">+</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PRICING -->
+        <section data-panel="pricing" class="hidden">
+          <div class="bg-white rounded-xl border border-[#eee5d9] p-6 max-w-3xl">
+            <h3 class="font-semibold mb-4">Base pricing</h3>
+            <div class="grid sm:grid-cols-3 gap-4 mb-6">
+              <div><label class="block text-xs text-muted mb-1">Weekday rate / night</label><input class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" value="₹6,500" /></div>
+              <div><label class="block text-xs text-muted mb-1">Weekend rate / night</label><input class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" value="₹8,125" /></div>
+              <div><label class="block text-xs text-muted mb-1">GST %</label><input class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" value="12%" /></div>
+            </div>
+            <h3 class="font-semibold mb-3">Packages</h3>
+            <div class="space-y-2">
+              <div class="flex items-center justify-between border border-[#eee5d9] rounded-lg px-4 py-3 text-sm"><span>Stay + Local Guide</span><span class="flex items-center gap-3"><b>+₹1,500</b><span class="badge badge-green">On</span></span></div>
+              <div class="flex items-center justify-between border border-[#eee5d9] rounded-lg px-4 py-3 text-sm"><span>Romantic Escape</span><span class="flex items-center gap-3"><b>+₹2,500</b><span class="badge badge-green">On</span></span></div>
+              <div class="flex items-center justify-between border border-[#eee5d9] rounded-lg px-4 py-3 text-sm"><span>Cultural Retreat</span><span class="flex items-center gap-3"><b>+₹3,200</b><span class="badge badge-green">On</span></span></div>
+              <div class="flex items-center justify-between border border-[#eee5d9] rounded-lg px-4 py-3 text-sm text-muted"><span>Family Getaway</span><span class="flex items-center gap-3"><b>+₹2,800</b><span class="badge" style="background:#eee;color:#888">Off</span></span></div>
+            </div>
+            <div class="mt-5"><button class="btn btn-primary text-sm" onclick="document.getElementById('savedToast').classList.remove('hidden'); setTimeout(function(){document.getElementById('savedToast').classList.add('hidden');},1800);">Save pricing</button></div>
+          </div>
+        </section>
+
+        <!-- REVIEWS -->
+        <section data-panel="reviews" class="hidden">
+          <div class="bg-white rounded-xl border border-[#eee5d9] p-6 max-w-3xl">
+            <h3 class="font-semibold mb-4">Reviews — approve before publishing</h3>
+            <div class="space-y-3">
+              <div class="border border-[#eee5d9] rounded-lg p-4">
+                <div class="flex justify-between items-start mb-1"><div class="font-medium text-sm">Meera J. <span class="text-gold">★★★★★</span></div><span class="badge badge-amber">Pending</span></div>
+                <p class="text-sm text-muted mb-3">"Absolutely stunning stay, the views are unreal and hosts so kind."</p>
+                <div class="flex gap-2"><button class="btn btn-primary text-xs py-1.5 px-3">Approve</button><button class="btn btn-outline text-xs py-1.5 px-3">Hide</button></div>
+              </div>
+              <div class="border border-[#eee5d9] rounded-lg p-4 opacity-70">
+                <div class="flex justify-between items-start mb-1"><div class="font-medium text-sm">James M. <span class="text-gold">★★★★★</span></div><span class="badge badge-green">Published</span></div>
+                <p class="text-sm text-muted">"A serene cultural retreat. The folk evening was the highlight."</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section data-panel="settings" class="hidden">
+          <div class="bg-white rounded-xl border border-[#eee5d9] p-6 max-w-3xl space-y-5">
+            <div><h3 class="font-semibold mb-3">Team &amp; roles</h3>
+              <div class="space-y-2 text-sm">
+                <div class="flex justify-between items-center border border-[#eee5d9] rounded-lg px-4 py-3"><span>Owner (you)</span><span class="badge badge-green">Super Admin</span></div>
+                <div class="flex justify-between items-center border border-[#eee5d9] rounded-lg px-4 py-3"><span>Booking Manager</span><span class="badge badge-blue">Bookings + Leads</span></div>
+                <div class="flex justify-between items-center border border-[#eee5d9] rounded-lg px-4 py-3"><span>Content Editor</span><span class="badge badge-amber">Content + Media</span></div>
+              </div>
+            </div>
+            <div><h3 class="font-semibold mb-3">Integrations</h3>
+              <div class="grid sm:grid-cols-2 gap-3 text-sm">
+                <div class="flex justify-between items-center border border-[#eee5d9] rounded-lg px-4 py-3"><span>💳 Razorpay</span><span class="badge badge-green">Connected</span></div>
+                <div class="flex justify-between items-center border border-[#eee5d9] rounded-lg px-4 py-3"><span>💬 WhatsApp</span><span class="badge badge-green">Connected</span></div>
+                <div class="flex justify-between items-center border border-[#eee5d9] rounded-lg px-4 py-3"><span>✉️ Email (Brevo)</span><span class="badge badge-green">Connected</span></div>
+                <div class="flex justify-between items-center border border-[#eee5d9] rounded-lg px-4 py-3"><span>📊 Google Analytics</span><span class="badge badge-amber">Setup</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- saved toast -->
+  <div id="savedToast" class="hidden fixed bottom-6 right-6 bg-ink text-white px-5 py-3 rounded-lg shadow-lg text-sm z-[80]">✓ Saved — your website is updated instantly.</div>
+
+  <script src="assets/app.js"></script>
+  <script>
+    // admin tab switching
+    (function(){
+      var links = document.querySelectorAll('.admin-side a[data-tab]');
+      var panels = document.querySelectorAll('[data-panel]');
+      var titles = {dashboard:'Dashboard',bookings:'Bookings',leads:'Leads / CRM',content:'Content & Pages',media:'Photos & Reels',pricing:'Pricing & Packages',reviews:'Reviews',settings:'Settings'};
+      links.forEach(function(a){
+        a.addEventListener('click', function(){
+          var t = a.getAttribute('data-tab');
+          links.forEach(function(x){x.classList.remove('active');}); a.classList.add('active');
+          panels.forEach(function(p){ p.classList.toggle('hidden', p.getAttribute('data-panel') !== t); });
+          document.getElementById('pageTitle').textContent = titles[t] || '';
+          window.scrollTo({top:0,behavior:'smooth'});
+        });
+      });
+      // build media grid from p1..p10
+      var g = document.getElementById('mediaGrid');
+      if (g){ for(var i=1;i<=10;i++){ g.innerHTML += '<div class="relative group aspect-square rounded-lg overflow-hidden border border-[#eee5d9]"><img src="assets/img/p'+i+'.jpg" class="w-full h-full object-cover" alt=""><span class="absolute top-1 right-1 w-5 h-5 rounded-full bg-white/90 text-xs grid place-items-center opacity-0 group-hover:opacity-100 cursor-pointer">✕</span></div>'; } }
+    })();
+  </script>
+</body>
+</html>
