@@ -75,7 +75,7 @@
   const WEEKEND = 1.25;              // Fri/Sat multiplier
   const TAX = 0.12;                  // 12% GST (<= 7500/night)
   const packages = {
-    room:   { label: 'Room Only',            add: 0 },
+    room:   { label: 'Stay Only',            add: 0 },
     guide:  { label: 'Stay + Local Guide',   add: 1500 },
     romance:{ label: 'Romantic Escape',      add: 2500 },
     culture:{ label: 'Cultural Retreat',     add: 3200 },
