@@ -34,7 +34,7 @@
       </a>
       <nav class="hidden lg:flex items-center gap-8">
         <a href="index.html" class="nav-link">Home</a>
-        <a href="index.html#rooms" class="nav-link">Rooms</a>
+        <a href="index.html#suite" class="nav-link">The Suite</a>
         <a href="index.html#gallery" class="nav-link">Gallery</a>
         <a href="index.html#experiences" class="nav-link">Experiences</a>
         <a href="blog.html" class="nav-link">Journal</a>
@@ -46,7 +46,7 @@
     </div>
     <div id="mobileNav" class="hidden lg:hidden bg-white shadow-lg mx-4 rounded-xl overflow-hidden">
       <a href="index.html" class="block px-5 py-3 border-b border-cream hover:bg-cream">Home</a>
-      <a href="index.html#rooms" class="block px-5 py-3 border-b border-cream hover:bg-cream">Rooms</a>
+      <a href="index.html#suite" class="block px-5 py-3 border-b border-cream hover:bg-cream">The Suite</a>
       <a href="index.html#gallery" class="block px-5 py-3 border-b border-cream hover:bg-cream">Gallery</a>
       <a href="blog.html" class="block px-5 py-3 border-b border-cream hover:bg-cream">Journal</a>
       <a href="admin.html" class="block px-5 py-3 hover:bg-cream text-terra font-semibold">Admin Preview</a>
@@ -92,8 +92,8 @@
           <h2 class="font-serif text-xl mb-4">2 · Add an experience</h2>
           <div class="grid sm:grid-cols-2 gap-3">
             <button data-pkg="room" class="text-left p-4 rounded-xl border border-[#e6d8c6] transition hover:bg-cream">
-              <div class="flex justify-between items-center"><span class="font-semibold">Room Only</span><span class="text-sm text-muted">included</span></div>
-              <p class="text-xs text-muted mt-1">Just the stay — full royal comfort.</p>
+              <div class="flex justify-between items-center"><span class="font-semibold">Stay Only</span><span class="text-sm text-muted">included</span></div>
+              <p class="text-xs text-muted mt-1">Just the suite — full royal comfort.</p>
             </button>
             <button data-pkg="guide" class="text-left p-4 rounded-xl border border-[#e6d8c6] transition hover:bg-cream">
               <div class="flex justify-between items-center"><span class="font-semibold">Stay + Local Guide</span><span class="text-sm text-terra font-semibold">+₹1,500</span></div>
@@ -116,9 +116,9 @@
             <label class="block text-sm font-semibold mb-2">Guests</label>
             <select id="guests" class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5 bg-white">
               <option value="1">1 guest</option><option value="2" selected>2 guests</option>
-              <option value="3">3 guests</option><option value="4">4 guests</option>
-              <option value="5">5 guests</option><option value="6">6 guests</option>
+              <option value="3">3 guests (extra bed)</option>
             </select>
+            <p class="text-xs text-muted mt-1.5">One suite · sleeps 2 comfortably, up to 3 with an extra bed.</p>
           </div>
           <div>
             <label class="block text-sm font-semibold mb-2">Promo code <span class="text-xs text-muted font-normal">(try GHAR10)</span></label>
@@ -176,7 +176,7 @@
       <div>
         <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Explore</h4>
         <ul class="space-y-2 text-sm">
-          <li><a href="index.html#rooms" class="hover:text-gold">Rooms &amp; Suites</a></li>
+          <li><a href="index.html#suite" class="hover:text-gold">The Suite</a></li>
           <li><a href="index.html#gallery" class="hover:text-gold">Gallery</a></li>
           <li><a href="blog.html" class="hover:text-gold">Journal &amp; Reviews</a></li>
           <li><a href="admin.html" class="hover:text-gold">Admin Preview</a></li>
@@ -186,16 +186,25 @@
         <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Contact</h4>
         <ul class="space-y-2 text-sm">
           <li>Amer, Jaipur, Rajasthan</li>
-          <li><a href="#" class="hover:text-gold">hello@padharo.house</a></li>
-          <li><a href="#" class="hover:text-gold">+91 —— (your number)</a></li>
+          <li><a href="mailto:padharohouse@gmail.com" class="hover:text-gold">padharohouse@gmail.com</a></li>
+          <li><a href="tel:+919461884005" class="hover:text-gold">+91 94618 84005</a></li>
         </ul>
       </div>
     </div>
     <div class="max-w-7xl mx-auto px-5 mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between gap-2 text-xs">
-      <span>© 2026 Padharo House. All rights reserved.</span>
+      <span>© 2026 Padharo House · GSTIN 08BEPPG3869F1Z4 · All rights reserved.</span>
       <span>Prototype designed by <b class="text-white/90">Manish Kumawat</b> · Forward Deployed AI Engineer</span>
     </div>
   </footer>
+
+  <!-- floating WhatsApp -->
+  <a href="https://wa.me/919461884005?text=Hi%20Padharo%20House%2C%20I%27d%20like%20to%20check%20availability%20for%20my%20dates."
+     target="_blank" rel="noopener"
+     class="fixed bottom-5 right-5 z-[70] flex items-center gap-2 bg-[#25D366] text-white rounded-full shadow-lg pl-3.5 pr-4 py-3 hover:brightness-95 transition"
+     aria-label="Chat with Padharo House on WhatsApp">
+    <svg viewBox="0 0 32 32" class="w-6 h-6 fill-current" aria-hidden="true"><path d="M16 3C9 3 3.3 8.7 3.3 15.7c0 2.5.7 4.8 1.9 6.8L3 29l6.7-2.1c1.9 1 4 1.6 6.3 1.6 7 0 12.7-5.7 12.7-12.7S23 3 16 3zm0 23.1c-2 0-3.9-.6-5.5-1.5l-.4-.2-4 1.2 1.2-3.9-.3-.4c-1.1-1.7-1.7-3.7-1.7-5.8C5.3 9.8 10.1 5 16 5s10.7 4.8 10.7 10.7S21.9 26.1 16 26.1zm6-8c-.3-.2-1.9-1-2.2-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1 1.3-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.6-.1-.2-.8-1.9-1-2.5-.3-.7-.5-.6-.8-.6h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.3 1.4 3.5c.2.2 2.4 3.7 5.9 5.2 2.2.9 3 1 4.1.9.7-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>
+    <span class="text-sm font-semibold hidden sm:block">Chat with us</span>
+  </a>
 
   <script src="assets/app.js"></script>
 </body>

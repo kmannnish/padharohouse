@@ -34,7 +34,7 @@
       </a>
       <nav class="hidden lg:flex items-center gap-8">
         <a href="index.html" class="nav-link active">Home</a>
-        <a href="#rooms" class="nav-link">Rooms</a>
+        <a href="#suite" class="nav-link">The Suite</a>
         <a href="#gallery" class="nav-link">Gallery</a>
         <a href="#experiences" class="nav-link">Experiences</a>
         <a href="#location" class="nav-link">Location</a>
@@ -48,7 +48,7 @@
     <!-- mobile nav -->
     <div id="mobileNav" class="hidden lg:hidden bg-white shadow-lg mx-4 rounded-xl overflow-hidden">
       <a href="index.html" class="block px-5 py-3 border-b border-cream hover:bg-cream">Home</a>
-      <a href="#rooms" class="block px-5 py-3 border-b border-cream hover:bg-cream">Rooms</a>
+      <a href="#suite" class="block px-5 py-3 border-b border-cream hover:bg-cream">The Suite</a>
       <a href="#gallery" class="block px-5 py-3 border-b border-cream hover:bg-cream">Gallery</a>
       <a href="#experiences" class="block px-5 py-3 border-b border-cream hover:bg-cream">Experiences</a>
       <a href="#location" class="block px-5 py-3 border-b border-cream hover:bg-cream">Location</a>
@@ -102,7 +102,7 @@
         </p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-5">
           <div><div class="font-serif text-3xl text-terra">1.4km</div><div class="text-xs text-muted mt-1">to Amber Fort</div></div>
-          <div><div class="font-serif text-3xl text-terra">5</div><div class="text-xs text-muted mt-1">curated suites</div></div>
+          <div><div class="font-serif text-3xl text-terra">1</div><div class="text-xs text-muted mt-1">private suite</div></div>
           <div><div class="font-serif text-3xl text-terra">24/7</div><div class="text-xs text-muted mt-1">host care</div></div>
           <div><div class="font-serif text-3xl text-terra">4.9★</div><div class="text-xs text-muted mt-1">guest rating</div></div>
         </div>
@@ -143,56 +143,52 @@
     </div>
   </section>
 
-  <!-- rooms -->
-  <section id="rooms" class="py-20 md:py-28 bg-white">
+  <!-- the suite -->
+  <section id="suite" class="py-20 md:py-28 bg-white">
     <div class="max-w-7xl mx-auto px-5">
       <div class="text-center max-w-2xl mx-auto mb-14 reveal">
-        <div class="eyebrow mb-3">Stay With Us</div>
-        <h2 class="font-serif text-3xl md:text-4xl mb-4">Rooms &amp; suites</h2>
-        <p class="text-muted">Each space is individually styled — royal comfort with a story on every wall.</p>
+        <div class="eyebrow mb-3">The Space</div>
+        <h2 class="font-serif text-3xl md:text-4xl mb-4">One suite, entirely yours</h2>
+        <p class="text-muted">Padharo House is a single private suite — so the house, the view and your hosts' full attention are never shared. No crowds, no reception desk, just your own royal retreat above the Amber Fort.</p>
       </div>
-      <div class="grid md:grid-cols-3 gap-7">
-        <!-- room card -->
-        <div class="card reveal">
-          <div class="zoom aspect-[4/3]"><img src="assets/img/p8.jpg" class="w-full h-full object-cover" alt="The Amber Suite" /></div>
-          <div class="p-6">
-            <div class="flex items-center justify-between mb-2">
-              <h3 class="font-serif text-xl">The Amber Suite</h3>
-              <span class="pill">Fort view</span>
-            </div>
-            <p class="text-sm text-muted mb-4">Double-height suite with skylight, swing &amp; stained-glass windows facing the fort.</p>
-            <div class="flex items-center justify-between">
-              <div><span class="font-serif text-2xl text-terra">₹8,500</span><span class="text-sm text-muted">/night</span></div>
-              <a href="booking.html" class="btn btn-outline text-sm">Book</a>
-            </div>
-          </div>
+
+      <div class="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center reveal">
+        <!-- images -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="zoom rounded-2xl col-span-2 aspect-[16/10]"><img src="assets/img/p8.jpg" class="w-full h-full object-cover" alt="The Amber Suite" /></div>
+          <div class="zoom rounded-2xl aspect-[4/3]"><img src="assets/img/p5.jpg" class="w-full h-full object-cover" alt="Suite bedroom" /></div>
+          <div class="zoom rounded-2xl aspect-[4/3]"><img src="assets/img/p3.jpg" class="w-full h-full object-cover" alt="Private lounge" /></div>
         </div>
-        <div class="card reveal">
-          <div class="zoom aspect-[4/3]"><img src="assets/img/p5.jpg" class="w-full h-full object-cover" alt="Heritage Room" /></div>
-          <div class="p-6">
-            <div class="flex items-center justify-between mb-2">
-              <h3 class="font-serif text-xl">Heritage Room</h3>
-              <span class="pill">Cosy</span>
-            </div>
-            <p class="text-sm text-muted mb-4">Warm maroon tones, hand-carved bed and soft lamp-lit evenings.</p>
-            <div class="flex items-center justify-between">
-              <div><span class="font-serif text-2xl text-terra">₹6,500</span><span class="text-sm text-muted">/night</span></div>
-              <a href="booking.html" class="btn btn-outline text-sm">Book</a>
-            </div>
+
+        <!-- details -->
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <h3 class="font-serif text-2xl md:text-3xl">The Amber Suite</h3>
+            <span class="pill">Fort view</span>
           </div>
-        </div>
-        <div class="card reveal">
-          <div class="zoom aspect-[4/3]"><img src="assets/img/p3.jpg" class="w-full h-full object-cover" alt="Royal Lounge Room" /></div>
-          <div class="p-6">
-            <div class="flex items-center justify-between mb-2">
-              <h3 class="font-serif text-xl">Royal Lounge</h3>
-              <span class="pill">Spacious</span>
+          <p class="text-muted leading-relaxed mb-6">
+            A double-height heritage suite with a skylight, a hanging swing and stained-glass jharokha
+            windows framing the Amber Fort. Hand-carved furniture, soft lamp-lit evenings and every
+            modern comfort — your private corner of royal Jaipur.
+          </p>
+
+          <div class="grid grid-cols-2 gap-y-3 gap-x-5 mb-8">
+            <div class="flex items-center gap-2.5 text-sm"><span class="text-terra text-lg">🛏️</span> King bed</div>
+            <div class="flex items-center gap-2.5 text-sm"><span class="text-terra text-lg">🏰</span> Amber Fort view</div>
+            <div class="flex items-center gap-2.5 text-sm"><span class="text-terra text-lg">👥</span> Sleeps 2 (up to 3)</div>
+            <div class="flex items-center gap-2.5 text-sm"><span class="text-terra text-lg">❄️</span> Air-conditioned</div>
+            <div class="flex items-center gap-2.5 text-sm"><span class="text-terra text-lg">📶</span> Fast Wi-Fi</div>
+            <div class="flex items-center gap-2.5 text-sm"><span class="text-terra text-lg">🚿</span> Private ensuite bath</div>
+            <div class="flex items-center gap-2.5 text-sm"><span class="text-terra text-lg">☕</span> Breakfast included</div>
+            <div class="flex items-center gap-2.5 text-sm"><span class="text-terra text-lg">🧺</span> Daily housekeeping</div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-4 border-t border-[#eee5d9] pt-5">
+            <div>
+              <span class="font-serif text-3xl text-terra">₹6,500</span><span class="text-sm text-muted">/night</span>
+              <div class="text-xs text-muted mt-0.5">Taxes calculated at checkout · weekend rates may vary</div>
             </div>
-            <p class="text-sm text-muted mb-4">Airy living space bathed in colour through triple arched stained-glass windows.</p>
-            <div class="flex items-center justify-between">
-              <div><span class="font-serif text-2xl text-terra">₹7,200</span><span class="text-sm text-muted">/night</span></div>
-              <a href="booking.html" class="btn btn-outline text-sm">Book</a>
-            </div>
+            <a href="booking.html" class="btn btn-primary">Check availability</a>
           </div>
         </div>
       </div>
@@ -341,13 +337,13 @@
         <div class="flex gap-3 mt-5">
           <a href="#" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition">📷</a>
           <a href="#" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition">📘</a>
-          <a href="#" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition">💬</a>
+          <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition">💬</a>
         </div>
       </div>
       <div>
         <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Explore</h4>
         <ul class="space-y-2 text-sm">
-          <li><a href="#rooms" class="hover:text-gold">Rooms &amp; Suites</a></li>
+          <li><a href="#suite" class="hover:text-gold">The Suite</a></li>
           <li><a href="#gallery" class="hover:text-gold">Gallery</a></li>
           <li><a href="#experiences" class="hover:text-gold">Experiences</a></li>
           <li><a href="blog.html" class="hover:text-gold">Journal &amp; Reviews</a></li>
@@ -358,14 +354,14 @@
         <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Contact</h4>
         <ul class="space-y-2 text-sm">
           <li>Amer, Jaipur, Rajasthan</li>
-          <li><a href="#" class="hover:text-gold">hello@padharo.house</a></li>
-          <li><a href="#" class="hover:text-gold">+91 —— (your number)</a></li>
-          <li><a href="booking.html" class="hover:text-gold">Book a stay →</a></li>
+          <li><a href="mailto:padharohouse@gmail.com" class="hover:text-gold">padharohouse@gmail.com</a></li>
+          <li><a href="tel:+919461884005" class="hover:text-gold">+91 94618 84005</a></li>
+          <li><a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="hover:text-gold">WhatsApp us →</a></li>
         </ul>
       </div>
     </div>
     <div class="max-w-7xl mx-auto px-5 mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between gap-2 text-xs">
-      <span>© 2026 Padharo House. All rights reserved.</span>
+      <span>© 2026 Padharo House · GSTIN 08BEPPG3869F1Z4 · All rights reserved.</span>
       <span>Prototype designed by <b class="text-white/90">Manish Kumawat</b> · Forward Deployed AI Engineer</span>
     </div>
   </footer>
@@ -377,6 +373,15 @@
     <img src="" alt="Gallery image" />
     <span class="lb-nav lb-next">›</span>
   </div>
+
+  <!-- floating WhatsApp -->
+  <a href="https://wa.me/919461884005?text=Hi%20Padharo%20House%2C%20I%27d%20like%20to%20check%20availability%20for%20my%20dates."
+     target="_blank" rel="noopener"
+     class="fixed bottom-5 right-5 z-[70] flex items-center gap-2 bg-[#25D366] text-white rounded-full shadow-lg pl-3.5 pr-4 py-3 hover:brightness-95 transition"
+     aria-label="Chat with Padharo House on WhatsApp">
+    <svg viewBox="0 0 32 32" class="w-6 h-6 fill-current" aria-hidden="true"><path d="M16 3C9 3 3.3 8.7 3.3 15.7c0 2.5.7 4.8 1.9 6.8L3 29l6.7-2.1c1.9 1 4 1.6 6.3 1.6 7 0 12.7-5.7 12.7-12.7S23 3 16 3zm0 23.1c-2 0-3.9-.6-5.5-1.5l-.4-.2-4 1.2 1.2-3.9-.3-.4c-1.1-1.7-1.7-3.7-1.7-5.8C5.3 9.8 10.1 5 16 5s10.7 4.8 10.7 10.7S21.9 26.1 16 26.1zm6-8c-.3-.2-1.9-1-2.2-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1 1.3-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.6-.1-.2-.8-1.9-1-2.5-.3-.7-.5-.6-.8-.6h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.3 1.4 3.5c.2.2 2.4 3.7 5.9 5.2 2.2.9 3 1 4.1.9.7-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>
+    <span class="text-sm font-semibold hidden sm:block">Chat with us</span>
+  </a>
 
   <script src="assets/app.js"></script>
 </body>
