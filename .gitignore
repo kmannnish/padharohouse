@@ -1,0 +1,16 @@
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+.vscode/
+.idea/
+
+# Node / build output (for Phase 2)
+node_modules/
+.next/
+dist/
+build/
+.env
+.env.*
+.wrangler/
