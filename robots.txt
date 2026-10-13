@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /prototype/
+Disallow: /opening-soon/
+Disallow: /admin.html

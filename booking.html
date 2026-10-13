@@ -51,7 +51,7 @@
     <div class="max-w-7xl mx-auto px-5 pb-10 text-center">
       <div class="eyebrow mb-3">Reserve Your Dates</div>
       <h1 class="font-serif text-3xl md:text-4xl mb-3">Book your stay</h1>
-      <p class="text-muted max-w-xl mx-auto">Pick your dates, choose an experience, and see a fully transparent price — taxes and all — before you pay.</p>
+      <p class="text-muted max-w-xl mx-auto">Pick your dates, choose an experience, and see a fully transparent price — taxes and all — before you book.</p>
     </div>
   </section>
 
@@ -125,36 +125,17 @@
         <div class="bg-white rounded-2xl p-6 border border-[#efe6da] shadow-sm">
           <h2 class="font-serif text-xl mb-4">3 · Price summary</h2>
           <div id="summary"></div>
-          <button id="bookCta" class="btn btn-primary w-full justify-center mt-5">Proceed to Pay</button>
-          <p class="text-xs text-muted text-center mt-3">🔒 Secure payment via Razorpay / UPI · Cards · Netbanking</p>
+          <button id="bookCta" class="btn btn-primary w-full justify-center mt-5">Request to Book on WhatsApp</button>
+          <p class="text-xs text-muted text-center mt-3">No payment now — we'll confirm availability &amp; the final price with you on WhatsApp.</p>
         </div>
         <div class="bg-white/70 rounded-xl p-4 mt-4 text-xs text-muted border border-[#efe6da]">
-          <b class="text-ink">Request-to-Book:</b> your request reaches the host instantly (dashboard + WhatsApp). Pay the deposit to hold your dates — the calendar updates automatically.
+          <b class="text-ink">How it works:</b> send your request and it reaches us instantly on WhatsApp. We'll confirm your dates and the final price, then share a secure way to pay the deposit and hold your stay.
         </div>
       </div>
     </div>
   </section>
 
-  <!-- pay modal (mock) -->
-  <div id="payModal" class="hidden fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden">
-      <div class="bg-terra text-white px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-2"><img src="assets/logo.png" class="h-8 bg-white rounded p-0.5" alt="" /><span class="font-serif">Padharo House</span></div>
-        <button id="payClose" class="text-white/80 hover:text-white text-xl">✕</button>
-      </div>
-      <div class="p-6">
-        <p class="text-sm text-muted mb-1">Pay to reserve (demo)</p>
-        <div class="font-serif text-3xl text-terra mb-5">Secure Checkout</div>
-        <div class="space-y-3">
-          <div class="flex items-center gap-3 border border-[#e6d8c6] rounded-lg px-4 py-3"><span>📱</span><span class="text-sm">UPI — GPay / PhonePe / Paytm</span></div>
-          <div class="flex items-center gap-3 border border-[#e6d8c6] rounded-lg px-4 py-3"><span>💳</span><span class="text-sm">Credit / Debit Card</span></div>
-          <div class="flex items-center gap-3 border border-[#e6d8c6] rounded-lg px-4 py-3"><span>🏦</span><span class="text-sm">Netbanking</span></div>
-        </div>
-        <button class="btn btn-primary w-full justify-center mt-5" onclick="alert('This is a prototype — no real payment is taken. In the live site this completes securely via Razorpay and the booking is confirmed by WhatsApp + email.');">Pay &amp; Confirm</button>
-        <p class="text-[11px] text-muted text-center mt-3">Prototype only — no real payment is processed.</p>
-      </div>
-    </div>
-  </div>
+  <!-- Online payment (Razorpay) arrives in Phase 2; for now booking is request-to-book via WhatsApp. -->
 
   <!-- footer -->
   <footer class="bg-ink text-white/75 pt-16 pb-8">

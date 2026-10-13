@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Padharo House — Opening Soon | Luxury Homestay opposite Amer Fort, Jaipur</title>
+  <meta name="description" content="Padharo House — a luxury boutique Airbnb homestay in Jaipur, right opposite the magnificent Amer Fort. Where heritage meets hospitality. Opening soon — follow our journey." />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+
+  <!-- social share preview (Instagram / WhatsApp / Facebook) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Padharo House — Opening Soon" />
+  <meta property="og:description" content="A new beginning, a dream come true. A luxury homestay opposite the Amer Fort, Jaipur. Where heritage meets hospitality." />
+  <meta property="og:image" content="assets/og.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600&family=Noto+Serif+Devanagari:wght@500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --terra:#A0472A; --terradark:#853a22; --gold:#B07D32; --gold-soft:#C0923B;
+      --cream:#FBF6EE; --sand:#EFE3D3; --ink:#2B2620; --muted:#6E645A;
+      --wa:#25D366;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{-webkit-text-size-adjust:100%}
+    body{
+      font-family:'Inter',system-ui,sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 600px at 50% -5%, #fffaf2 0%, rgba(255,250,242,0) 60%),
+        linear-gradient(180deg,#FBF6EE 0%, #F6ECDC 100%);
+      min-height:100vh;min-height:100svh;
+      display:flex;flex-direction:column;align-items:center;
+      text-align:center;overflow-x:hidden;position:relative;
+      padding:clamp(28px,6vw,64px) 22px 0;
+    }
+
+    /* faint Rajasthani mandala corners (from the brand graphic) */
+    .corner{position:fixed;width:clamp(150px,34vw,340px);height:auto;opacity:.16;
+      pointer-events:none;z-index:0;filter:saturate(.9)}
+    .c-tr{top:0;right:0}
+    .c-tl{top:0;left:0;transform:scaleX(-1)}
+    .c-br{bottom:0;right:0;transform:scaleY(-1)}
+    .c-bl{bottom:0;left:0;transform:scale(-1,-1)}
+
+    .wrap{position:relative;z-index:1;width:100%;max-width:680px;margin:auto 0;
+      display:flex;flex-direction:column;align-items:center;gap:0}
+
+    .brandmark{width:clamp(176px,40vw,286px);height:auto;
+      filter:drop-shadow(0 6px 18px rgba(133,58,34,.12))}
+
+    .eyebrow{margin-top:26px;display:flex;align-items:center;gap:12px;
+      text-transform:uppercase;letter-spacing:.3em;font-size:.72rem;font-weight:600;
+      color:var(--gold)}
+    .eyebrow .hi{font-family:'Noto Serif Devanagari',serif;letter-spacing:normal;
+      text-transform:none;font-size:1.05rem;color:var(--terra)}
+
+    .rule{display:flex;align-items:center;justify-content:center;gap:14px;
+      margin:22px 0 4px;width:min(260px,70%)}
+    .rule span{height:1px;flex:1;background:linear-gradient(90deg,transparent,#d8c3a6)}
+    .rule .d{color:var(--gold-soft);font-size:.7rem}
+
+    h1{font-family:'Playfair Display',serif;font-weight:600;color:var(--terradark);
+      line-height:1.12;font-size:clamp(2rem,6.2vw,3.3rem);margin-top:14px;
+      letter-spacing:.3px}
+
+    .intro{margin-top:20px;max-width:48ch;color:var(--muted);
+      font-size:clamp(1rem,2.6vw,1.12rem);line-height:1.75}
+    .intro b{color:var(--terra);font-weight:600}
+
+    .tagline{margin-top:22px;font-family:'Playfair Display',serif;font-style:italic;
+      font-weight:600;color:var(--terra);font-size:clamp(1.15rem,3.4vw,1.6rem)}
+
+    .photo{margin-top:34px;width:100%;position:relative;border-radius:18px;overflow:hidden;
+      box-shadow:0 20px 50px -18px rgba(43,38,32,.5);border:1px solid rgba(192,146,59,.35)}
+    .photo img{display:block;width:100%;height:clamp(190px,40vw,300px);object-fit:cover}
+    .photo .chip{position:absolute;left:14px;bottom:14px;background:rgba(43,38,32,.62);
+      color:#fff;backdrop-filter:blur(4px);font-size:.74rem;font-weight:500;
+      padding:7px 13px;border-radius:999px;letter-spacing:.03em}
+
+    .ctas{margin-top:30px;display:flex;flex-wrap:wrap;gap:13px;justify-content:center}
+    .btn{display:inline-flex;align-items:center;gap:9px;border-radius:999px;
+      padding:14px 24px;font-weight:600;font-size:.96rem;text-decoration:none;
+      transition:transform .15s ease,box-shadow .2s ease,background .2s ease}
+    .btn:hover{transform:translateY(-2px)}
+    .btn svg{width:19px;height:19px}
+    .btn-ig{color:#fff;background:linear-gradient(135deg,#C0923B 0%,#A0472A 55%,#853a22 100%);
+      box-shadow:0 12px 26px -10px rgba(160,71,42,.7)}
+    .btn-wa{color:#fff;background:var(--wa);box-shadow:0 12px 26px -10px rgba(37,211,102,.6)}
+
+    .handle{margin-top:16px;color:var(--muted);font-size:.9rem;font-weight:500}
+    .handle a{color:var(--terra);text-decoration:none}
+
+    footer{position:relative;z-index:1;margin-top:auto;padding:40px 0 26px;
+      color:var(--muted);font-size:.8rem;line-height:1.7}
+    footer a{color:var(--terra);text-decoration:none}
+    footer .loc{font-weight:600;color:var(--ink)}
+
+    /* entrance animation */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+    .rise{opacity:0;animation:fadeUp .8s cubic-bezier(.2,.7,.2,1) forwards}
+    @media (prefers-reduced-motion:reduce){.rise{animation:none;opacity:1}}
+  </style>
+</head>
+<body>
+  <!-- Opening Soon page for Padharo House. Brand assets extracted from the client's coming-soon graphic. Built by Manish Kumawat. -->
+  <img class="corner c-tr" src="assets/mandala.png" alt="" aria-hidden="true" />
+  <img class="corner c-tl" src="assets/mandala.png" alt="" aria-hidden="true" />
+  <img class="corner c-br" src="assets/mandala.png" alt="" aria-hidden="true" />
+  <img class="corner c-bl" src="assets/mandala.png" alt="" aria-hidden="true" />
+
+  <main class="wrap">
+    <img class="brandmark rise" style="animation-delay:.05s" src="assets/brandmark.png" alt="Padharo House" />
+
+    <div class="eyebrow rise" style="animation-delay:.15s">
+      <span>Opening&nbsp;Soon</span><span class="hi">जल्द&nbsp;ही</span>
+    </div>
+
+    <div class="rule rise" style="animation-delay:.2s"><span></span><div class="d">✦</div><span></span></div>
+
+    <h1 class="rise" style="animation-delay:.25s">A New Beginning,<br />A Dream Come True</h1>
+
+    <p class="intro rise" style="animation-delay:.35s">
+      Introducing <b>Padharo House</b> — my very first Airbnb venture, nestled in the
+      heritage charm of Jaipur, right opposite the magnificent Amer Fort.
+    </p>
+
+    <p class="tagline rise" style="animation-delay:.45s">Where Heritage Meets Hospitality</p>
+
+    <div class="photo rise" style="animation-delay:.5s">
+      <img src="assets/p2.jpg" alt="View of the Amber Fort from Padharo House" />
+      <span class="chip">📍 Opposite Amer Fort · Jaipur</span>
+    </div>
+
+    <div class="ctas rise" style="animation-delay:.6s">
+      <a class="btn btn-ig" href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s0 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.58 2.2 15.2 2.2 12s0-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2Zm0 1.98c-3.14 0-3.51.01-4.75.07-.9.04-1.38.19-1.7.32-.43.17-.74.37-1.06.69-.32.32-.52.63-.69 1.06-.13.32-.28.8-.32 1.7-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.04.9.19 1.38.32 1.7.17.43.37.74.69 1.06.32.32.63.52 1.06.69.32.13.8.28 1.7.32 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c.9-.04 1.38-.19 1.7-.32.43-.17.74-.37 1.06-.69.32-.32.52-.63.69-1.06.13-.32.28-.8.32-1.7.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.04-.9-.19-1.38-.32-1.7a2.86 2.86 0 0 0-.69-1.06 2.86 2.86 0 0 0-1.06-.69c-.32-.13-.8-.28-1.7-.32-1.24-.06-1.61-.07-4.75-.07Zm0 3.37a4.45 4.45 0 1 1 0 8.9 4.45 4.45 0 0 1 0-8.9Zm0 7.34a2.89 2.89 0 1 0 0-5.78 2.89 2.89 0 0 0 0 5.78Zm5.66-7.5a1.04 1.04 0 1 1-2.08 0 1.04 1.04 0 0 1 2.08 0Z"/></svg>
+        Follow our journey
+      </a>
+      <a class="btn btn-wa" href="https://wa.me/919461884005?text=Hi%20Padharo%20House%2C%20I%27d%20love%20to%20know%20more%20about%20your%20opening." target="_blank" rel="noopener">
+        <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 3C9 3 3.3 8.7 3.3 15.7c0 2.5.7 4.8 1.9 6.8L3 29l6.7-2.1c1.9 1 4 1.6 6.3 1.6 7 0 12.7-5.7 12.7-12.7S23 3 16 3zm0 23.1c-2 0-3.9-.6-5.5-1.5l-.4-.2-4 1.2 1.2-3.9-.3-.4c-1.1-1.7-1.7-3.7-1.7-5.8C5.3 9.8 10.1 5 16 5s10.7 4.8 10.7 10.7S21.9 26.1 16 26.1zm6-8c-.3-.2-1.9-1-2.2-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1 1.3-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.6-.1-.2-.8-1.9-1-2.5-.3-.7-.5-.6-.8-.6h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.3 1.4 3.5c.2.2 2.4 3.7 5.9 5.2 2.2.9 3 1 4.1.9.7-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>
+        Enquire on WhatsApp
+      </a>
+    </div>
+
+    <p class="handle rise" style="animation-delay:.68s">
+      Bookings open shortly — follow <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener">@padharo_house</a> for the reveal.
+    </p>
+  </main>
+
+  <footer class="rise" style="animation-delay:.75s">
+    <div class="loc">Amer, Jaipur, Rajasthan · Opposite Amer Fort</div>
+    <div><a href="mailto:padharohouse@gmail.com">padharohouse@gmail.com</a> &nbsp;·&nbsp; <a href="tel:+919461884005">+91 94618 84005</a></div>
+    <div style="margin-top:8px">© 2026 Padharo House</div>
+  </footer>
+</body>
+</html>

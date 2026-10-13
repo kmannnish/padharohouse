@@ -81,12 +81,13 @@
     culture:{ label: 'Cultural Retreat',     add: 3200 },
     family: { label: 'Family Getaway',       add: 2800 },
   };
-  // pre-blocked demo dates (offsets from today)
-  const booked = new Set([3, 4, 5, 12, 18, 19, 24].map(o => iso(new Date(Date.now() + o * MS_DAY))));
+  // no bookings yet — brand-new property (owner can block dates later from the admin)
+  const booked = new Set();
 
   let viewDate = new Date(); viewDate.setDate(1);
   let start = null, end = null;
   let pkg = 'guide', guests = 2, promo = false;
+  let quoteText = '';
 
   const nightRate = d => {
     const day = d.getDay();
@@ -143,6 +144,7 @@
     if (!start || !end) {
       box.innerHTML = `<p class="text-[var(--muted)] text-sm py-6 text-center">Select your check-in and check-out dates on the calendar to see a live price breakdown.</p>`;
       if (cta) { cta.classList.add('opacity-50','pointer-events-none'); }
+      quoteText = '';
       return;
     }
     if (cta) cta.classList.remove('opacity-50','pointer-events-none');
@@ -155,6 +157,7 @@
     const preTax = subtotalPre - discount;
     const tax = preTax * TAX;
     const total = preTax + tax;
+    quoteText = `Dates: ${fmt(start)} to ${fmt(end)} (${nights} night${nights > 1 ? 's' : ''}) · ${packages[pkg].label} · ${guests} guest${guests > 1 ? 's' : ''} · Indicative total ${INR(total)}`;
 
     const row = (l, v, cls = '') => `<div class="flex justify-between py-1.5 ${cls}"><span>${l}</span><span>${v}</span></div>`;
     document.getElementById('summary').innerHTML = `
@@ -193,11 +196,12 @@
 
   const cta = document.getElementById('bookCta');
   if (cta) cta.addEventListener('click', () => {
-    const modal = document.getElementById('payModal');
-    if (modal) modal.classList.remove('hidden');
+    if (!start || !end) return;
+    const msg = 'Hi Padharo House, I would like to request a booking.' +
+      (quoteText ? '\n\n' + quoteText : '') +
+      '\n\nPlease confirm availability and the final price. Thank you!';
+    window.open('https://wa.me/919461884005?text=' + encodeURIComponent(msg), '_blank');
   });
-  const payClose = document.getElementById('payClose');
-  if (payClose) payClose.addEventListener('click', () => document.getElementById('payModal').classList.add('hidden'));
 
   // init: preselect the default package + a demo range
   renderCalendar();
