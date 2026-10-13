@@ -51,17 +51,22 @@
   </header>
 
   <!-- hero -->
-  <section class="hero">
-    <div class="hero-slides">
-      <img class="slide active" src="assets/img/p2.jpg" alt="View of the Amber Fort through a jharokha window at Padharo House" />
-      <img class="slide" src="assets/img/p8.jpg" alt="The Amber Suite" />
-      <img class="slide" src="assets/img/p3.jpg" alt="Heritage lounge" />
-      <img class="slide" src="assets/img/p9.jpg" alt="Rooftop dining with a view" />
-      <img class="slide" src="assets/img/p6.jpg" alt="Courtyard at dusk" />
+  <section class="hero relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden pt-[74px]">
+    <!-- Background Slides (z-0) -->
+    <div class="hero-slides absolute inset-0 z-0">
+      <img class="slide active w-full h-full object-cover" src="assets/img/p2.jpg" alt="View of the Amber Fort through a jharokha window at Padharo House" />
+      <img class="slide w-full h-full object-cover" src="assets/img/p8.jpg" alt="The Amber Suite" />
+      <img class="slide w-full h-full object-cover" src="assets/img/p3.jpg" alt="Heritage lounge" />
+      <img class="slide w-full h-full object-cover" src="assets/img/p9.jpg" alt="Rooftop dining with a view" />
+      <img class="slide w-full h-full object-cover" src="assets/img/p6.jpg" alt="Courtyard at dusk" />
     </div>
-    <div class="scrim"></div>
-    <div class="relative max-w-7xl mx-auto px-5 w-full text-white">
-      <div class="max-w-2xl reveal">
+
+    <!-- Dark Overlay / Scrim (z-10) -->
+    <div class="scrim absolute inset-0 z-10 bg-gradient-to-r from-ink/85 via-ink/50 to-transparent pointer-events-none"></div>
+
+    <!-- Text Overlay Container (z-20) -->
+    <div class="relative z-20 max-w-7xl mx-auto px-5 py-16 w-full text-white">
+      <div class="max-w-2xl">
         <div class="eyebrow text-gold mb-4">Luxury Boutique Homestay · Jaipur</div>
         <h1 class="font-serif font-semibold leading-[1.05] text-4xl sm:text-5xl md:text-6xl mb-5">
           Wake up to the<br /><span class="text-gold">Amber Fort.</span>
@@ -75,15 +80,17 @@
           <a href="#gallery" class="btn btn-ghost">Explore the House</a>
         </div>
         <div class="flex items-center gap-6 mt-10 text-sm">
-          <div class="flex items-center gap-2"><span class="text-gold text-lg">✦</span><span class="text-white/85">Newly opened · 2026</span></div>
+          <div class="flex items-center gap-2"><span class="text-gold text-lg">✦</span><span class="text-white/85">Opening Soon · 2026</span></div>
           <div class="hidden sm:block w-px h-5 bg-white/30"></div>
-          <div class="hidden sm:block text-white/85">Amber Fort · 1.4 km</div>
+          <div class="hidden sm:block text-white/85">Amber Fort 50m walk</div>
         </div>
       </div>
     </div>
-    <button class="hero-arrow prev" aria-label="Previous photo">‹</button>
-    <button class="hero-arrow next" aria-label="Next photo">›</button>
-    <div class="hero-dots" aria-hidden="true"></div>
+
+    <!-- Slider Controls (z-30) -->
+    <button class="hero-arrow prev z-30" aria-label="Previous photo">‹</button>
+    <button class="hero-arrow next z-30" aria-label="Next photo">›</button>
+    <div class="hero-dots z-30" aria-hidden="true"></div>
   </section>
 
   <!-- welcome -->
@@ -102,7 +109,7 @@
           perfect setting for an unforgettable stay in the Pink City.
         </p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-5">
-          <div><div class="font-serif text-3xl text-terra">1.4km</div><div class="text-xs text-muted mt-1">to Amber Fort</div></div>
+          <div><div class="font-serif text-3xl text-terra">50m</div><div class="text-xs text-muted mt-1">to Amber Fort</div></div>
           <div><div class="font-serif text-3xl text-terra">1</div><div class="text-xs text-muted mt-1">private suite</div></div>
           <div><div class="font-serif text-3xl text-terra">24/7</div><div class="text-xs text-muted mt-1">host care</div></div>
           <div><div class="font-serif text-3xl text-terra">New</div><div class="text-xs text-muted mt-1">opened 2026</div></div>
