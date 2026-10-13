@@ -205,3 +205,47 @@
   if (dp) dp.classList.add('ring-2','ring-[var(--terra)]','bg-[var(--cream)]');
   renderSummary();
 })();
+
+/* ===========================================================
+   HERO SLIDER (home) — autoplay cross-fade + arrows + dots
+   =========================================================== */
+(function () {
+  'use strict';
+  const wrap = document.querySelector('.hero .hero-slides');
+  if (!wrap) return;
+  const slides = Array.from(wrap.querySelectorAll('.slide'));
+  if (slides.length < 2) return;
+
+  const dotsBox = document.querySelector('.hero-dots');
+  const DUR = 5500;
+  let i = 0, timer = null;
+
+  const dots = slides.map((_, idx) => {
+    const b = document.createElement('button');
+    b.setAttribute('aria-label', 'Go to slide ' + (idx + 1));
+    b.addEventListener('click', () => go(idx, true));
+    if (dotsBox) dotsBox.appendChild(b);
+    return b;
+  });
+
+  function render() {
+    slides.forEach((s, n) => s.classList.toggle('active', n === i));
+    dots.forEach((d, n) => d.classList.toggle('active', n === i));
+  }
+  function go(n, user) { i = (n + slides.length) % slides.length; render(); if (user) restart(); }
+  function restart() { clearInterval(timer); timer = setInterval(() => go(i + 1), DUR); }
+
+  const next = document.querySelector('.hero-arrow.next');
+  const prev = document.querySelector('.hero-arrow.prev');
+  if (next) next.addEventListener('click', () => go(i + 1, true));
+  if (prev) prev.addEventListener('click', () => go(i - 1, true));
+
+  const hero = document.querySelector('.hero');
+  if (hero) {
+    hero.addEventListener('mouseenter', () => clearInterval(timer));
+    hero.addEventListener('mouseleave', restart);
+  }
+
+  render();
+  restart();
+})();

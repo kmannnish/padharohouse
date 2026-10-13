@@ -39,7 +39,19 @@ h1,h2,h3,h4,.font-serif{font-family:'Playfair Display',Georgia,serif;}
 /* hero */
 .hero{position:relative; min-height:92vh; display:flex; align-items:center; overflow:hidden;}
 .hero img.bg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
-.hero .scrim{position:absolute; inset:0; background:linear-gradient(180deg,rgba(20,12,8,.55) 0%,rgba(20,12,8,.28) 40%,rgba(20,12,8,.72) 100%);}
+.hero .scrim{position:absolute; inset:0; background:linear-gradient(180deg,rgba(20,12,8,.55) 0%,rgba(20,12,8,.28) 40%,rgba(20,12,8,.72) 100%); z-index:2;}
+
+/* hero slider */
+.hero .hero-slides{position:absolute; inset:0; z-index:1;}
+.hero .slide{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1.1s ease; will-change:opacity;}
+.hero .slide.active{opacity:1;}
+.hero-arrow{position:absolute; top:50%; transform:translateY(-50%); z-index:20; width:46px; height:46px; border-radius:9999px; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.45); color:#fff; font-size:1.6rem; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; backdrop-filter:blur(4px); transition:.2s;}
+.hero-arrow:hover{background:rgba(255,255,255,.3);}
+.hero-arrow.prev{left:18px;} .hero-arrow.next{right:18px;}
+.hero-dots{position:absolute; bottom:26px; left:50%; transform:translateX(-50%); z-index:20; display:flex; gap:10px;}
+.hero-dots button{width:10px; height:10px; border-radius:9999px; background:rgba(255,255,255,.5); border:0; padding:0; cursor:pointer; transition:.25s;}
+.hero-dots button.active{background:#fff; width:26px;}
+@media (max-width:640px){ .hero-arrow{display:none;} }
 
 /* image hover zoom */
 .zoom{overflow:hidden;}

@@ -19,14 +19,8 @@
 </head>
 <body class="has-hero">
 
-  <!-- prototype ribbon -->
-  <div id="protoRibbon" class="proto-ribbon fixed top-0 inset-x-0 z-[60] text-center py-1.5 px-4">
-    <span>Interactive prototype — photos &amp; prices are samples, fully editable later &nbsp;·&nbsp; designed by <strong>Manish Kumawat</strong> &nbsp;·&nbsp; <a href="admin.html">Preview the Admin panel &rarr;</a></span>
-    <button id="ribbonClose" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white">✕</button>
-  </div>
-
   <!-- header -->
-  <header class="site-header" style="top:30px">
+  <header class="site-header">
     <div class="max-w-7xl mx-auto px-5 flex items-center justify-between h-[74px]">
       <a href="index.html" class="flex items-center gap-3">
         <img src="assets/logo.png" alt="Padharo House" class="h-11 w-auto drop-shadow" />
@@ -52,14 +46,19 @@
       <a href="#gallery" class="block px-5 py-3 border-b border-cream hover:bg-cream">Gallery</a>
       <a href="#experiences" class="block px-5 py-3 border-b border-cream hover:bg-cream">Experiences</a>
       <a href="#location" class="block px-5 py-3 border-b border-cream hover:bg-cream">Location</a>
-      <a href="blog.html" class="block px-5 py-3 border-b border-cream hover:bg-cream">Journal</a>
-      <a href="admin.html" class="block px-5 py-3 hover:bg-cream text-terra font-semibold">Admin Preview</a>
+      <a href="blog.html" class="block px-5 py-3 hover:bg-cream">Journal</a>
     </div>
   </header>
 
   <!-- hero -->
   <section class="hero">
-    <img class="bg" src="assets/img/p2.jpg" alt="Boutique homestay lounge with a view of the Amber Fort through a jharokha window" />
+    <div class="hero-slides">
+      <img class="slide active" src="assets/img/p2.jpg" alt="View of the Amber Fort through a jharokha window at Padharo House" />
+      <img class="slide" src="assets/img/p8.jpg" alt="The Amber Suite" />
+      <img class="slide" src="assets/img/p3.jpg" alt="Heritage lounge" />
+      <img class="slide" src="assets/img/p9.jpg" alt="Rooftop dining with a view" />
+      <img class="slide" src="assets/img/p6.jpg" alt="Courtyard at dusk" />
+    </div>
     <div class="scrim"></div>
     <div class="relative max-w-7xl mx-auto px-5 w-full text-white">
       <div class="max-w-2xl reveal">
@@ -82,7 +81,9 @@
         </div>
       </div>
     </div>
-    <a href="#welcome" class="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/70 text-sm animate-bounce">↓ scroll</a>
+    <button class="hero-arrow prev" aria-label="Previous photo">‹</button>
+    <button class="hero-arrow next" aria-label="Next photo">›</button>
+    <div class="hero-dots" aria-hidden="true"></div>
   </section>
 
   <!-- welcome -->
@@ -347,7 +348,6 @@
           <li><a href="#gallery" class="hover:text-gold">Gallery</a></li>
           <li><a href="#experiences" class="hover:text-gold">Experiences</a></li>
           <li><a href="blog.html" class="hover:text-gold">Journal &amp; Reviews</a></li>
-          <li><a href="admin.html" class="hover:text-gold">Admin Preview</a></li>
         </ul>
       </div>
       <div>
@@ -362,7 +362,7 @@
     </div>
     <div class="max-w-7xl mx-auto px-5 mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between gap-2 text-xs">
       <span>© 2026 Padharo House · GSTIN 08BEPPG3869F1Z4 · All rights reserved.</span>
-      <span>Prototype designed by <b class="text-white/90">Manish Kumawat</b> · Forward Deployed AI Engineer</span>
+      <span>Amer, Jaipur · Opposite the Amber Fort</span>
     </div>
   </footer>
 
