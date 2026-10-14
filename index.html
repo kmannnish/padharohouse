@@ -614,16 +614,20 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, doc, onSnapshot, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    /* ====== 1. PASTE YOUR FIREBASE WEB CONFIG BELOW ======
-       Firebase console → Project settings → "Your apps" → Web app → Config.
-       The site works and defaults to the LIVE homepage until this is filled in. */
+    /* ====== Firebase web config (project: padharo-house) ======
+       Everything here is filled in except apiKey — paste the value that starts
+       with "AIza..." from: Firebase console -> Project settings -> General ->
+       Your apps -> SDK setup and configuration -> Config.
+       These values are public identifiers, not secrets; Firestore rules (see
+       firestore.rules) are what protect the data.
+       Until apiKey is filled in, the site simply shows the LIVE homepage. */
     const firebaseConfig = {
       apiKey: "PASTE_API_KEY",
-      authDomain: "PASTE_PROJECT.firebaseapp.com",
-      projectId: "PASTE_PROJECT_ID",
-      storageBucket: "PASTE_PROJECT.appspot.com",
-      messagingSenderId: "PASTE_SENDER_ID",
-      appId: "PASTE_APP_ID"
+      authDomain: "padharo-house.firebaseapp.com",
+      projectId: "padharo-house",
+      storageBucket: "padharo-house.firebasestorage.app",
+      messagingSenderId: "357110206597",
+      appId: "1:357110206597:web:4826cfc4903f69677d99ec"
     };
     const FIREBASE_READY = !/PASTE_/.test(firebaseConfig.apiKey);
 
