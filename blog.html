@@ -16,6 +16,7 @@
     }}};
   </script>
   <link rel="stylesheet" href="assets/styles.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -57,18 +58,18 @@
   <!-- featured post -->
   <section class="py-14 bg-white">
     <div class="max-w-7xl mx-auto px-5">
-      <div class="grid md:grid-cols-2 gap-8 items-center bg-cream rounded-3xl overflow-hidden reveal">
-        <div class="zoom h-full min-h-[300px]"><img src="assets/img/p2.jpg" class="w-full h-full object-cover" alt="Amber Fort view" /></div>
+      <a href="amer-fort.html" class="grid md:grid-cols-2 gap-8 items-center bg-cream rounded-3xl overflow-hidden reveal-z group">
+        <div class="zoom h-full min-h-[300px]"><img src="assets/places/amer-fort.jpg" class="w-full h-full object-cover" alt="Amer Fort, Amer, Jaipur" /></div>
         <div class="p-8 md:p-10">
-          <span class="pill mb-4">Featured · Travel Guide</span>
-          <h2 class="font-serif text-2xl md:text-3xl mb-3 leading-snug">The perfect 48 hours in Amer: fort, food &amp; light</h2>
-          <p class="text-muted mb-5">From sunrise at the Amber Fort to a lantern-lit dinner — how to spend two unforgettable days around Padharo House, straight from your hosts.</p>
+          <span class="pill mb-4">Featured · Heritage Guide</span>
+          <h2 class="font-serif text-2xl md:text-3xl mb-3 leading-snug">Amer Fort: a 50 metre walk, four centuries deep</h2>
+          <p class="text-muted mb-5">Why the fort looks the way it does, what to seek out inside — Ganesh Pol, the Sheesh Mahal, Sukh Niwas — and how staying across the lane lets you beat the coaches to the gate.</p>
           <div class="flex items-center gap-3 text-sm text-muted mb-6">
-            <span>By the Padharo House team</span><span>·</span><span>6 min read</span>
+            <span>By Pankaj Gupta</span><span>·</span><span>6 min read</span>
           </div>
-          <span class="text-sm text-muted italic">Full guide coming soon</span>
+          <span class="inline-flex items-center gap-2 text-sm font-semibold text-terra">Read the guide <i data-lucide="arrow-right" class="w-4 h-4 transition group-hover:translate-x-1"></i></span>
         </div>
-      </div>
+      </a>
     </div>
   </section>
 
@@ -76,40 +77,50 @@
   <section class="pb-16 bg-white">
     <div class="max-w-7xl mx-auto px-5">
       <div class="flex items-center gap-3 mb-8 flex-wrap">
-        <span class="pill">All</span>
-        <span class="text-sm text-muted hover:text-terra cursor-pointer">Travel Guides</span>
-        <span class="text-sm text-muted hover:text-terra cursor-pointer">Heritage &amp; Culture</span>
-        <span class="text-sm text-muted hover:text-terra cursor-pointer">Food</span>
-        <span class="text-sm text-muted hover:text-terra cursor-pointer">Property News</span>
+        <span class="pill">Amer Heritage Circle</span>
+        <span class="text-sm text-muted">Everything worth seeing within 4 km of the house</span>
       </div>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
-        <article class="card reveal">
-          <div class="zoom aspect-[16/10]"><img src="assets/img/p3.jpg" class="w-full h-full object-cover" alt="" /></div>
-          <div class="p-6">
-            <span class="pill mb-3">Heritage &amp; Culture</span>
-            <h3 class="font-serif text-lg mb-2 leading-snug">Stained glass &amp; jharokhas: the art in our windows</h3>
-            <p class="text-sm text-muted mb-4">A short story of the Rajasthani craft that colours every corner of Padharo House.</p>
-            <div class="text-xs text-muted">Coming soon</div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger">
+        <a class="place-card reveal-z" href="jaigarh-fort.html">
+          <div class="pc-media"><img src="assets/places/jaigarh-fort.jpg" alt="Jaigarh Fort, Amer" loading="lazy" /><div class="pc-veil"></div></div>
+          <div class="pc-body">
+            <div class="pc-chip">Forts</div>
+            <div class="pc-title">Jaigarh Fort</div>
+            <div class="pc-desc">The ramparts in your window — and the Jaivana cannon they guard.</div>
+            <div class="pc-go">Read the guide <i data-lucide="arrow-right" class="w-4 h-4"></i></div>
           </div>
-        </article>
-        <article class="card reveal">
-          <div class="zoom aspect-[16/10]"><img src="assets/img/p9.jpg" class="w-full h-full object-cover" alt="" /></div>
-          <div class="p-6">
-            <span class="pill mb-3">Food</span>
-            <h3 class="font-serif text-lg mb-2 leading-snug">A royal Rajasthani thali, served on our terrace</h3>
-            <p class="text-sm text-muted mb-4">Dal baati churma, gatte ki sabzi and more — the flavours of a home-cooked Jaipur evening.</p>
-            <div class="text-xs text-muted">Coming soon</div>
+          <div class="pc-ring"></div>
+        </a>
+        <a class="place-card reveal-z" href="panna-meena-ka-kund.html">
+          <div class="pc-media"><img src="assets/places/panna-meena-ka-kund.jpg" alt="Panna Meena ka Kund, Amer" loading="lazy" /><div class="pc-veil"></div></div>
+          <div class="pc-body">
+            <div class="pc-chip">Stepwells</div>
+            <div class="pc-title">Panna Meena ka Kund</div>
+            <div class="pc-desc">Eight storeys of criss-crossing stairs, best at first light.</div>
+            <div class="pc-go">Read the guide <i data-lucide="arrow-right" class="w-4 h-4"></i></div>
           </div>
-        </article>
-        <article class="card reveal">
-          <div class="zoom aspect-[16/10]"><img src="assets/img/p7.jpg" class="w-full h-full object-cover" alt="" /></div>
-          <div class="p-6">
-            <span class="pill mb-3">Travel Guides</span>
-            <h3 class="font-serif text-lg mb-2 leading-snug">Beyond Amber Fort: 5 quiet corners of Amer</h3>
-            <p class="text-sm text-muted mb-4">Skip the crowds — the stepwells, viewpoints and cafés our guests love most.</p>
-            <div class="text-xs text-muted">Coming soon</div>
+          <div class="pc-ring"></div>
+        </a>
+        <a class="place-card reveal-z" href="jagat-shiromani.html">
+          <div class="pc-media"><img src="assets/places/jagat-shiromani.jpg" alt="Jagat Shiromani Temple, Amer" loading="lazy" /><div class="pc-veil"></div></div>
+          <div class="pc-body">
+            <div class="pc-chip">Temples</div>
+            <div class="pc-title">Jagat Shiromani Temple</div>
+            <div class="pc-desc">A queen's memorial, and the finest carving in the valley.</div>
+            <div class="pc-go">Read the guide <i data-lucide="arrow-right" class="w-4 h-4"></i></div>
           </div>
-        </article>
+          <div class="pc-ring"></div>
+        </a>
+        <a class="place-card reveal-z" href="sagar-lake.html">
+          <div class="pc-media"><img src="assets/places/sagar-lake.jpg" alt="Sagar Lake, Amer" loading="lazy" /><div class="pc-veil"></div></div>
+          <div class="pc-body">
+            <div class="pc-chip">Hidden Amer</div>
+            <div class="pc-title">Sagar Lake</div>
+            <div class="pc-desc">The old reservoir behind the fort, where almost nobody goes.</div>
+            <div class="pc-go">Read the guide <i data-lucide="arrow-right" class="w-4 h-4"></i></div>
+          </div>
+          <div class="pc-ring"></div>
+        </a>
       </div>
     </div>
   </section>
@@ -137,12 +148,20 @@
   <!-- floating WhatsApp -->
   <a href="https://wa.me/919461884005?text=Hi%20Padharo%20House%2C%20I%27d%20like%20to%20check%20availability%20for%20my%20dates."
      target="_blank" rel="noopener"
-     class="fixed bottom-5 right-5 z-[70] flex items-center gap-2 bg-[#25D366] text-white rounded-full shadow-lg pl-3.5 pr-4 py-3 hover:brightness-95 transition"
+     class="wa-float fixed bottom-5 right-5 z-[70] flex items-center gap-2 bg-[#25D366] text-white rounded-full shadow-lg pl-3.5 pr-4 py-3 hover:brightness-95 transition"
      aria-label="Chat with Padharo House on WhatsApp">
     <svg viewBox="0 0 32 32" class="w-6 h-6 fill-current" aria-hidden="true"><path d="M16 3C9 3 3.3 8.7 3.3 15.7c0 2.5.7 4.8 1.9 6.8L3 29l6.7-2.1c1.9 1 4 1.6 6.3 1.6 7 0 12.7-5.7 12.7-12.7S23 3 16 3zm0 23.1c-2 0-3.9-.6-5.5-1.5l-.4-.2-4 1.2 1.2-3.9-.3-.4c-1.1-1.7-1.7-3.7-1.7-5.8C5.3 9.8 10.1 5 16 5s10.7 4.8 10.7 10.7S21.9 26.1 16 26.1zm6-8c-.3-.2-1.9-1-2.2-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1 1.3-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.6-.1-.2-.8-1.9-1-2.5-.3-.7-.5-.6-.8-.6h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.3 1.4 3.5c.2.2 2.4 3.7 5.9 5.2 2.2.9 3 1 4.1.9.7-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>
     <span class="text-sm font-semibold hidden sm:block">Chat with us</span>
   </a>
 
+  <nav class="mobile-cta" aria-label="Quick actions">
+    <a href="booking.html" class="primary"><i data-lucide="calendar-check" class="w-5 h-5"></i> Book</a>
+    <a href="https://wa.me/919461884005" target="_blank" rel="noopener"><i data-lucide="message-circle" class="w-5 h-5"></i> WhatsApp</a>
+    <a href="tel:+919461884005"><i data-lucide="phone" class="w-5 h-5"></i> Call</a>
+    <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener"><i data-lucide="map-pin" class="w-5 h-5"></i> Map</a>
+  </nav>
+
   <script src="assets/app.js"></script>
+  <script>if(window.lucide){try{window.lucide.createIcons()}catch(e){}}</script>
 </body>
 </html>

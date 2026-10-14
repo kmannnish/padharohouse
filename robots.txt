@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /opening-soon/
 Disallow: /admin.html
+
+Sitemap: https://padharohouse.in/sitemap.xml

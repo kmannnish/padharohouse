@@ -8,6 +8,7 @@
   <meta name="keywords" content="homestay near Amer Fort, boutique heritage homestay Jaipur, Jaigarh Fort view stay, Airbnb Amer Jaipur, private heritage stay Amer, Panna Meena ka Kund, stay opposite Amer Fort, Padharo House" />
   <link rel="canonical" href="https://padharohouse.in/" />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="preload" as="image" href="assets/img/p2.jpg" fetchpriority="high" />
 
   <!-- social share -->
   <meta property="og:type" content="website" />
@@ -32,14 +33,34 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
-    /* loader (fails open to the live site even if JS/Firebase never respond) */
-    #loader{position:fixed;inset:0;z-index:200;background:#FBF6EE;display:flex;flex-direction:column;
-      align-items:center;justify-content:center;gap:16px;transition:opacity .5s ease;animation:loaderFail .5s ease 6s forwards;}
-    #loader.hide{opacity:0;pointer-events:none;}
-    #loader img{width:120px;height:auto;animation:phpulse 1.6s ease-in-out infinite;}
-    #loader span{font-family:'Playfair Display',serif;color:#A0472A;letter-spacing:.25em;font-size:.8rem;text-transform:uppercase;}
-    @keyframes phpulse{0%,100%{opacity:.5;transform:scale(.98)}50%{opacity:1;transform:scale(1.02)}}
+    /* ---- loader: holds briefly, then lifts away like a curtain ---- */
+    #loader{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;gap:18px;
+      background:radial-gradient(900px 520px at 50% 38%, #fffdf8 0%, #FBF6EE 55%, #F4E9D8 100%);
+      transition:transform 1.05s cubic-bezier(.76,0,.24,1);
+      animation:loaderFail .6s ease 7s forwards;}
+    #loader.hide{transform:translateY(-101%);}
+    #loader .ldr-in{display:flex;flex-direction:column;align-items:center;gap:16px;
+      animation:ldrRise .9s cubic-bezier(.16,.84,.26,1) both;
+      transition:opacity .45s ease, transform .5s ease;}
+    #loader.hide .ldr-in{opacity:0;transform:translateY(-16px);}
+    #loader img{width:clamp(130px,30vw,170px);height:auto;}
+    #loader .ldr-name{font-family:'Playfair Display',serif;color:#A0472A;letter-spacing:.34em;
+      font-size:.72rem;text-transform:uppercase;}
+    #loader .ldr-bar{width:132px;height:2px;border-radius:2px;background:rgba(160,71,42,.16);overflow:hidden;}
+    #loader .ldr-bar i{display:block;height:100%;width:100%;transform-origin:left;
+      background:linear-gradient(90deg,#A0472A,#C0923B);animation:ldrFill 1.7s cubic-bezier(.3,.1,.2,1) both;}
+    @keyframes ldrRise{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+    @keyframes ldrFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
     @keyframes loaderFail{to{opacity:0;visibility:hidden;pointer-events:none;}}
+    /* content eases in beneath the lifting curtain */
+    @keyframes contentIn{from{opacity:0;transform:scale(1.012)}to{opacity:1;transform:none}}
+    body.booted #live,body.booted #openingSoon{animation:contentIn .95s cubic-bezier(.16,.84,.26,1) both;}
+    @media (prefers-reduced-motion:reduce){
+      #loader,#loader .ldr-in,#loader .ldr-bar i{animation:none!important;transition:opacity .3s ease!important;}
+      #loader.hide{opacity:0;transform:none;}
+      body.booted #live,body.booted #openingSoon{animation:none!important;}
+    }
 
     /* instagram welcome banner */
     #igBanner{position:fixed;top:0;left:0;right:0;z-index:60;}
@@ -59,6 +80,9 @@
       display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;overflow:hidden;}
     .os-corner{position:absolute;width:clamp(140px,32vw,320px);opacity:.14;pointer-events:none;}
     .os-tr{top:0;right:0}.os-bl{bottom:0;left:0;transform:scale(-1,-1)}
+
+    /* the floating WhatsApp pill is replaced by the sticky bar on phones */
+    @media (max-width:767px){ .wa-float{display:none!important;} }
   </style>
 
   <!-- Local SEO: LodgingBusiness structured data -->
@@ -92,11 +116,48 @@
     "keywords":"homestay near Amer Fort, boutique heritage homestay Jaipur, Jaigarh Fort view stay, Airbnb Amer Jaipur, private heritage stay Amer"
   }
   </script>
+
+  <!-- Brand entity: helps Google connect "Padharo House" / "Padharo House Amer/Jaipur" to this site -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebSite",
+    "@id":"https://padharohouse.in/#website",
+    "url":"https://padharohouse.in/",
+    "name":"Padharo House",
+    "alternateName":["Padharo House Amer","Padharo House Jaipur","Padharo House Amer Fort","Padharo House"],
+    "inLanguage":"en-IN",
+    "publisher":{"@id":"https://padharohouse.in"}
+  }
+  </script>
+
+  <!-- FAQ rich results -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"What is Padharo House?","acceptedAnswer":{"@type":"Answer","text":"Padharo House is an exclusive single-suite boutique heritage homestay in Amer, Jaipur, directly opposite the Amer Fort. Because there is only one suite, the house and your hosts' attention are never shared with other guests."}},
+      {"@type":"Question","name":"Where is Padharo House located in Jaipur?","acceptedAnswer":{"@type":"Answer","text":"Padharo House is in Amer (Amber), about 11 km north of central Jaipur, Rajasthan — right opposite the Amer Fort and roughly 24 km from Jaipur International Airport."}},
+      {"@type":"Question","name":"How far is Padharo House from Amer Fort?","acceptedAnswer":{"@type":"Answer","text":"Hardly a 50 metre walk. The Amer Fort is directly opposite the property, so guests can reach the gate for first light before the tour coaches arrive."}},
+      {"@type":"Question","name":"Does Padharo House have a Jaigarh Fort view?","acceptedAnswer":{"@type":"Answer","text":"Yes. The suite looks directly onto the ramparts of Jaigarh Fort on the ridge above Amer — gold at sunrise and floodlit after dark."}},
+      {"@type":"Question","name":"How many rooms does Padharo House have?","acceptedAnswer":{"@type":"Answer","text":"One. Padharo House is a single private suite that sleeps two comfortably and up to three with an extra bed, so every booking has the property to itself."}},
+      {"@type":"Question","name":"What is there to see near Padharo House?","acceptedAnswer":{"@type":"Answer","text":"Every major Amer heritage site is within about four kilometres: Amer Fort, Jaigarh Fort, Panna Meena ka Kund stepwell, the Jagat Shiromani Temple and Sagar Lake."}},
+      {"@type":"Question","name":"How do I book Padharo House?","acceptedAnswer":{"@type":"Answer","text":"Send your dates through the availability page on padharohouse.in or message +91 94618 84005 on WhatsApp. The hosts confirm dates and the final price personally."}}
+    ]
+  }
+  </script>
 </head>
 <body class="has-hero">
 
   <!-- ============ LOADER (hidden once mode resolves) ============ -->
-  <div id="loader"><img src="assets/brandmark.png" alt="Padharo House" /><span>Padharo House</span></div>
+  <div id="loader">
+    <div class="ldr-in">
+      <img src="assets/brandmark.png" alt="Padharo House" />
+      <div class="ldr-bar"><i></i></div>
+      <span class="ldr-name">Where Heritage Meets Hospitality</span>
+    </div>
+  </div>
 
   <!-- ============ INSTAGRAM WELCOME BANNER ============ -->
   <div id="igBanner" class="ig-grad text-white text-sm" style="display:none">
@@ -210,7 +271,7 @@
 
   <!-- 3 highlights -->
   <section class="py-16 bg-cream">
-    <div class="max-w-7xl mx-auto px-5 grid sm:grid-cols-3 gap-6">
+    <div class="max-w-7xl mx-auto px-5 grid sm:grid-cols-3 gap-6 stagger">
       <div class="reveal bg-white rounded-2xl p-7 text-center border border-[#efe6da]">
         <div class="heritage-ico mx-auto mb-4"><i data-lucide="footprints" class="w-6 h-6"></i></div>
         <h3 class="font-serif text-lg mb-1">Hardly 50 Meter Walk to Amer Fort</h3>
@@ -275,7 +336,7 @@
   <!-- meet your host -->
   <section id="host" class="py-20 md:py-28 bg-white">
     <div class="max-w-6xl mx-auto px-5 grid md:grid-cols-2 gap-10 lg:gap-14 items-center">
-      <div class="reveal order-2 md:order-1">
+      <div class="reveal-l order-2 md:order-1">
         <div class="eyebrow mb-3">Your Host</div>
         <h2 class="font-serif text-3xl md:text-4xl mb-5">A dream, lovingly opened for you</h2>
         <p class="text-muted leading-relaxed mb-4">
@@ -294,7 +355,7 @@
           <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="message-circle" class="w-4 h-4"></i> Say hello</a>
         </div>
       </div>
-      <div class="reveal order-1 md:order-2">
+      <div class="reveal-r order-1 md:order-2">
         <div class="relative">
           <div class="zoom rounded-3xl overflow-hidden shadow-xl border border-[#eee5d9]"><img src="assets/host.jpg" class="w-full h-[380px] md:h-[460px] object-cover" alt="Pankaj Gupta, your host at Padharo House, Amer" /></div>
           <div class="absolute -bottom-5 left-6 bg-white rounded-2xl shadow-lg px-5 py-3 border border-[#eee5d9]">
@@ -311,36 +372,61 @@
     <div class="max-w-7xl mx-auto px-5">
       <div class="text-center max-w-2xl mx-auto mb-14 reveal">
         <div class="eyebrow mb-3">Within 4 KM</div>
-        <h2 class="font-serif text-3xl md:text-4xl mb-4">The Amer Heritage Circle</h2>
-        <p class="text-muted">Everything that makes Amer magical — all within a short walk or drive of your suite.</p>
+        <h2 class="font-serif text-3xl md:text-4xl mb-4"><span class="h-line">The Amer Heritage Circle</span></h2>
+        <p class="text-muted mt-7">Everything that makes Amer magical — all within a short walk or drive of your suite. Tap any place to read our guide.</p>
       </div>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="heritage-card bg-white rounded-2xl p-7 border border-[#efe6da] reveal">
-          <div class="heritage-ico mb-4"><i data-lucide="castle" class="w-6 h-6"></i></div>
-          <h3 class="font-serif text-xl mb-1">Amer Fort</h3>
-          <p class="text-sm text-muted">50 m walk · right opposite the suite.</p>
-        </div>
-        <div class="heritage-card bg-white rounded-2xl p-7 border border-[#efe6da] reveal">
-          <div class="heritage-ico mb-4"><i data-lucide="mountain" class="w-6 h-6"></i></div>
-          <h3 class="font-serif text-xl mb-1">Jaigarh Fort View</h3>
-          <p class="text-sm text-muted">Direct panoramic vista from the property.</p>
-        </div>
-        <div class="heritage-card bg-white rounded-2xl p-7 border border-[#efe6da] reveal">
-          <div class="heritage-ico mb-4"><i data-lucide="waves" class="w-6 h-6"></i></div>
-          <h3 class="font-serif text-xl mb-1">Panna Meena ka Kund</h3>
-          <p class="text-sm text-muted">Amer's iconic heritage stepwell, within 4 km.</p>
-        </div>
-        <div class="heritage-card bg-white rounded-2xl p-7 border border-[#efe6da] reveal">
-          <div class="heritage-ico mb-4"><i data-lucide="landmark" class="w-6 h-6"></i></div>
-          <h3 class="font-serif text-xl mb-1">Jagat Shiromani Temple</h3>
-          <p class="text-sm text-muted">Ancient intricately-carved temple, within 4 km.</p>
-        </div>
-        <div class="heritage-card bg-white rounded-2xl p-7 border border-[#efe6da] reveal">
-          <div class="heritage-ico mb-4"><i data-lucide="droplets" class="w-6 h-6"></i></div>
-          <h3 class="font-serif text-xl mb-1">Sagar Lake</h3>
-          <p class="text-sm text-muted">Tranquil historic reservoir, within 4 km.</p>
-        </div>
-        <div class="heritage-card bg-terra text-white rounded-2xl p-7 reveal flex flex-col justify-center">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger">
+        <a class="place-card reveal-z" href="amer-fort.html">
+          <div class="pc-media"><img src="assets/places/amer-fort.jpg" alt="Amer Fort, Amer, Jaipur" loading="lazy" /><div class="pc-veil"></div></div>
+          <div class="pc-body">
+            <div class="pc-chip"><i data-lucide="footprints" class="w-3.5 h-3.5"></i> 50 m walk · right opposite</div>
+            <div class="pc-title">Amer Fort</div>
+            <div class="pc-desc">The UNESCO-listed hill fort across the lane — be at the gate before the crowds.</div>
+            <div class="pc-go">Read the guide <i data-lucide="arrow-right" class="w-4 h-4"></i></div>
+          </div>
+          <div class="pc-ring"></div>
+        </a>
+        <a class="place-card reveal-z" href="jaigarh-fort.html">
+          <div class="pc-media"><img src="assets/places/jaigarh-fort.jpg" alt="Jaigarh Fort above Amer, Jaipur" loading="lazy" /><div class="pc-veil"></div></div>
+          <div class="pc-body">
+            <div class="pc-chip"><i data-lucide="mountain" class="w-3.5 h-3.5"></i> Direct panoramic view</div>
+            <div class="pc-title">Jaigarh Fort</div>
+            <div class="pc-desc">The ramparts that fill your window, and the great Jaivana cannon they guard.</div>
+            <div class="pc-go">Read the guide <i data-lucide="arrow-right" class="w-4 h-4"></i></div>
+          </div>
+          <div class="pc-ring"></div>
+        </a>
+        <a class="place-card reveal-z" href="panna-meena-ka-kund.html">
+          <div class="pc-media"><img src="assets/places/panna-meena-ka-kund.jpg" alt="Panna Meena ka Kund stepwell, Amer" loading="lazy" /><div class="pc-veil"></div></div>
+          <div class="pc-body">
+            <div class="pc-chip"><i data-lucide="waves" class="w-3.5 h-3.5"></i> Within 4 km</div>
+            <div class="pc-title">Panna Meena ka Kund</div>
+            <div class="pc-desc">Amer's iconic stepwell — eight storeys of criss-crossing stairs.</div>
+            <div class="pc-go">Read the guide <i data-lucide="arrow-right" class="w-4 h-4"></i></div>
+          </div>
+          <div class="pc-ring"></div>
+        </a>
+        <a class="place-card reveal-z" href="jagat-shiromani.html">
+          <div class="pc-media"><img src="assets/places/jagat-shiromani.jpg" alt="Jagat Shiromani Temple, Amer" loading="lazy" /><div class="pc-veil"></div></div>
+          <div class="pc-body">
+            <div class="pc-chip"><i data-lucide="landmark" class="w-3.5 h-3.5"></i> Within 4 km</div>
+            <div class="pc-title">Jagat Shiromani Temple</div>
+            <div class="pc-desc">A queen's memorial to her son, and the finest carving in the valley.</div>
+            <div class="pc-go">Read the guide <i data-lucide="arrow-right" class="w-4 h-4"></i></div>
+          </div>
+          <div class="pc-ring"></div>
+        </a>
+        <a class="place-card reveal-z" href="sagar-lake.html">
+          <div class="pc-media"><img src="assets/places/sagar-lake.jpg" alt="Sagar Lake reservoir behind Amer Fort" loading="lazy" /><div class="pc-veil"></div></div>
+          <div class="pc-body">
+            <div class="pc-chip"><i data-lucide="droplets" class="w-3.5 h-3.5"></i> Within 4 km</div>
+            <div class="pc-title">Sagar Lake</div>
+            <div class="pc-desc">The old reservoir behind the fort — silent, and almost nobody goes.</div>
+            <div class="pc-go">Read the guide <i data-lucide="arrow-right" class="w-4 h-4"></i></div>
+          </div>
+          <div class="pc-ring"></div>
+        </a>
+        <div class="heritage-card bg-terra text-white rounded-2xl p-7 reveal-z flex flex-col justify-center">
           <h3 class="font-serif text-xl mb-2">Your royal base in Amer</h3>
           <p class="text-sm text-white/85 mb-4">Stay in the heart of it all — then come home to your private suite.</p>
           <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold text-gold"><i data-lucide="map-pin" class="w-4 h-4"></i> Open in Google Maps</a>
@@ -395,6 +481,46 @@
     </div>
   </section>
 
+  <!-- FAQ -->
+  <section id="faq" class="py-20 md:py-28 bg-white">
+    <div class="max-w-3xl mx-auto px-5">
+      <div class="text-center mb-12 reveal">
+        <div class="eyebrow mb-3">Good to Know</div>
+        <h2 class="font-serif text-3xl md:text-4xl"><span class="h-line">Frequently asked questions</span></h2>
+      </div>
+      <div class="space-y-3 stagger">
+        <details class="reveal bg-cream rounded-xl border border-[#efe6da] p-5 group">
+          <summary class="font-serif text-lg cursor-pointer flex items-center justify-between gap-4">What is Padharo House?<i data-lucide="chevron-down" class="w-5 h-5 text-terra shrink-0 transition group-open:rotate-180"></i></summary>
+          <p class="text-muted mt-3 leading-relaxed">Padharo House is an exclusive single-suite boutique heritage homestay in Amer, Jaipur, directly opposite the Amer Fort. Because there is only one suite, the house, the garden view and your hosts' attention are never shared with other guests.</p>
+        </details>
+        <details class="reveal bg-cream rounded-xl border border-[#efe6da] p-5 group">
+          <summary class="font-serif text-lg cursor-pointer flex items-center justify-between gap-4">Where is Padharo House located in Jaipur?<i data-lucide="chevron-down" class="w-5 h-5 text-terra shrink-0 transition group-open:rotate-180"></i></summary>
+          <p class="text-muted mt-3 leading-relaxed">We are in Amer (Amber), about 11 km north of central Jaipur, Rajasthan — right opposite the Amer Fort and roughly 24 km from Jaipur International Airport. <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="text-terra font-semibold hover:underline">Open our Google Maps pin</a>.</p>
+        </details>
+        <details class="reveal bg-cream rounded-xl border border-[#efe6da] p-5 group">
+          <summary class="font-serif text-lg cursor-pointer flex items-center justify-between gap-4">How far is Padharo House from Amer Fort?<i data-lucide="chevron-down" class="w-5 h-5 text-terra shrink-0 transition group-open:rotate-180"></i></summary>
+          <p class="text-muted mt-3 leading-relaxed">Hardly a 50 metre walk. The fort is directly opposite the property, so you can be at the gate for first light before the tour coaches arrive. <a href="amer-fort.html" class="text-terra font-semibold hover:underline">Read our Amer Fort guide</a>.</p>
+        </details>
+        <details class="reveal bg-cream rounded-xl border border-[#efe6da] p-5 group">
+          <summary class="font-serif text-lg cursor-pointer flex items-center justify-between gap-4">Does Padharo House have a Jaigarh Fort view?<i data-lucide="chevron-down" class="w-5 h-5 text-terra shrink-0 transition group-open:rotate-180"></i></summary>
+          <p class="text-muted mt-3 leading-relaxed">Yes — the suite looks directly onto the ramparts of Jaigarh Fort, which sit on the ridge above Amer. They are gold at sunrise and floodlit after dark. <a href="jaigarh-fort.html" class="text-terra font-semibold hover:underline">Read our Jaigarh Fort guide</a>.</p>
+        </details>
+        <details class="reveal bg-cream rounded-xl border border-[#efe6da] p-5 group">
+          <summary class="font-serif text-lg cursor-pointer flex items-center justify-between gap-4">How many rooms does Padharo House have?<i data-lucide="chevron-down" class="w-5 h-5 text-terra shrink-0 transition group-open:rotate-180"></i></summary>
+          <p class="text-muted mt-3 leading-relaxed">One. Padharo House is a single private suite that sleeps two comfortably, and up to three with an extra bed — so every booking has the property to itself.</p>
+        </details>
+        <details class="reveal bg-cream rounded-xl border border-[#efe6da] p-5 group">
+          <summary class="font-serif text-lg cursor-pointer flex items-center justify-between gap-4">What is there to see near Padharo House?<i data-lucide="chevron-down" class="w-5 h-5 text-terra shrink-0 transition group-open:rotate-180"></i></summary>
+          <p class="text-muted mt-3 leading-relaxed">Every major Amer heritage site sits within about four kilometres: <a href="amer-fort.html" class="text-terra font-semibold hover:underline">Amer Fort</a>, <a href="jaigarh-fort.html" class="text-terra font-semibold hover:underline">Jaigarh Fort</a>, <a href="panna-meena-ka-kund.html" class="text-terra font-semibold hover:underline">Panna Meena ka Kund</a>, the <a href="jagat-shiromani.html" class="text-terra font-semibold hover:underline">Jagat Shiromani Temple</a> and <a href="sagar-lake.html" class="text-terra font-semibold hover:underline">Sagar Lake</a>.</p>
+        </details>
+        <details class="reveal bg-cream rounded-xl border border-[#efe6da] p-5 group">
+          <summary class="font-serif text-lg cursor-pointer flex items-center justify-between gap-4">How do I book Padharo House?<i data-lucide="chevron-down" class="w-5 h-5 text-terra shrink-0 transition group-open:rotate-180"></i></summary>
+          <p class="text-muted mt-3 leading-relaxed">Send your dates through our <a href="booking.html" class="text-terra font-semibold hover:underline">availability page</a> or message us on <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="text-terra font-semibold hover:underline">WhatsApp</a> at +91 94618 84005. We confirm your dates and the final price personally.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <!-- Instagram CTA band -->
   <section class="relative py-24 text-center text-white overflow-hidden">
     <img src="assets/img/p6.jpg" class="absolute inset-0 w-full h-full object-cover" alt="" />
@@ -429,9 +555,15 @@
         <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Explore</h4>
         <ul class="space-y-2 text-sm">
           <li><a href="#suite" class="hover:text-gold">The Suite</a></li>
-          <li><a href="#heritage" class="hover:text-gold">Heritage Circle</a></li>
           <li><a href="#gallery" class="hover:text-gold">Gallery</a></li>
+          <li><a href="#faq" class="hover:text-gold">FAQ</a></li>
           <li><a href="blog.html" class="hover:text-gold">Journal</a></li>
+          <li class="pt-2 text-white/50 text-xs uppercase tracking-wider">Heritage Circle</li>
+          <li><a href="amer-fort.html" class="hover:text-gold">Amer Fort</a></li>
+          <li><a href="jaigarh-fort.html" class="hover:text-gold">Jaigarh Fort</a></li>
+          <li><a href="panna-meena-ka-kund.html" class="hover:text-gold">Panna Meena ka Kund</a></li>
+          <li><a href="jagat-shiromani.html" class="hover:text-gold">Jagat Shiromani Temple</a></li>
+          <li><a href="sagar-lake.html" class="hover:text-gold">Sagar Lake</a></li>
         </ul>
       </div>
       <div>
@@ -461,11 +593,18 @@
   <!-- floating WhatsApp -->
   <a href="https://wa.me/919461884005?text=Hi%20Padharo%20House%2C%20I%27d%20like%20to%20check%20availability%20for%20my%20dates."
      target="_blank" rel="noopener"
-     class="fixed bottom-5 right-5 z-[70] flex items-center gap-2 bg-[#25D366] text-white rounded-full shadow-lg pl-3.5 pr-4 py-3 hover:brightness-95 transition"
+     class="wa-float fixed bottom-5 right-5 z-[70] flex items-center gap-2 bg-[#25D366] text-white rounded-full shadow-lg pl-3.5 pr-4 py-3 hover:brightness-95 transition"
      aria-label="Chat with Padharo House on WhatsApp">
     <svg viewBox="0 0 32 32" class="w-6 h-6 fill-current" aria-hidden="true"><path d="M16 3C9 3 3.3 8.7 3.3 15.7c0 2.5.7 4.8 1.9 6.8L3 29l6.7-2.1c1.9 1 4 1.6 6.3 1.6 7 0 12.7-5.7 12.7-12.7S23 3 16 3zm0 23.1c-2 0-3.9-.6-5.5-1.5l-.4-.2-4 1.2 1.2-3.9-.3-.4c-1.1-1.7-1.7-3.7-1.7-5.8C5.3 9.8 10.1 5 16 5s10.7 4.8 10.7 10.7S21.9 26.1 16 26.1zm6-8c-.3-.2-1.9-1-2.2-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1 1.3-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.6-.1-.2-.8-1.9-1-2.5-.3-.7-.5-.6-.8-.6h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.3 1.4 3.5c.2.2 2.4 3.7 5.9 5.2 2.2.9 3 1 4.1.9.7-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>
     <span class="text-sm font-semibold hidden sm:block">Chat with us</span>
   </a>
+  <!-- sticky mobile action bar -->
+  <nav class="mobile-cta" aria-label="Quick actions">
+    <a href="booking.html" class="primary"><i data-lucide="calendar-check" class="w-5 h-5"></i> Book</a>
+    <a href="https://wa.me/919461884005" target="_blank" rel="noopener"><i data-lucide="message-circle" class="w-5 h-5"></i> WhatsApp</a>
+    <a href="tel:+919461884005"><i data-lucide="phone" class="w-5 h-5"></i> Call</a>
+    <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener"><i data-lucide="map-pin" class="w-5 h-5"></i> Map</a>
+  </nav>
   </div><!-- /#live -->
 
   <script src="assets/app.js"></script>
@@ -499,7 +638,18 @@
     const liveEl = document.getElementById("live");
     let resolved = false, db = null;
 
-    function hideLoader(){ if(loaderEl){ loaderEl.classList.add("hide"); setTimeout(()=>loaderEl.remove(), 600);} }
+    /* The loader holds for a beat so the brand registers, then lifts away. */
+    const BOOT_T0 = Date.now();
+    const MIN_LOADER_MS = 1750;
+    function hideLoader(){
+      if(!loaderEl) return;
+      const wait = Math.max(0, MIN_LOADER_MS - (Date.now() - BOOT_T0));
+      setTimeout(()=>{
+        document.body.classList.add("booted");
+        loaderEl.classList.add("hide");
+        setTimeout(()=>{ if(loaderEl && loaderEl.parentNode) loaderEl.remove(); }, 1200);
+      }, wait);
+    }
     function refreshIcons(){ if(window.lucide) try{ window.lucide.createIcons(); }catch(e){} }
     function resolveMode(fsMode){
       if (isPreview) return "live";

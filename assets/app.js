@@ -32,11 +32,28 @@
     document.querySelectorAll('.ribbon-offset').forEach(el => el.style.paddingTop = '78px');
   });
 
-  /* ---- reveal on scroll ---- */
+  /* ---- reveal on scroll (with variants + auto stagger) ---- */
+  document.querySelectorAll('.stagger').forEach(group => {
+    Array.from(group.children).forEach((child, i) => child.style.setProperty('--i', i));
+  });
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal, .reveal-l, .reveal-r, .reveal-z').forEach(el => io.observe(el));
+
+  /* ---- subtle hero parallax (skipped when reduced motion is preferred) ---- */
+  const slidesWrap = document.querySelector('.hero .hero-slides');
+  if (slidesWrap && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let raf = null;
+    window.addEventListener('scroll', () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        const y = Math.min(window.scrollY, 900);
+        slidesWrap.style.transform = 'translate3d(0,' + (y * 0.16) + 'px,0) scale(1.05)';
+        raf = null;
+      });
+    }, { passive: true });
+  }
 
   /* ---- lightbox gallery ---- */
   const lb = document.getElementById('lightbox');
