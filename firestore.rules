@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Site mode toggle — world-readable (the site needs it), only the owner
+    // edits it from the Firebase console. Never writable from the web.
+    match /config/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Leads — visitors may SUBMIT (create) with name + phone, but nobody can
+    // read, list, edit or delete them from the client. You read them in the
+    // Firebase console / admin app. This keeps guest personal data private.
+    match /leads/{docId} {
+      allow create: if request.resource.data.keys().hasAll(['name', 'phone'])
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() < 120
+                    && request.resource.data.phone is string
+                    && request.resource.data.phone.size() < 40;
+      allow read, update, delete: if false;
+    }
+
+    // Traffic analytics — create-only pings from the site; not publicly readable.
+    match /traffic_analytics/{docId} {
+      allow create: if true;
+      allow read, update, delete: if false;
+    }
+
+    // Lock everything else.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

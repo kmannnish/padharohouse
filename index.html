@@ -3,11 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Padharo House — Luxury Boutique Homestay with Amber Fort Views, Jaipur</title>
-  <meta name="description" content="A luxury boutique homestay in Jaipur with sweeping views of the historic Amber Fort. Rajasthani heritage charm meets modern comfort. Book your royal escape." />
+  <title>Padharo House — Boutique Heritage Homestay Opposite Amer Fort, Jaipur</title>
+  <meta name="description" content="Padharo House is an exclusive single-suite boutique heritage homestay just 50m from Amer Fort, with panoramic Jaigarh Fort views, in Amer, Jaipur. A private royal stay where heritage meets hospitality." />
+  <meta name="keywords" content="homestay near Amer Fort, boutique heritage homestay Jaipur, Jaigarh Fort view stay, Airbnb Amer Jaipur, private heritage stay Amer, Panna Meena ka Kund, stay opposite Amer Fort, Padharo House" />
+  <link rel="canonical" href="https://padharohouse.in/" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+
+  <!-- social share -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Padharo House" />
+  <meta property="og:title" content="Padharo House — Heritage Homestay Opposite Amer Fort" />
+  <meta property="og:description" content="An exclusive single-suite heritage stay 50m from Amer Fort with panoramic Jaigarh Fort views. Where heritage meets hospitality." />
+  <meta property="og:image" content="https://padharohouse.in/assets/og.jpg" />
+  <meta property="og:url" content="https://padharohouse.in/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@500;600&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { theme: { extend: {
@@ -16,10 +29,123 @@
     }}};
   </script>
   <link rel="stylesheet" href="assets/styles.css" />
-</head>
-<body class="has-hero">
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- header -->
+  <style>
+    /* loader (fails open to the live site even if JS/Firebase never respond) */
+    #loader{position:fixed;inset:0;z-index:200;background:#FBF6EE;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;gap:16px;transition:opacity .5s ease;animation:loaderFail .5s ease 6s forwards;}
+    #loader.hide{opacity:0;pointer-events:none;}
+    #loader img{width:120px;height:auto;animation:phpulse 1.6s ease-in-out infinite;}
+    #loader span{font-family:'Playfair Display',serif;color:#A0472A;letter-spacing:.25em;font-size:.8rem;text-transform:uppercase;}
+    @keyframes phpulse{0%,100%{opacity:.5;transform:scale(.98)}50%{opacity:1;transform:scale(1.02)}}
+    @keyframes loaderFail{to{opacity:0;visibility:hidden;pointer-events:none;}}
+
+    /* instagram welcome banner */
+    #igBanner{position:fixed;top:0;left:0;right:0;z-index:60;}
+    .ig-grad{background:linear-gradient(90deg,#C0923B 0%,#A0472A 55%,#853a22 100%);}
+    body.has-ig .site-header{top:44px;}
+    body.has-ig #openingSoon{padding-top:44px;}
+
+    /* heritage circle cards */
+    .heritage-card{transition:transform .25s ease, box-shadow .25s ease;}
+    .heritage-card:hover{transform:translateY(-5px);box-shadow:0 24px 44px -26px rgba(43,38,32,.5);}
+    .heritage-ico{width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:9999px;background:#FBF6EE;color:#A0472A;}
+
+    /* opening soon layout */
+    #openingSoon{min-height:100vh;min-height:100svh;background:
+      radial-gradient(1200px 600px at 50% -5%, #fffaf2 0%, rgba(255,250,242,0) 60%),
+      linear-gradient(180deg,#FBF6EE 0%, #F6ECDC 100%);
+      display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;overflow:hidden;}
+    .os-corner{position:absolute;width:clamp(140px,32vw,320px);opacity:.14;pointer-events:none;}
+    .os-tr{top:0;right:0}.os-bl{bottom:0;left:0;transform:scale(-1,-1)}
+
+    /* VIP modal */
+    #vipModal{position:fixed;inset:0;z-index:120;background:rgba(18,11,7,.62);display:none;align-items:center;justify-content:center;padding:16px;}
+    #vipModal.open{display:flex;}
+  </style>
+
+  <!-- Local SEO: LodgingBusiness structured data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"LodgingBusiness",
+    "@id":"https://padharohouse.in",
+    "name":"Padharo House",
+    "alternateName":"Padharo House — Boutique Heritage Homestay",
+    "description":"Exclusive single-suite boutique heritage homestay 50 metres from Amer Fort with panoramic Jaigarh Fort views, in Amer, Jaipur, Rajasthan.",
+    "url":"https://padharohouse.in",
+    "image":"https://padharohouse.in/assets/og.jpg",
+    "logo":"https://padharohouse.in/assets/brandmark.png",
+    "telephone":"+919461884005",
+    "email":"padharohouse@gmail.com",
+    "priceRange":"₹₹",
+    "currenciesAccepted":"INR",
+    "numberOfRooms":1,
+    "address":{"@type":"PostalAddress","streetAddress":"Opposite Amer Fort","addressLocality":"Amer","addressRegion":"Rajasthan","postalCode":"302028","addressCountry":"IN"},
+    "geo":{"@type":"GeoCoordinates","latitude":26.987683983961603,"longitude":75.8550010443521},
+    "hasMap":"https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521",
+    "sameAs":["https://www.instagram.com/padharo_house"],
+    "amenityFeature":[
+      {"@type":"LocationFeatureSpecification","name":"Amer Fort view","value":true},
+      {"@type":"LocationFeatureSpecification","name":"Jaigarh Fort view","value":true},
+      {"@type":"LocationFeatureSpecification","name":"Free WiFi","value":true},
+      {"@type":"LocationFeatureSpecification","name":"Air conditioning","value":true},
+      {"@type":"LocationFeatureSpecification","name":"Breakfast included","value":true}
+    ],
+    "keywords":"homestay near Amer Fort, boutique heritage homestay Jaipur, Jaigarh Fort view stay, Airbnb Amer Jaipur, private heritage stay Amer"
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ============ LOADER (hidden once mode resolves) ============ -->
+  <div id="loader"><img src="assets/brandmark.png" alt="Padharo House" /><span>Padharo House</span></div>
+
+  <!-- ============ INSTAGRAM WELCOME BANNER ============ -->
+  <div id="igBanner" class="ig-grad text-white text-sm" style="display:none">
+    <div class="max-w-7xl mx-auto px-10 py-2.5 relative text-center">
+      <span>✨ Khamma Ghani Instagram Family (<b>@padharo_house</b>)! Reserve your Exclusive Opening Stay.</span>
+      <button data-vip-open class="underline font-semibold ml-2 hover:text-cream">Reserve →</button>
+      <button id="igClose" class="absolute right-3 top-1/2 -translate-y-1/2 opacity-80 hover:opacity-100" aria-label="Dismiss">✕</button>
+    </div>
+  </div>
+
+  <!-- ============ OPENING SOON LAYOUT (shown when siteMode='opening_soon') ============ -->
+  <section id="openingSoon" style="display:none">
+    <img class="os-corner os-tr" src="assets/mandala.png" alt="" aria-hidden="true" />
+    <img class="os-corner os-bl" src="assets/mandala.png" alt="" aria-hidden="true" />
+    <div class="relative z-10 w-full max-w-2xl mx-auto px-6 my-auto py-16 flex flex-col items-center">
+      <img src="assets/brandmark.png" alt="Padharo House" class="w-[clamp(180px,40vw,290px)]" />
+      <div class="mt-6 flex items-center gap-3 text-gold font-semibold" style="letter-spacing:.3em">
+        <span class="uppercase text-xs">Opening Soon</span>
+        <span style="font-family:'Noto Serif Devanagari',serif" class="text-terra text-lg">जल्द ही</span>
+      </div>
+      <h1 class="font-serif text-terradark mt-5 leading-[1.12]" style="font-size:clamp(1.9rem,5.5vw,3rem)">A New Beginning,<br/>A Dream Come True</h1>
+      <p class="font-serif italic text-terra mt-3" style="font-size:clamp(1.05rem,3vw,1.4rem)">Introducing Padharo House — Where Heritage Meets Hospitality</p>
+      <p class="text-muted leading-relaxed mt-5 max-w-xl" style="font-size:clamp(1rem,2.6vw,1.1rem)">
+        My very first Airbnb venture, nestled in the heritage charm of Jaipur, right opposite the magnificent
+        Amer Fort. An exclusive, private heritage stay with panoramic Jaigarh Fort ramparts.
+      </p>
+      <div class="grid sm:grid-cols-3 gap-3 mt-8 w-full text-sm">
+        <div class="bg-white/60 border border-[#e8dcc9] rounded-xl py-3 px-2">🚶 50m to Amer Fort</div>
+        <div class="bg-white/60 border border-[#e8dcc9] rounded-xl py-3 px-2">🏔️ Jaigarh Fort view</div>
+        <div class="bg-white/60 border border-[#e8dcc9] rounded-xl py-3 px-2">📍 Heritage gems ≤4 km</div>
+      </div>
+      <div class="flex flex-wrap gap-3 justify-center mt-8">
+        <button data-vip-open class="btn btn-primary">Reserve Your Exclusive Opening Stay</button>
+      </div>
+      <div class="flex flex-wrap gap-3 justify-center mt-3">
+        <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="instagram" class="w-4 h-4"></i> @padharo_house</a>
+        <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="map-pin" class="w-4 h-4"></i> Google Maps</a>
+      </div>
+      <div class="mt-10 text-xs text-muted">Amer, Jaipur, Rajasthan · Opposite the Amer Fort · © 2026 Padharo House</div>
+    </div>
+  </section>
+
+  <!-- ============ LIVE HOMEPAGE (shown when siteMode='live' / default) ============ -->
+  <div id="live">
   <header class="site-header">
     <div class="max-w-7xl mx-auto px-5 flex items-center justify-between h-[74px]">
       <a href="index.html" class="flex items-center gap-3">
@@ -29,124 +155,80 @@
       <nav class="hidden lg:flex items-center gap-8">
         <a href="index.html" class="nav-link active">Home</a>
         <a href="#suite" class="nav-link">The Suite</a>
+        <a href="#heritage" class="nav-link">Heritage Circle</a>
         <a href="#gallery" class="nav-link">Gallery</a>
-        <a href="#experiences" class="nav-link">Experiences</a>
         <a href="#location" class="nav-link">Location</a>
         <a href="blog.html" class="nav-link">Journal</a>
       </nav>
       <div class="flex items-center gap-3">
-        <a href="booking.html" class="btn btn-primary text-sm">Book Now</a>
+        <button data-vip-open class="btn btn-primary text-sm">Reserve Stay</button>
         <button id="burger" class="lg:hidden nav-ico text-2xl leading-none">☰</button>
       </div>
     </div>
-    <!-- mobile nav -->
     <div id="mobileNav" class="hidden lg:hidden bg-white shadow-lg mx-4 rounded-xl overflow-hidden">
       <a href="index.html" class="block px-5 py-3 border-b border-cream hover:bg-cream">Home</a>
       <a href="#suite" class="block px-5 py-3 border-b border-cream hover:bg-cream">The Suite</a>
+      <a href="#heritage" class="block px-5 py-3 border-b border-cream hover:bg-cream">Heritage Circle</a>
       <a href="#gallery" class="block px-5 py-3 border-b border-cream hover:bg-cream">Gallery</a>
-      <a href="#experiences" class="block px-5 py-3 border-b border-cream hover:bg-cream">Experiences</a>
       <a href="#location" class="block px-5 py-3 border-b border-cream hover:bg-cream">Location</a>
       <a href="blog.html" class="block px-5 py-3 hover:bg-cream">Journal</a>
     </div>
   </header>
 
   <!-- hero -->
-  <section class="hero relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden pt-[74px]">
-    <!-- Background Slides (z-0) -->
-    <div class="hero-slides absolute inset-0 z-0">
-      <img class="slide active w-full h-full object-cover" src="assets/img/p2.jpg" alt="View of the Amber Fort through a jharokha window at Padharo House" />
-      <img class="slide w-full h-full object-cover" src="assets/img/p8.jpg" alt="The Amber Suite" />
-      <img class="slide w-full h-full object-cover" src="assets/img/p3.jpg" alt="Heritage lounge" />
-      <img class="slide w-full h-full object-cover" src="assets/img/p9.jpg" alt="Rooftop dining with a view" />
-      <img class="slide w-full h-full object-cover" src="assets/img/p6.jpg" alt="Courtyard at dusk" />
+  <section class="hero">
+    <div class="hero-slides">
+      <img class="slide active" src="assets/img/p2.jpg" alt="View of the Amer Fort through a jharokha window at Padharo House" />
+      <img class="slide" src="assets/img/p8.jpg" alt="The Amber Suite" />
+      <img class="slide" src="assets/img/p3.jpg" alt="Heritage lounge" />
+      <img class="slide" src="assets/img/p9.jpg" alt="Rooftop dining with a view" />
+      <img class="slide" src="assets/img/p6.jpg" alt="Courtyard at dusk" />
     </div>
-
-    <!-- Dark Overlay / Scrim (z-10) -->
-    <div class="scrim absolute inset-0 z-10 bg-gradient-to-r from-ink/85 via-ink/50 to-transparent pointer-events-none"></div>
-
-    <!-- Text Overlay Container (z-20) -->
-    <div class="relative z-20 max-w-7xl mx-auto px-5 py-16 w-full text-white">
-      <div class="max-w-2xl">
-        <div class="eyebrow text-gold mb-4">Luxury Boutique Homestay · Jaipur</div>
-        <h1 class="font-serif font-semibold leading-[1.05] text-4xl sm:text-5xl md:text-6xl mb-5">
-          Wake up to the<br /><span class="text-gold">Amber Fort.</span>
+    <div class="scrim"></div>
+    <div class="relative z-20 max-w-7xl mx-auto px-5 w-full text-white">
+      <div class="max-w-2xl reveal">
+        <div class="eyebrow text-gold mb-4">Exclusive Single-Suite Heritage Homestay · Amer, Jaipur</div>
+        <h1 class="font-serif font-semibold leading-[1.06] text-4xl sm:text-5xl md:text-6xl mb-4">
+          A New Beginning,<br /><span class="text-gold">A Dream Come True.</span>
         </h1>
+        <p class="font-serif italic text-white/95 text-xl md:text-2xl mb-5">Introducing Padharo House — Where Heritage Meets Hospitality</p>
         <p class="text-white/90 text-base md:text-lg max-w-xl mb-8">
-          A truly royal experience in the Pink City — where Rajasthani heritage charm meets
-          every modern comfort, framed by spectacular, sweeping views of the historic Amber Fort.
+          My very first Airbnb venture, nestled in the heritage charm of Jaipur, right opposite the magnificent
+          Amer Fort — an exclusive, private heritage stay with panoramic Jaigarh Fort ramparts.
         </p>
         <div class="flex flex-wrap gap-3">
-          <a href="booking.html" class="btn btn-primary">Book Your Stay</a>
-          <a href="#gallery" class="btn btn-ghost">Explore the House</a>
+          <button data-vip-open class="btn btn-primary">Reserve Your Exclusive Stay</button>
+          <a href="#suite" class="btn btn-ghost">Explore the Suite</a>
         </div>
-        <div class="flex items-center gap-6 mt-10 text-sm">
-          <div class="flex items-center gap-2"><span class="text-gold text-lg">✦</span><span class="text-white/85">Opening Soon · 2026</span></div>
-          <div class="hidden sm:block w-px h-5 bg-white/30"></div>
-          <div class="hidden sm:block text-white/85">Amber Fort 50m walk</div>
+        <div class="flex items-center gap-5 mt-10 text-sm">
+          <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="flex items-center gap-2 text-white/90 hover:text-gold"><i data-lucide="instagram" class="w-4 h-4"></i> @padharo_house</a>
+          <span class="w-px h-5 bg-white/30"></span>
+          <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="flex items-center gap-2 text-white/90 hover:text-gold"><i data-lucide="map-pin" class="w-4 h-4"></i> Amer Fort · 50 m</a>
         </div>
       </div>
     </div>
-
-    <!-- Slider Controls (z-30) -->
-    <button class="hero-arrow prev z-30" aria-label="Previous photo">‹</button>
-    <button class="hero-arrow next z-30" aria-label="Next photo">›</button>
-    <div class="hero-dots z-30" aria-hidden="true"></div>
+    <button class="hero-arrow prev" aria-label="Previous photo">‹</button>
+    <button class="hero-arrow next" aria-label="Next photo">›</button>
+    <div class="hero-dots" aria-hidden="true"></div>
   </section>
 
-  <!-- welcome -->
-  <section id="welcome" class="py-20 md:py-28 bg-white">
-    <div class="max-w-7xl mx-auto px-5 grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
-      <div class="reveal">
-        <div class="eyebrow mb-3">Welcome to Padharo House</div>
-        <h2 class="font-serif text-3xl md:text-4xl leading-tight mb-5">Your royal home in the heart of heritage.</h2>
-        <p class="text-muted leading-relaxed mb-4">
-          Welcome to your ultimate holiday getaway in Jaipur. Our luxury boutique homestay offers a
-          truly royal experience, designed to go beyond your expectations — seamlessly blending
-          Rajasthani heritage charm with modern amenities to fulfil your every need.
-        </p>
-        <p class="text-muted leading-relaxed mb-8">
-          Whether you are seeking a romantic escape or a serene cultural retreat, Padharo House is the
-          perfect setting for an unforgettable stay in the Pink City.
-        </p>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-5">
-          <div><div class="font-serif text-3xl text-terra">50m</div><div class="text-xs text-muted mt-1">to Amber Fort</div></div>
-          <div><div class="font-serif text-3xl text-terra">1</div><div class="text-xs text-muted mt-1">private suite</div></div>
-          <div><div class="font-serif text-3xl text-terra">24/7</div><div class="text-xs text-muted mt-1">host care</div></div>
-          <div><div class="font-serif text-3xl text-terra">New</div><div class="text-xs text-muted mt-1">opened 2026</div></div>
-        </div>
-      </div>
-      <div class="reveal grid grid-cols-2 gap-4">
-        <div class="zoom rounded-2xl row-span-2"><img src="assets/img/p1.jpg" class="h-full w-full object-cover" alt="Heritage lounge" /></div>
-        <div class="zoom rounded-2xl"><img src="assets/img/p5.jpg" class="h-full w-full object-cover" alt="Bedroom" /></div>
-        <div class="zoom rounded-2xl"><img src="assets/img/p9.jpg" class="h-full w-full object-cover" alt="Dining" /></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- highlights -->
+  <!-- 3 highlights -->
   <section class="py-16 bg-cream">
-    <div class="max-w-7xl mx-auto px-5">
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="reveal text-center px-4">
-          <div class="text-3xl mb-3">🏰</div>
-          <h3 class="font-serif text-lg mb-2">Royal Fort Views</h3>
-          <p class="text-sm text-muted">Sweeping views of the historic Amber Fort from your window.</p>
-        </div>
-        <div class="reveal text-center px-4">
-          <div class="text-3xl mb-3">🕌</div>
-          <h3 class="font-serif text-lg mb-2">Heritage Design</h3>
-          <p class="text-sm text-muted">Jharokhas, stained glass &amp; Rajasthani craft in every corner.</p>
-        </div>
-        <div class="reveal text-center px-4">
-          <div class="text-3xl mb-3">🧭</div>
-          <h3 class="font-serif text-lg mb-2">Curated Experiences</h3>
-          <p class="text-sm text-muted">Local guides, cultural evenings &amp; romantic add-ons on request.</p>
-        </div>
-        <div class="reveal text-center px-4">
-          <div class="text-3xl mb-3">✨</div>
-          <h3 class="font-serif text-lg mb-2">Modern Comfort</h3>
-          <p class="text-sm text-muted">Air-conditioning, fast Wi-Fi, spotless linens &amp; warm hosting.</p>
-        </div>
+    <div class="max-w-7xl mx-auto px-5 grid sm:grid-cols-3 gap-6">
+      <div class="reveal bg-white rounded-2xl p-7 text-center border border-[#efe6da]">
+        <div class="heritage-ico mx-auto mb-4"><i data-lucide="footprints" class="w-6 h-6"></i></div>
+        <h3 class="font-serif text-lg mb-1">Hardly 50 Meter Walk to Amer Fort</h3>
+        <p class="text-sm text-muted">Step out of the suite and you are at the gates of the Amer Fort.</p>
+      </div>
+      <div class="reveal bg-white rounded-2xl p-7 text-center border border-[#efe6da]">
+        <div class="heritage-ico mx-auto mb-4"><i data-lucide="mountain" class="w-6 h-6"></i></div>
+        <h3 class="font-serif text-lg mb-1">Panoramic Jaigarh Fort View</h3>
+        <p class="text-sm text-muted">Wake to the ramparts of Jaigarh Fort crowning the Aravalli hills.</p>
+      </div>
+      <div class="reveal bg-white rounded-2xl p-7 text-center border border-[#efe6da]">
+        <div class="heritage-ico mx-auto mb-4"><i data-lucide="map" class="w-6 h-6"></i></div>
+        <h3 class="font-serif text-lg mb-1">All Amer Heritage Gems within 4 KM Range</h3>
+        <p class="text-sm text-muted">Forts, stepwells, temples and lakes — the best of Amer at your doorstep.</p>
       </div>
     </div>
   </section>
@@ -157,47 +239,81 @@
       <div class="text-center max-w-2xl mx-auto mb-14 reveal">
         <div class="eyebrow mb-3">The Space</div>
         <h2 class="font-serif text-3xl md:text-4xl mb-4">One suite, entirely yours</h2>
-        <p class="text-muted">Padharo House is a single private suite — so the house, the view and your hosts' full attention are never shared. No crowds, no reception desk, just your own royal retreat above the Amber Fort.</p>
+        <p class="text-muted">Padharo House is a single private suite — the house, the view and your hosts' full attention are never shared. No crowds, no reception desk, just your own royal retreat above the Amer Fort.</p>
       </div>
-
       <div class="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center reveal">
-        <!-- images -->
         <div class="grid grid-cols-2 gap-3">
           <div class="zoom rounded-2xl col-span-2 aspect-[16/10]"><img src="assets/img/p8.jpg" class="w-full h-full object-cover" alt="The Amber Suite" /></div>
           <div class="zoom rounded-2xl aspect-[4/3]"><img src="assets/img/p5.jpg" class="w-full h-full object-cover" alt="Suite bedroom" /></div>
           <div class="zoom rounded-2xl aspect-[4/3]"><img src="assets/img/p3.jpg" class="w-full h-full object-cover" alt="Private lounge" /></div>
         </div>
-
-        <!-- details -->
         <div>
           <div class="flex items-center gap-3 mb-3">
             <h3 class="font-serif text-2xl md:text-3xl">The Amber Suite</h3>
             <span class="pill">Fort view</span>
           </div>
           <p class="text-muted leading-relaxed mb-6">
-            A double-height heritage suite with a skylight, a hanging swing and stained-glass jharokha
-            windows framing the Amber Fort. Hand-carved furniture, soft lamp-lit evenings and every
-            modern comfort — your private corner of royal Jaipur.
+            A double-height heritage suite with a skylight, a hanging swing and stained-glass jharokha windows
+            framing the Amer Fort. Hand-carved furniture, soft lamp-lit evenings and every modern comfort —
+            your private corner of royal Jaipur, with Jaigarh Fort on the horizon.
           </p>
-
           <div class="grid grid-cols-2 gap-y-3 gap-x-5 mb-8">
-            <div class="flex items-center gap-2.5 text-sm"><span class="text-terra text-lg">🛏️</span> King bed</div>
-            <div class="flex items-center gap-2.5 text-sm"><span class="text-terra text-lg">🏰</span> Amber Fort view</div>
-            <div class="flex items-center gap-2.5 text-sm"><span class="text-terra text-lg">👥</span> Sleeps 2 (up to 3)</div>
-            <div class="flex items-center gap-2.5 text-sm"><span class="text-terra text-lg">❄️</span> Air-conditioned</div>
-            <div class="flex items-center gap-2.5 text-sm"><span class="text-terra text-lg">📶</span> Fast Wi-Fi</div>
-            <div class="flex items-center gap-2.5 text-sm"><span class="text-terra text-lg">🚿</span> Private ensuite bath</div>
-            <div class="flex items-center gap-2.5 text-sm"><span class="text-terra text-lg">☕</span> Breakfast included</div>
-            <div class="flex items-center gap-2.5 text-sm"><span class="text-terra text-lg">🧺</span> Daily housekeeping</div>
+            <div class="flex items-center gap-2.5 text-sm"><i data-lucide="bed-double" class="w-5 h-5 text-terra"></i> King bed</div>
+            <div class="flex items-center gap-2.5 text-sm"><i data-lucide="castle" class="w-5 h-5 text-terra"></i> Amer Fort view</div>
+            <div class="flex items-center gap-2.5 text-sm"><i data-lucide="users" class="w-5 h-5 text-terra"></i> Sleeps 2 (up to 3)</div>
+            <div class="flex items-center gap-2.5 text-sm"><i data-lucide="snowflake" class="w-5 h-5 text-terra"></i> Air-conditioned</div>
+            <div class="flex items-center gap-2.5 text-sm"><i data-lucide="wifi" class="w-5 h-5 text-terra"></i> Fast Wi-Fi</div>
+            <div class="flex items-center gap-2.5 text-sm"><i data-lucide="bath" class="w-5 h-5 text-terra"></i> Private ensuite bath</div>
+            <div class="flex items-center gap-2.5 text-sm"><i data-lucide="coffee" class="w-5 h-5 text-terra"></i> Breakfast included</div>
+            <div class="flex items-center gap-2.5 text-sm"><i data-lucide="sparkles" class="w-5 h-5 text-terra"></i> Daily housekeeping</div>
           </div>
+          <div class="flex flex-wrap items-center gap-4 border-t border-[#eee5d9] pt-5">
+            <button data-vip-open class="btn btn-primary">Reserve Your Exclusive Stay</button>
+            <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-outline text-sm">Ask on WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <div class="flex flex-wrap items-center justify-between gap-4 border-t border-[#eee5d9] pt-5">
-            <div>
-              <span class="font-serif text-3xl text-terra">From ₹6,500</span><span class="text-sm text-muted">/night</span>
-              <div class="text-xs text-muted mt-0.5">Indicative rate · confirm your dates &amp; final price on enquiry</div>
-            </div>
-            <a href="booking.html" class="btn btn-primary">Check availability</a>
-          </div>
+  <!-- 4 KM Amer Heritage Circle -->
+  <section id="heritage" class="py-20 md:py-28 bg-cream">
+    <div class="max-w-7xl mx-auto px-5">
+      <div class="text-center max-w-2xl mx-auto mb-14 reveal">
+        <div class="eyebrow mb-3">Within 4 KM</div>
+        <h2 class="font-serif text-3xl md:text-4xl mb-4">The Amer Heritage Circle</h2>
+        <p class="text-muted">Everything that makes Amer magical — all within a short walk or drive of your suite.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="heritage-card bg-white rounded-2xl p-7 border border-[#efe6da] reveal">
+          <div class="heritage-ico mb-4"><i data-lucide="castle" class="w-6 h-6"></i></div>
+          <h3 class="font-serif text-xl mb-1">Amer Fort</h3>
+          <p class="text-sm text-muted">50 m walk · right opposite the suite.</p>
+        </div>
+        <div class="heritage-card bg-white rounded-2xl p-7 border border-[#efe6da] reveal">
+          <div class="heritage-ico mb-4"><i data-lucide="mountain" class="w-6 h-6"></i></div>
+          <h3 class="font-serif text-xl mb-1">Jaigarh Fort View</h3>
+          <p class="text-sm text-muted">Direct panoramic vista from the property.</p>
+        </div>
+        <div class="heritage-card bg-white rounded-2xl p-7 border border-[#efe6da] reveal">
+          <div class="heritage-ico mb-4"><i data-lucide="waves" class="w-6 h-6"></i></div>
+          <h3 class="font-serif text-xl mb-1">Panna Meena ka Kund</h3>
+          <p class="text-sm text-muted">Amer's iconic heritage stepwell, within 4 km.</p>
+        </div>
+        <div class="heritage-card bg-white rounded-2xl p-7 border border-[#efe6da] reveal">
+          <div class="heritage-ico mb-4"><i data-lucide="landmark" class="w-6 h-6"></i></div>
+          <h3 class="font-serif text-xl mb-1">Jagat Shiromani Temple</h3>
+          <p class="text-sm text-muted">Ancient intricately-carved temple, within 4 km.</p>
+        </div>
+        <div class="heritage-card bg-white rounded-2xl p-7 border border-[#efe6da] reveal">
+          <div class="heritage-ico mb-4"><i data-lucide="droplets" class="w-6 h-6"></i></div>
+          <h3 class="font-serif text-xl mb-1">Sagar Lake</h3>
+          <p class="text-sm text-muted">Tranquil historic reservoir, within 4 km.</p>
+        </div>
+        <div class="heritage-card bg-terra text-white rounded-2xl p-7 reveal flex flex-col justify-center">
+          <h3 class="font-serif text-xl mb-2">Your royal base in Amer</h3>
+          <p class="text-sm text-white/85 mb-4">Stay in the heart of it all — then come home to your private suite.</p>
+          <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold text-gold"><i data-lucide="map-pin" class="w-4 h-4"></i> Open in Google Maps</a>
         </div>
       </div>
     </div>
@@ -224,97 +340,40 @@
     </div>
   </section>
 
-  <!-- experiences / packages -->
-  <section id="experiences" class="py-20 md:py-28 bg-cream">
-    <div class="max-w-7xl mx-auto px-5">
-      <div class="text-center max-w-2xl mx-auto mb-14 reveal">
-        <div class="eyebrow mb-3">Curated Packages</div>
-        <h2 class="font-serif text-3xl md:text-4xl mb-4">More than a stay</h2>
-        <p class="text-muted">Add an experience when you book and we'll tailor your stay to the trip you have in mind.</p>
-      </div>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="reveal bg-white rounded-2xl p-7 border border-[#efe6da]">
-          <div class="text-2xl mb-3">🧭</div><h3 class="font-serif text-xl mb-2">Stay + Local Guide</h3>
-          <p class="text-sm text-muted mb-4">A knowledgeable local guide for Amber Fort, City Palace &amp; the old city.</p>
-          <span class="text-sm font-semibold text-terra">+ ₹1,500 / night</span>
-        </div>
-        <div class="reveal bg-white rounded-2xl p-7 border border-[#efe6da]">
-          <div class="text-2xl mb-3">🌹</div><h3 class="font-serif text-xl mb-2">Romantic Escape</h3>
-          <p class="text-sm text-muted mb-4">Flower décor, candlight dinner on the terrace &amp; late checkout.</p>
-          <span class="text-sm font-semibold text-terra">+ ₹2,500 / night</span>
-        </div>
-        <div class="reveal bg-white rounded-2xl p-7 border border-[#efe6da]">
-          <div class="text-2xl mb-3">🪔</div><h3 class="font-serif text-xl mb-2">Cultural Retreat</h3>
-          <p class="text-sm text-muted mb-4">Folk music evening, puppet show &amp; a traditional Rajasthani thali.</p>
-          <span class="text-sm font-semibold text-terra">+ ₹3,200 / night</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- reels -->
-  <section class="py-20 md:py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-5">
-      <div class="flex items-end justify-between mb-8 reveal">
-        <div>
-          <div class="eyebrow mb-3">Reel Library</div>
-          <h2 class="font-serif text-3xl md:text-4xl">See it in motion</h2>
-        </div>
-        <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="text-sm text-terra font-semibold hidden sm:block">Watch our reels on Instagram →</a>
-      </div>
-      <div class="flex gap-4 overflow-x-auto no-scrollbar pb-3 reveal">
-        <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="reel"><img src="assets/img/p1.jpg" alt="" /><div class="play"><span>▶</span></div></a>
-        <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="reel"><img src="assets/img/p8.jpg" alt="" /><div class="play"><span>▶</span></div></a>
-        <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="reel"><img src="assets/img/p7.jpg" alt="" /><div class="play"><span>▶</span></div></a>
-        <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="reel"><img src="assets/img/p3.jpg" alt="" /><div class="play"><span>▶</span></div></a>
-        <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="reel"><img src="assets/img/p9.jpg" alt="" /><div class="play"><span>▶</span></div></a>
-        <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="reel"><img src="assets/img/p6.jpg" alt="" /><div class="play"><span>▶</span></div></a>
-      </div>
-    </div>
-  </section>
-
   <!-- location -->
   <section id="location" class="py-20 md:py-28 bg-cream">
     <div class="max-w-7xl mx-auto px-5 grid md:grid-cols-2 gap-12 items-center">
       <div class="reveal">
         <div class="eyebrow mb-3">Location</div>
-        <h2 class="font-serif text-3xl md:text-4xl mb-5">In the shadow of the Amber Fort</h2>
-        <p class="text-muted mb-6">Perfectly placed in Amer, Jaipur — minutes from the fort and a short drive to the Pink City's icons.</p>
-        <ul class="space-y-3">
-          <li class="flex items-center gap-3"><span class="w-9 h-9 rounded-full bg-white grid place-items-center text-terra">🏰</span><span>Amber (Amer) Fort <b>· 1.4 km</b></span></li>
-          <li class="flex items-center gap-3"><span class="w-9 h-9 rounded-full bg-white grid place-items-center text-terra">💧</span><span>Jal Mahal <b>· 6 km</b></span></li>
-          <li class="flex items-center gap-3"><span class="w-9 h-9 rounded-full bg-white grid place-items-center text-terra">🏛️</span><span>City Palace &amp; Hawa Mahal <b>· 11 km</b></span></li>
-          <li class="flex items-center gap-3"><span class="w-9 h-9 rounded-full bg-white grid place-items-center text-terra">✈️</span><span>Jaipur Airport <b>· 24 km</b></span></li>
+        <h2 class="font-serif text-3xl md:text-4xl mb-5">Right opposite the Amer Fort</h2>
+        <p class="text-muted mb-6">In the heart of Amer, Jaipur — a 50 m walk to the fort and a short drive to the Pink City's icons.</p>
+        <ul class="space-y-3 mb-7">
+          <li class="flex items-center gap-3"><span class="w-9 h-9 rounded-full bg-white grid place-items-center text-terra"><i data-lucide="castle" class="w-4 h-4"></i></span><span>Amer (Amer) Fort <b>· 50 m walk</b></span></li>
+          <li class="flex items-center gap-3"><span class="w-9 h-9 rounded-full bg-white grid place-items-center text-terra"><i data-lucide="mountain" class="w-4 h-4"></i></span><span>Jaigarh Fort <b>· panoramic view</b></span></li>
+          <li class="flex items-center gap-3"><span class="w-9 h-9 rounded-full bg-white grid place-items-center text-terra"><i data-lucide="landmark" class="w-4 h-4"></i></span><span>Panna Meena ka Kund &amp; temples <b>· ≤ 4 km</b></span></li>
+          <li class="flex items-center gap-3"><span class="w-9 h-9 rounded-full bg-white grid place-items-center text-terra"><i data-lucide="plane" class="w-4 h-4"></i></span><span>Jaipur Airport <b>· 24 km</b></span></li>
         </ul>
+        <div class="flex flex-wrap gap-3">
+          <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="btn btn-primary text-sm"><i data-lucide="map-pin" class="w-4 h-4"></i> Google Maps Pin</a>
+          <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="instagram" class="w-4 h-4"></i> Instagram</a>
+        </div>
       </div>
       <div class="reveal rounded-2xl overflow-hidden shadow-lg border border-[#e6d8c6]">
-        <iframe title="Map — Amber Fort, Jaipur" class="w-full h-[340px]" style="border:0" loading="lazy"
-          src="https://www.google.com/maps?q=Amber+Fort+Jaipur&output=embed"></iframe>
+        <iframe title="Map — Padharo House, opposite Amer Fort, Jaipur" class="w-full h-[360px]" style="border:0" loading="lazy"
+          src="https://www.google.com/maps?q=26.987683983961603,75.8550010443521&z=16&output=embed"></iframe>
       </div>
     </div>
   </section>
 
-  <!-- new property -->
-  <section class="py-20 md:py-28 bg-white">
-    <div class="max-w-3xl mx-auto px-5 text-center reveal">
-      <div class="eyebrow mb-3">Be Among Our First Guests</div>
-      <h2 class="font-serif text-3xl md:text-4xl mb-4">A brand-new heritage homestay</h2>
-      <p class="text-muted mb-8">Padharo House has just opened its doors — so you could be among the very first to wake up to the Amber Fort with us. Follow our journey on Instagram, and your stay could become the first story told here.</p>
-      <div class="flex flex-wrap gap-3 justify-center">
-        <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="btn btn-outline">Follow @padharo_house</a>
-        <a href="booking.html" class="btn btn-primary">Book your stay</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA band -->
+  <!-- VIP early-access band -->
   <section class="relative py-24 text-center text-white overflow-hidden">
     <img src="assets/img/p6.jpg" class="absolute inset-0 w-full h-full object-cover" alt="" />
-    <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(133,58,34,.82),rgba(43,38,32,.86))"></div>
+    <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(133,58,34,.84),rgba(43,38,32,.88))"></div>
     <div class="relative max-w-2xl mx-auto px-5 reveal">
-      <h2 class="font-serif text-3xl md:text-5xl mb-5">Ready for a royal escape?</h2>
-      <p class="text-white/85 mb-8">Check live availability and reserve your dates in a few clicks.</p>
-      <a href="booking.html" class="btn btn-primary text-base">Check Availability &amp; Book</a>
+      <div class="eyebrow text-gold mb-3">VIP Early Access</div>
+      <h2 class="font-serif text-3xl md:text-5xl mb-4">Reserve your exclusive opening stay</h2>
+      <p class="text-white/85 mb-8">Be among our very first guests. Send your dates and we'll personally confirm availability and the opening rate.</p>
+      <button data-vip-open class="btn btn-primary text-base">Request Early Access</button>
     </div>
   </section>
 
@@ -326,26 +385,26 @@
           <img src="assets/logo.png" alt="" class="h-11 bg-white/95 rounded-lg p-1" />
           <span class="font-serif text-xl text-white">Padharo House</span>
         </div>
-        <p class="text-sm max-w-md">A luxury boutique homestay in Amer, Jaipur — Rajasthani heritage charm with modern comfort, moments from the Amber Fort.</p>
+        <p class="text-sm max-w-md">An exclusive single-suite boutique heritage homestay in Amer, Jaipur — opposite the Amer Fort, with panoramic Jaigarh Fort views. Where heritage meets hospitality.</p>
         <div class="flex gap-3 mt-5">
-          <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition">📷</a>
-          <a href="#" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition">📘</a>
-          <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition">💬</a>
+          <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+          <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
+          <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition"><i data-lucide="map-pin" class="w-4 h-4"></i></a>
         </div>
       </div>
       <div>
         <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Explore</h4>
         <ul class="space-y-2 text-sm">
           <li><a href="#suite" class="hover:text-gold">The Suite</a></li>
+          <li><a href="#heritage" class="hover:text-gold">Heritage Circle</a></li>
           <li><a href="#gallery" class="hover:text-gold">Gallery</a></li>
-          <li><a href="#experiences" class="hover:text-gold">Experiences</a></li>
-          <li><a href="blog.html" class="hover:text-gold">Journal &amp; Reviews</a></li>
+          <li><a href="blog.html" class="hover:text-gold">Journal</a></li>
         </ul>
       </div>
       <div>
         <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Contact</h4>
         <ul class="space-y-2 text-sm">
-          <li>Amer, Jaipur, Rajasthan</li>
+          <li>Opposite Amer Fort, Amer, Jaipur</li>
           <li><a href="mailto:padharohouse@gmail.com" class="hover:text-gold">padharohouse@gmail.com</a></li>
           <li><a href="tel:+919461884005" class="hover:text-gold">+91 94618 84005</a></li>
           <li><a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="hover:text-gold">WhatsApp us →</a></li>
@@ -354,7 +413,7 @@
     </div>
     <div class="max-w-7xl mx-auto px-5 mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between gap-2 text-xs">
       <span>© 2026 Padharo House · GSTIN 08BEPPG3869F1Z4 · All rights reserved.</span>
-      <span>Amer, Jaipur · Opposite the Amber Fort</span>
+      <span>Amer, Jaipur · Opposite the Amer Fort</span>
     </div>
   </footer>
 
@@ -374,7 +433,166 @@
     <svg viewBox="0 0 32 32" class="w-6 h-6 fill-current" aria-hidden="true"><path d="M16 3C9 3 3.3 8.7 3.3 15.7c0 2.5.7 4.8 1.9 6.8L3 29l6.7-2.1c1.9 1 4 1.6 6.3 1.6 7 0 12.7-5.7 12.7-12.7S23 3 16 3zm0 23.1c-2 0-3.9-.6-5.5-1.5l-.4-.2-4 1.2 1.2-3.9-.3-.4c-1.1-1.7-1.7-3.7-1.7-5.8C5.3 9.8 10.1 5 16 5s10.7 4.8 10.7 10.7S21.9 26.1 16 26.1zm6-8c-.3-.2-1.9-1-2.2-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1 1.3-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.6-.1-.2-.8-1.9-1-2.5-.3-.7-.5-.6-.8-.6h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.3 1.4 3.5c.2.2 2.4 3.7 5.9 5.2 2.2.9 3 1 4.1.9.7-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>
     <span class="text-sm font-semibold hidden sm:block">Chat with us</span>
   </a>
+  </div><!-- /#live -->
+
+  <!-- ============ VIP EARLY ACCESS MODAL ============ -->
+  <div id="vipModal">
+    <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl">
+      <div class="bg-terra text-white px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-2"><img src="assets/logo.png" class="h-8 bg-white rounded p-0.5" alt="" /><span class="font-serif">VIP Early Access</span></div>
+        <button id="vipClose" class="text-white/80 hover:text-white text-xl" aria-label="Close">✕</button>
+      </div>
+      <form id="vipForm" class="p-6 space-y-4">
+        <p class="text-sm text-muted">Reserve your <b class="text-ink">exclusive opening stay</b>. We'll confirm on WhatsApp.</p>
+        <div><label class="block text-sm font-semibold mb-1">Name</label><input name="name" required class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" placeholder="Your name" /></div>
+        <div><label class="block text-sm font-semibold mb-1">WhatsApp number</label><input name="phone" required inputmode="tel" class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" placeholder="+91 …" /></div>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block text-sm font-semibold mb-1">Preferred dates</label><input name="dates" class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" placeholder="e.g. 12–14 Nov" /></div>
+          <div><label class="block text-sm font-semibold mb-1">Guests</label>
+            <select name="guests" class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5 bg-white"><option>1</option><option selected>2</option><option>3</option></select>
+          </div>
+        </div>
+        <div><label class="block text-sm font-semibold mb-1">Message <span class="text-xs text-muted font-normal">(optional)</span></label><textarea name="message" rows="2" class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" placeholder="Anything we should know?"></textarea></div>
+        <button type="submit" class="btn btn-primary w-full justify-center">Send Request &amp; Open WhatsApp</button>
+        <p class="text-[11px] text-muted text-center">Your details are sent securely to the host. No payment is taken here.</p>
+      </form>
+      <div id="vipDone" style="display:none" class="p-8 text-center">
+        <div class="text-4xl mb-3">🙏</div>
+        <h3 class="font-serif text-xl mb-2">Khamma Ghani!</h3>
+        <p class="text-sm text-muted mb-5">Your request is in. We've opened WhatsApp so you can send it to us directly — we'll confirm your royal stay shortly.</p>
+        <button id="vipCloseDone" class="btn btn-outline text-sm">Close</button>
+      </div>
+    </div>
+  </div>
 
   <script src="assets/app.js"></script>
+
+  <!-- ============ FIREBASE DYNAMIC MODE + CONVERSION + ANALYTICS ============ -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, onSnapshot, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    /* ====== 1. PASTE YOUR FIREBASE WEB CONFIG BELOW ======
+       Firebase console → Project settings → "Your apps" → Web app → Config.
+       The site works and defaults to the LIVE homepage until this is filled in. */
+    const firebaseConfig = {
+      apiKey: "PASTE_API_KEY",
+      authDomain: "PASTE_PROJECT.firebaseapp.com",
+      projectId: "PASTE_PROJECT_ID",
+      storageBucket: "PASTE_PROJECT.appspot.com",
+      messagingSenderId: "PASTE_SENDER_ID",
+      appId: "PASTE_APP_ID"
+    };
+    const FIREBASE_READY = !/PASTE_/.test(firebaseConfig.apiKey);
+    const WHATSAPP = "919461884005";
+
+    const params = new URLSearchParams(location.search);
+    const isPreview = params.get("preview") === "true";
+    const forcedMode = params.get("mode"); // dev override: ?mode=opening_soon | ?mode=live
+    const utm = (params.get("utm_source") || "").toLowerCase();
+    const ref = (params.get("ref") || "").toLowerCase();
+
+    const loaderEl = document.getElementById("loader");
+    const osEl = document.getElementById("openingSoon");
+    const liveEl = document.getElementById("live");
+    let resolved = false, db = null;
+
+    function hideLoader(){ if(loaderEl){ loaderEl.classList.add("hide"); setTimeout(()=>loaderEl.remove(), 600);} }
+    function refreshIcons(){ if(window.lucide) try{ window.lucide.createIcons(); }catch(e){} }
+    function resolveMode(fsMode){
+      if (isPreview) return "live";
+      if (forcedMode === "opening_soon" || forcedMode === "live") return forcedMode;
+      return fsMode === "opening_soon" ? "opening_soon" : "live";
+    }
+    function applyMode(mode){
+      const live = mode !== "opening_soon";
+      liveEl.style.display = live ? "" : "none";
+      osEl.style.display = live ? "none" : "flex";
+      resolved = true;
+      hideLoader();
+      refreshIcons();
+    }
+
+    /* Instagram welcome banner */
+    if (utm === "instagram" || ref === "ig"){
+      const b = document.getElementById("igBanner");
+      if (b){ b.style.display = "block"; document.body.classList.add("has-ig"); }
+    }
+    const igClose = document.getElementById("igClose");
+    if (igClose) igClose.addEventListener("click", ()=>{ document.getElementById("igBanner").style.display="none"; document.body.classList.remove("has-ig"); });
+
+    /* Decide initial mode */
+    if (isPreview || forcedMode) applyMode(resolveMode());
+    else if (!FIREBASE_READY) applyMode("live");
+
+    if (FIREBASE_READY){
+      try{
+        const app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        onSnapshot(doc(db, "config", "site_settings"),
+          (snap)=> applyMode(resolveMode(snap.exists() ? snap.data().siteMode : "live")),
+          (err)=>{ console.warn("site_settings listen failed:", err); if(!resolved) applyMode("live"); });
+        logTraffic();
+      }catch(e){ console.warn("Firebase init failed:", e); if(!resolved) applyMode("live"); }
+    }
+    /* Fail-open: never leave the visitor stuck on the loader */
+    setTimeout(()=>{ if(!resolved) applyMode("live"); }, 3500);
+
+    /* 4. Lightweight traffic analytics (once per browser session) */
+    function logTraffic(){
+      try{
+        if (sessionStorage.getItem("ph_logged")) return;
+        sessionStorage.setItem("ph_logged", "1");
+        const device = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? "mobile" : "desktop";
+        addDoc(collection(db, "traffic_analytics"), {
+          date: serverTimestamp(),
+          referrer: document.referrer || "direct",
+          utm_source: utm || null,
+          ref: ref || null,
+          device,
+          path: location.pathname + location.search
+        }).catch(()=>{});
+      }catch(e){}
+    }
+
+    /* VIP Early Access form → Firestore `leads` + WhatsApp */
+    const modal = document.getElementById("vipModal");
+    const form = document.getElementById("vipForm");
+    const done = document.getElementById("vipDone");
+    document.querySelectorAll("[data-vip-open]").forEach(btn=> btn.addEventListener("click", ()=> modal.classList.add("open")));
+    document.getElementById("vipClose").addEventListener("click", ()=> modal.classList.remove("open"));
+    const vipCloseDone = document.getElementById("vipCloseDone");
+    if (vipCloseDone) vipCloseDone.addEventListener("click", ()=> modal.classList.remove("open"));
+    modal.addEventListener("click", (e)=>{ if(e.target === modal) modal.classList.remove("open"); });
+
+    form.addEventListener("submit", async (e)=>{
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const lead = {
+        name: (fd.get("name") || "").toString().trim(),
+        phone: (fd.get("phone") || "").toString().trim(),
+        dates: (fd.get("dates") || "").toString().trim(),
+        guests: (fd.get("guests") || "").toString(),
+        message: (fd.get("message") || "").toString().trim(),
+        source: utm || ref || "website",
+        createdAt: FIREBASE_READY ? serverTimestamp() : new Date().toISOString()
+      };
+      if (db){ try{ await addDoc(collection(db, "leads"), lead); }catch(err){ console.warn("lead save failed:", err); } }
+      const msg =
+        "Khamma Ghani Padharo House! 🙏\n" +
+        "I would love to reserve an *exclusive opening stay*.\n\n" +
+        "Name: " + lead.name + "\n" +
+        "WhatsApp: " + lead.phone + "\n" +
+        "Dates: " + (lead.dates || "flexible") + "\n" +
+        "Guests: " + lead.guests + "\n" +
+        (lead.message ? "Note: " + lead.message + "\n" : "") +
+        "\n— via padharohouse.in";
+      window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg), "_blank");
+      if (done){ form.style.display = "none"; done.style.display = "block"; }
+    });
+
+    /* initial icon render */
+    refreshIcons();
+  </script>
 </body>
 </html>
