@@ -32,6 +32,10 @@ h1,h2,h3,h4,.font-serif{font-family:'Playfair Display',Georgia,serif;}
 .site-header.solid{background:rgba(255,255,255,.96); box-shadow:0 6px 24px -14px rgba(0,0,0,.35); backdrop-filter:blur(8px);}
 .site-header .brand-name,.site-header .nav-link,.site-header .nav-ico{color:#fff;}
 .site-header.solid .brand-name,.site-header.solid .nav-link,.site-header.solid .nav-ico{color:var(--ink);}
+/* logo mark swaps with header state: white over the hero, terracotta on the solid bar */
+.site-header .logo-color{display:none;}
+.site-header.solid .logo-white{display:none;}
+.site-header.solid .logo-color{display:inline-block;}
 .nav-link{position:relative; font-weight:500; font-size:.95rem; transition:.2s;}
 .nav-link::after{content:''; position:absolute; left:0; bottom:-6px; height:2px; width:0; background:var(--gold); transition:.25s;}
 .nav-link:hover::after,.nav-link.active::after{width:100%;}
