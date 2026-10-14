@@ -59,10 +59,6 @@
       display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;overflow:hidden;}
     .os-corner{position:absolute;width:clamp(140px,32vw,320px);opacity:.14;pointer-events:none;}
     .os-tr{top:0;right:0}.os-bl{bottom:0;left:0;transform:scale(-1,-1)}
-
-    /* VIP modal */
-    #vipModal{position:fixed;inset:0;z-index:120;background:rgba(18,11,7,.62);display:none;align-items:center;justify-content:center;padding:16px;}
-    #vipModal.open{display:flex;}
   </style>
 
   <!-- Local SEO: LodgingBusiness structured data -->
@@ -97,7 +93,7 @@
   }
   </script>
 </head>
-<body>
+<body class="has-hero">
 
   <!-- ============ LOADER (hidden once mode resolves) ============ -->
   <div id="loader"><img src="assets/brandmark.png" alt="Padharo House" /><span>Padharo House</span></div>
@@ -105,8 +101,8 @@
   <!-- ============ INSTAGRAM WELCOME BANNER ============ -->
   <div id="igBanner" class="ig-grad text-white text-sm" style="display:none">
     <div class="max-w-7xl mx-auto px-10 py-2.5 relative text-center">
-      <span>✨ Khamma Ghani Instagram Family (<b>@padharo_house</b>)! Reserve your Exclusive Opening Stay.</span>
-      <button data-vip-open class="underline font-semibold ml-2 hover:text-cream">Reserve →</button>
+      <span>✨ Khamma Ghani Instagram Family (<b>@padharo_house</b>)! Your exclusive heritage stay awaits.</span>
+      <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="underline font-semibold ml-2 hover:text-cream">WhatsApp us →</a>
       <button id="igClose" class="absolute right-3 top-1/2 -translate-y-1/2 opacity-80 hover:opacity-100" aria-label="Dismiss">✕</button>
     </div>
   </div>
@@ -133,10 +129,9 @@
         <div class="bg-white/60 border border-[#e8dcc9] rounded-xl py-3 px-2">📍 Heritage gems ≤4 km</div>
       </div>
       <div class="flex flex-wrap gap-3 justify-center mt-8">
-        <button data-vip-open class="btn btn-primary">Reserve Your Exclusive Opening Stay</button>
+        <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="btn btn-primary"><i data-lucide="instagram" class="w-4 h-4"></i> Follow @padharo_house</a>
       </div>
       <div class="flex flex-wrap gap-3 justify-center mt-3">
-        <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="instagram" class="w-4 h-4"></i> @padharo_house</a>
         <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp</a>
         <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="map-pin" class="w-4 h-4"></i> Google Maps</a>
       </div>
@@ -161,7 +156,7 @@
         <a href="blog.html" class="nav-link">Journal</a>
       </nav>
       <div class="flex items-center gap-3">
-        <button data-vip-open class="btn btn-primary text-sm">Reserve Stay</button>
+        <a href="booking.html" class="btn btn-primary text-sm">Book Now</a>
         <button id="burger" class="lg:hidden nav-ico text-2xl leading-none">☰</button>
       </div>
     </div>
@@ -197,7 +192,7 @@
           Amer Fort — an exclusive, private heritage stay with panoramic Jaigarh Fort ramparts.
         </p>
         <div class="flex flex-wrap gap-3">
-          <button data-vip-open class="btn btn-primary">Reserve Your Exclusive Stay</button>
+          <a href="booking.html" class="btn btn-primary">Check Availability</a>
           <a href="#suite" class="btn btn-ghost">Explore the Suite</a>
         </div>
         <div class="flex items-center gap-5 mt-10 text-sm">
@@ -268,7 +263,7 @@
             <div class="flex items-center gap-2.5 text-sm"><i data-lucide="sparkles" class="w-5 h-5 text-terra"></i> Daily housekeeping</div>
           </div>
           <div class="flex flex-wrap items-center gap-4 border-t border-[#eee5d9] pt-5">
-            <button data-vip-open class="btn btn-primary">Reserve Your Exclusive Stay</button>
+            <a href="booking.html" class="btn btn-primary">Check Availability</a>
             <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-outline text-sm">Ask on WhatsApp</a>
           </div>
         </div>
@@ -365,15 +360,18 @@
     </div>
   </section>
 
-  <!-- VIP early-access band -->
+  <!-- Instagram CTA band -->
   <section class="relative py-24 text-center text-white overflow-hidden">
     <img src="assets/img/p6.jpg" class="absolute inset-0 w-full h-full object-cover" alt="" />
     <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(133,58,34,.84),rgba(43,38,32,.88))"></div>
     <div class="relative max-w-2xl mx-auto px-5 reveal">
-      <div class="eyebrow text-gold mb-3">VIP Early Access</div>
-      <h2 class="font-serif text-3xl md:text-5xl mb-4">Reserve your exclusive opening stay</h2>
-      <p class="text-white/85 mb-8">Be among our very first guests. Send your dates and we'll personally confirm availability and the opening rate.</p>
-      <button data-vip-open class="btn btn-primary text-base">Request Early Access</button>
+      <div class="eyebrow text-gold mb-3">Follow Our Journey</div>
+      <h2 class="font-serif text-3xl md:text-5xl mb-4">See Padharo House on Instagram</h2>
+      <p class="text-white/85 mb-8">Reels, stories and first looks from your heritage home, right opposite the Amer Fort.</p>
+      <div class="flex flex-wrap gap-3 justify-center">
+        <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="btn btn-primary text-base"><i data-lucide="instagram" class="w-5 h-5"></i> Follow @padharo_house</a>
+        <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-ghost text-base"><i data-lucide="message-circle" class="w-5 h-5"></i> Enquire on WhatsApp</a>
+      </div>
     </div>
   </section>
 
@@ -387,7 +385,7 @@
         </div>
         <p class="text-sm max-w-md">An exclusive single-suite boutique heritage homestay in Amer, Jaipur — opposite the Amer Fort, with panoramic Jaigarh Fort views. Where heritage meets hospitality.</p>
         <div class="flex gap-3 mt-5">
-          <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+          <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="flex items-center gap-2 bg-white/10 hover:bg-terra transition rounded-full pl-2.5 pr-4 py-2 text-sm"><i data-lucide="instagram" class="w-4 h-4"></i> @padharo_house</a>
           <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
           <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition"><i data-lucide="map-pin" class="w-4 h-4"></i></a>
         </div>
@@ -435,39 +433,9 @@
   </a>
   </div><!-- /#live -->
 
-  <!-- ============ VIP EARLY ACCESS MODAL ============ -->
-  <div id="vipModal">
-    <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl">
-      <div class="bg-terra text-white px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-2"><img src="assets/logo.png" class="h-8 bg-white rounded p-0.5" alt="" /><span class="font-serif">VIP Early Access</span></div>
-        <button id="vipClose" class="text-white/80 hover:text-white text-xl" aria-label="Close">✕</button>
-      </div>
-      <form id="vipForm" class="p-6 space-y-4">
-        <p class="text-sm text-muted">Reserve your <b class="text-ink">exclusive opening stay</b>. We'll confirm on WhatsApp.</p>
-        <div><label class="block text-sm font-semibold mb-1">Name</label><input name="name" required class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" placeholder="Your name" /></div>
-        <div><label class="block text-sm font-semibold mb-1">WhatsApp number</label><input name="phone" required inputmode="tel" class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" placeholder="+91 …" /></div>
-        <div class="grid grid-cols-2 gap-3">
-          <div><label class="block text-sm font-semibold mb-1">Preferred dates</label><input name="dates" class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" placeholder="e.g. 12–14 Nov" /></div>
-          <div><label class="block text-sm font-semibold mb-1">Guests</label>
-            <select name="guests" class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5 bg-white"><option>1</option><option selected>2</option><option>3</option></select>
-          </div>
-        </div>
-        <div><label class="block text-sm font-semibold mb-1">Message <span class="text-xs text-muted font-normal">(optional)</span></label><textarea name="message" rows="2" class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" placeholder="Anything we should know?"></textarea></div>
-        <button type="submit" class="btn btn-primary w-full justify-center">Send Request &amp; Open WhatsApp</button>
-        <p class="text-[11px] text-muted text-center">Your details are sent securely to the host. No payment is taken here.</p>
-      </form>
-      <div id="vipDone" style="display:none" class="p-8 text-center">
-        <div class="text-4xl mb-3">🙏</div>
-        <h3 class="font-serif text-xl mb-2">Khamma Ghani!</h3>
-        <p class="text-sm text-muted mb-5">Your request is in. We've opened WhatsApp so you can send it to us directly — we'll confirm your royal stay shortly.</p>
-        <button id="vipCloseDone" class="btn btn-outline text-sm">Close</button>
-      </div>
-    </div>
-  </div>
-
   <script src="assets/app.js"></script>
 
-  <!-- ============ FIREBASE DYNAMIC MODE + CONVERSION + ANALYTICS ============ -->
+  <!-- ============ FIREBASE DYNAMIC MODE + ANALYTICS ============ -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, doc, onSnapshot, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -484,7 +452,6 @@
       appId: "PASTE_APP_ID"
     };
     const FIREBASE_READY = !/PASTE_/.test(firebaseConfig.apiKey);
-    const WHATSAPP = "919461884005";
 
     const params = new URLSearchParams(location.search);
     const isPreview = params.get("preview") === "true";
@@ -538,7 +505,7 @@
     /* Fail-open: never leave the visitor stuck on the loader */
     setTimeout(()=>{ if(!resolved) applyMode("live"); }, 3500);
 
-    /* 4. Lightweight traffic analytics (once per browser session) */
+    /* Lightweight traffic analytics (once per browser session) */
     function logTraffic(){
       try{
         if (sessionStorage.getItem("ph_logged")) return;
@@ -554,42 +521,6 @@
         }).catch(()=>{});
       }catch(e){}
     }
-
-    /* VIP Early Access form → Firestore `leads` + WhatsApp */
-    const modal = document.getElementById("vipModal");
-    const form = document.getElementById("vipForm");
-    const done = document.getElementById("vipDone");
-    document.querySelectorAll("[data-vip-open]").forEach(btn=> btn.addEventListener("click", ()=> modal.classList.add("open")));
-    document.getElementById("vipClose").addEventListener("click", ()=> modal.classList.remove("open"));
-    const vipCloseDone = document.getElementById("vipCloseDone");
-    if (vipCloseDone) vipCloseDone.addEventListener("click", ()=> modal.classList.remove("open"));
-    modal.addEventListener("click", (e)=>{ if(e.target === modal) modal.classList.remove("open"); });
-
-    form.addEventListener("submit", async (e)=>{
-      e.preventDefault();
-      const fd = new FormData(e.target);
-      const lead = {
-        name: (fd.get("name") || "").toString().trim(),
-        phone: (fd.get("phone") || "").toString().trim(),
-        dates: (fd.get("dates") || "").toString().trim(),
-        guests: (fd.get("guests") || "").toString(),
-        message: (fd.get("message") || "").toString().trim(),
-        source: utm || ref || "website",
-        createdAt: FIREBASE_READY ? serverTimestamp() : new Date().toISOString()
-      };
-      if (db){ try{ await addDoc(collection(db, "leads"), lead); }catch(err){ console.warn("lead save failed:", err); } }
-      const msg =
-        "Khamma Ghani Padharo House! 🙏\n" +
-        "I would love to reserve an *exclusive opening stay*.\n\n" +
-        "Name: " + lead.name + "\n" +
-        "WhatsApp: " + lead.phone + "\n" +
-        "Dates: " + (lead.dates || "flexible") + "\n" +
-        "Guests: " + lead.guests + "\n" +
-        (lead.message ? "Note: " + lead.message + "\n" : "") +
-        "\n— via padharohouse.in";
-      window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg), "_blank");
-      if (done){ form.style.display = "none"; done.style.display = "block"; }
-    });
 
     /* initial icon render */
     refreshIcons();
