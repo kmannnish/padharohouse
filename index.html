@@ -136,6 +136,33 @@
 
     /* the floating WhatsApp pill is replaced by the sticky bar on phones */
     @media (max-width:767px){ .wa-float{display:none!important;} }
+
+    /* ---- launch phase: outline "Opening Soon" at the foot of the hero slider ----
+       Remove this block, the .hero-launch class and the .hero-soon-wrap markup
+       when the launch phase is over. */
+    .hero-launch{padding-bottom:124px;}
+    .hero-soon-wrap{position:absolute;left:0;right:0;bottom:56px;z-index:20;pointer-events:none;}
+    .hero-soon{display:flex;align-items:baseline;gap:.3em;
+      font-family:'Playfair Display',Georgia,serif;font-weight:600;text-transform:uppercase;
+      letter-spacing:.14em;line-height:1;font-size:clamp(1.65rem,5.2vw,4rem);
+      color:transparent;-webkit-text-stroke:1.1px rgba(255,255,255,.88);
+      animation:soonGlow 8s ease-in-out 2.2s infinite;}
+    @supports not ((-webkit-text-stroke:1px #000) or (text-stroke:1px #000)){
+      .hero-soon{color:rgba(255,255,255,.92);}
+    }
+    .hero-soon span{animation:soonIn 1.4s cubic-bezier(.16,.84,.26,1) both;}
+    .hero-soon span:nth-child(2){animation-delay:.16s;}
+    @keyframes soonIn{from{opacity:0;letter-spacing:.44em;transform:translateY(16px)}to{opacity:1;transform:none}}
+    @keyframes soonGlow{0%,100%{-webkit-text-stroke-color:rgba(255,255,255,.88)}50%{-webkit-text-stroke-color:rgba(192,146,59,.95)}}
+    /* phones: stack to two lines. wide screens: one line. */
+    @media (max-width:767px){
+      .hero-launch{padding-bottom:158px;}
+      .hero-soon-wrap{bottom:64px;}
+      .hero-soon{flex-direction:column;gap:.04em;}
+    }
+    @media (prefers-reduced-motion:reduce){
+      .hero-soon,.hero-soon span{animation:none!important;opacity:1;letter-spacing:.14em;}
+    }
   </style>
 
   <!-- Local SEO: LodgingBusiness structured data -->
@@ -296,7 +323,7 @@
   </header>
 
   <!-- hero -->
-  <section class="hero">
+  <section class="hero hero-launch">
     <div class="hero-slides">
       <img class="slide active" src="assets/img/p2.jpg" alt="View of the Amer Fort through a jharokha window at Padharo House" />
       <img class="slide" src="assets/img/p8.jpg" alt="The Amber Suite" />
@@ -327,7 +354,13 @@
         </div>
       </div>
     </div>
-    <button class="hero-arrow prev" aria-label="Previous photo">‹</button>
+    <!-- launch-phase statement at the foot of the slider -->
+    <div class="hero-soon-wrap">
+      <div class="max-w-7xl mx-auto px-5">
+        <div class="hero-soon" aria-label="Opening Soon"><span>Opening</span><span>Soon</span></div>
+      </div>
+    </div>
+    <button class="hero-arrow prev" aria-label="Previous photo">&lsaquo;</button>
     <button class="hero-arrow next" aria-label="Next photo">›</button>
     <div class="hero-dots" aria-hidden="true"></div>
   </section>
@@ -718,15 +751,14 @@
       }, wait);
     }
     function refreshIcons(){ if(window.lucide) try{ window.lucide.createIcons(); }catch(e){} }
-    /* Launch phase: the site shows the Opening Soon page by default.
-       Firestore config/site_settings.siteMode = "live" flips it to the full
-       homepage (instantly, no redeploy). ?preview=true always shows the full
-       site. To retire the launch page for good, delete the #openingSoon section
-       and make this function return "live". */
+    /* Launch phase: the domain shows the full homepage, which carries the
+       outline "Opening Soon" statement at the foot of the hero slider.
+       The standalone full-screen launch page is still available on demand via
+       Firestore config/site_settings.siteMode = "opening_soon", or ?mode=opening_soon. */
     function resolveMode(fsMode){
       if (isPreview) return "live";
       if (forcedMode === "opening_soon" || forcedMode === "live") return forcedMode;
-      return fsMode === "live" ? "live" : "opening_soon";
+      return fsMode === "opening_soon" ? "opening_soon" : "live";
     }
     function applyMode(mode){
       const live = mode !== "opening_soon";
