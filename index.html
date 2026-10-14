@@ -81,6 +81,21 @@
     .os-corner{position:absolute;width:clamp(140px,32vw,320px);opacity:.14;pointer-events:none;}
     .os-tr{top:0;right:0}.os-bl{bottom:0;left:0;transform:scale(-1,-1)}
 
+    /* opening soon — outline "ghost" typography */
+    .os-ghost{font-family:'Playfair Display',Georgia,serif;font-weight:600;text-transform:uppercase;
+      font-size:clamp(1.75rem,7.6vw,3.6rem);line-height:1.05;letter-spacing:.12em;
+      color:transparent;-webkit-text-stroke:1.2px var(--terra);
+      max-width:100%;animation:ghostIn 1.5s cubic-bezier(.16,.84,.26,1) both;}
+    /* if a browser can't stroke text, fall back to solid terracotta */
+    @supports not ((-webkit-text-stroke:1px #000) or (text-stroke:1px #000)){
+      .os-ghost{color:var(--terra);}
+    }
+    .os-hi{font-family:'Noto Serif Devanagari',serif;color:var(--terra);
+      font-size:clamp(1.1rem,3.8vw,1.45rem);letter-spacing:.06em;
+      animation:ghostIn 1.5s .2s cubic-bezier(.16,.84,.26,1) both;}
+    @keyframes ghostIn{from{opacity:0;letter-spacing:.36em;transform:translateY(12px)}to{opacity:1;transform:none}}
+    @media (prefers-reduced-motion:reduce){ .os-ghost,.os-hi{animation:none;} }
+
     /* the floating WhatsApp pill is replaced by the sticky bar on phones */
     @media (max-width:767px){ .wa-float{display:none!important;} }
   </style>
@@ -174,9 +189,9 @@
     <img class="os-corner os-bl" src="assets/mandala.png" alt="" aria-hidden="true" />
     <div class="relative z-10 w-full max-w-2xl mx-auto px-6 my-auto py-16 flex flex-col items-center">
       <img src="assets/brandmark.png" alt="Padharo House" class="w-[clamp(180px,40vw,290px)]" />
-      <div class="mt-6 flex items-center gap-3 text-gold font-semibold" style="letter-spacing:.3em">
-        <span class="uppercase text-xs">Opening Soon</span>
-        <span style="font-family:'Noto Serif Devanagari',serif" class="text-terra text-lg">जल्द ही</span>
+      <div class="mt-8 flex flex-col items-center gap-2.5">
+        <div class="os-ghost">Opening&nbsp;Soon</div>
+        <div class="os-hi">जल्द ही</div>
       </div>
       <h1 class="font-serif text-terradark mt-5 leading-[1.12]" style="font-size:clamp(1.9rem,5.5vw,3rem)">A New Beginning,<br/>A Dream Come True</h1>
       <p class="font-serif italic text-terra mt-3" style="font-size:clamp(1.05rem,3vw,1.4rem)">Introducing Padharo House — Where Heritage Meets Hospitality</p>
