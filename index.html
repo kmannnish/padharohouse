@@ -84,17 +84,55 @@
     /* opening soon — outline "ghost" typography */
     .os-ghost{font-family:'Playfair Display',Georgia,serif;font-weight:600;text-transform:uppercase;
       font-size:clamp(1.75rem,7.6vw,3.6rem);line-height:1.05;letter-spacing:.12em;
-      color:transparent;-webkit-text-stroke:1.2px var(--terra);
-      max-width:100%;animation:ghostIn 1.5s cubic-bezier(.16,.84,.26,1) both;}
+      color:transparent;-webkit-text-stroke:1.2px var(--terra);max-width:100%;
+      animation-name:ghostIn, strokeGlow;
+      animation-duration:1.7s, 7s;
+      animation-timing-function:cubic-bezier(.16,.84,.26,1), ease-in-out;
+      animation-delay:.38s, 2.4s;
+      animation-iteration-count:1, infinite;
+      animation-fill-mode:both, none;}
     /* if a browser can't stroke text, fall back to solid terracotta */
     @supports not ((-webkit-text-stroke:1px #000) or (text-stroke:1px #000)){
       .os-ghost{color:var(--terra);}
     }
     .os-hi{font-family:'Noto Serif Devanagari',serif;color:var(--terra);
-      font-size:clamp(1.1rem,3.8vw,1.45rem);letter-spacing:.06em;
-      animation:ghostIn 1.5s .2s cubic-bezier(.16,.84,.26,1) both;}
-    @keyframes ghostIn{from{opacity:0;letter-spacing:.36em;transform:translateY(12px)}to{opacity:1;transform:none}}
-    @media (prefers-reduced-motion:reduce){ .os-ghost,.os-hi{animation:none;} }
+      font-size:clamp(1.1rem,3.8vw,1.45rem);letter-spacing:.06em;}
+    @keyframes ghostIn{from{opacity:0;letter-spacing:.38em;transform:translateY(14px)}to{opacity:1;transform:none}}
+    @keyframes strokeGlow{0%,100%{-webkit-text-stroke-color:var(--terra)}50%{-webkit-text-stroke-color:var(--gold)}}
+
+    /* sequenced entrance for every element on the landing page */
+    .os-el{animation:osIn 1.05s cubic-bezier(.16,.84,.26,1) both;animation-delay:var(--d,0s);}
+    @keyframes osIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+    /* hairline that draws itself under the wordmark */
+    .os-rule{height:1px;width:0;background:linear-gradient(90deg,transparent,var(--gold),transparent);
+      animation:ruleDraw 1.5s .9s cubic-bezier(.16,.84,.26,1) both;}
+    @keyframes ruleDraw{to{width:min(300px,68vw)}}
+
+    /* slow breathing glow behind the logo */
+    .os-logo{position:relative;}
+    .os-logo::before{content:'';position:absolute;inset:-22% -16%;border-radius:50%;
+      background:radial-gradient(circle,rgba(192,146,59,.22),rgba(192,146,59,0) 68%);
+      animation:breathe 7s ease-in-out infinite;}
+    @keyframes breathe{0%,100%{opacity:.45;transform:scale(.94)}50%{opacity:1;transform:scale(1.06)}}
+
+    /* minimal text chips */
+    .os-chip{background:rgba(255,255,255,.62);border:1px solid #e8dcc9;border-radius:.75rem;
+      padding:.8rem .6rem;letter-spacing:.02em;transition:border-color .3s ease, transform .3s ease;}
+    .os-chip:hover{border-color:var(--gold);transform:translateY(-2px);}
+
+    /* mandala corners drift very slowly (bottom-left keeps its mirror flip) */
+    .os-corner{animation:cornerFloat 16s ease-in-out infinite;}
+    .os-bl{animation-name:cornerFloatFlip;animation-delay:-8s;}
+    @keyframes cornerFloat{0%,100%{transform:translate3d(0,0,0) rotate(0)}50%{transform:translate3d(-12px,12px,0) rotate(-2.5deg)}}
+    @keyframes cornerFloatFlip{0%,100%{transform:scale(-1,-1) translate3d(0,0,0)}50%{transform:scale(-1,-1) translate3d(-12px,12px,0) rotate(-2.5deg)}}
+
+    @media (prefers-reduced-motion:reduce){
+      .os-ghost,.os-hi,.os-el,.os-rule,.os-corner,.os-bl,.os-logo::before{animation:none!important;}
+      .os-ghost{opacity:1;letter-spacing:.12em;}
+      .os-el{opacity:1;transform:none;}
+      .os-rule{width:min(300px,68vw);}
+    }
 
     /* the floating WhatsApp pill is replaced by the sticky bar on phones */
     @media (max-width:767px){ .wa-float{display:none!important;} }
@@ -188,30 +226,40 @@
     <img class="os-corner os-tr" src="assets/mandala.png" alt="" aria-hidden="true" />
     <img class="os-corner os-bl" src="assets/mandala.png" alt="" aria-hidden="true" />
     <div class="relative z-10 w-full max-w-2xl mx-auto px-6 my-auto py-16 flex flex-col items-center">
-      <img src="assets/brandmark.png" alt="Padharo House" class="w-[clamp(180px,40vw,290px)]" />
-      <div class="mt-8 flex flex-col items-center gap-2.5">
-        <div class="os-ghost">Opening&nbsp;Soon</div>
-        <div class="os-hi">जल्द ही</div>
+
+      <div class="os-logo os-el" style="--d:.15s">
+        <img src="assets/brandmark.png" alt="Padharo House" class="w-[clamp(180px,40vw,290px)] relative" />
       </div>
-      <h1 class="font-serif text-terradark mt-5 leading-[1.12]" style="font-size:clamp(1.9rem,5.5vw,3rem)">A New Beginning,<br/>A Dream Come True</h1>
-      <p class="font-serif italic text-terra mt-3" style="font-size:clamp(1.05rem,3vw,1.4rem)">Introducing Padharo House — Where Heritage Meets Hospitality</p>
-      <p class="text-muted leading-relaxed mt-5 max-w-xl" style="font-size:clamp(1rem,2.6vw,1.1rem)">
+
+      <div class="mt-9 flex flex-col items-center gap-3">
+        <div class="os-ghost">Opening&nbsp;Soon</div>
+        <div class="os-hi os-el" style="--d:.72s">जल्द ही</div>
+      </div>
+
+      <div class="os-rule mt-7"></div>
+
+      <h1 class="font-serif text-terradark mt-7 leading-[1.12] os-el" style="font-size:clamp(1.9rem,5.5vw,3rem);--d:1.05s">A New Beginning,<br/>A Dream Come True</h1>
+      <p class="font-serif italic text-terra mt-3 os-el" style="font-size:clamp(1.05rem,3vw,1.4rem);--d:1.2s">Introducing Padharo House — Where Heritage Meets Hospitality</p>
+      <p class="text-muted leading-relaxed mt-5 max-w-xl os-el" style="font-size:clamp(1rem,2.6vw,1.1rem);--d:1.35s">
         My very first Airbnb venture, nestled in the heritage charm of Jaipur, right opposite the magnificent
         Amer Fort. An exclusive, private heritage stay with panoramic Jaigarh Fort ramparts.
       </p>
-      <div class="grid sm:grid-cols-3 gap-3 mt-8 w-full text-sm">
-        <div class="bg-white/60 border border-[#e8dcc9] rounded-xl py-3 px-2">🚶 50m to Amer Fort</div>
-        <div class="bg-white/60 border border-[#e8dcc9] rounded-xl py-3 px-2">🏔️ Jaigarh Fort view</div>
-        <div class="bg-white/60 border border-[#e8dcc9] rounded-xl py-3 px-2">📍 Heritage gems ≤4 km</div>
+
+      <div class="grid sm:grid-cols-3 gap-3 mt-9 w-full text-sm">
+        <div class="os-chip os-el" style="--d:1.5s">50 m to Amer Fort</div>
+        <div class="os-chip os-el" style="--d:1.6s">Jaigarh Fort view</div>
+        <div class="os-chip os-el" style="--d:1.7s">Heritage gems &#8804; 4 km</div>
       </div>
-      <div class="flex flex-wrap gap-3 justify-center mt-8">
+
+      <div class="flex flex-wrap gap-3 justify-center mt-9 os-el" style="--d:1.85s">
         <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="btn btn-primary"><i data-lucide="instagram" class="w-4 h-4"></i> Follow @padharo_house</a>
       </div>
-      <div class="flex flex-wrap gap-3 justify-center mt-3">
+      <div class="flex flex-wrap gap-3 justify-center mt-3 os-el" style="--d:1.97s">
         <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp</a>
         <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="map-pin" class="w-4 h-4"></i> Google Maps</a>
       </div>
-      <div class="mt-10 text-xs text-muted">Amer, Jaipur, Rajasthan · Opposite the Amer Fort · © 2026 Padharo House</div>
+
+      <div class="mt-11 text-xs text-muted os-el" style="--d:2.1s">Amer, Jaipur, Rajasthan &middot; Opposite the Amer Fort &middot; &copy; 2026 Padharo House</div>
     </div>
   </section>
 
@@ -670,10 +718,15 @@
       }, wait);
     }
     function refreshIcons(){ if(window.lucide) try{ window.lucide.createIcons(); }catch(e){} }
+    /* Launch phase: the site shows the Opening Soon page by default.
+       Firestore config/site_settings.siteMode = "live" flips it to the full
+       homepage (instantly, no redeploy). ?preview=true always shows the full
+       site. To retire the launch page for good, delete the #openingSoon section
+       and make this function return "live". */
     function resolveMode(fsMode){
       if (isPreview) return "live";
       if (forcedMode === "opening_soon" || forcedMode === "live") return forcedMode;
-      return fsMode === "opening_soon" ? "opening_soon" : "live";
+      return fsMode === "live" ? "live" : "opening_soon";
     }
     function applyMode(mode){
       const live = mode !== "opening_soon";
@@ -694,20 +747,20 @@
 
     /* Decide initial mode */
     if (isPreview || forcedMode) applyMode(resolveMode());
-    else if (!FIREBASE_READY) applyMode("live");
+    else if (!FIREBASE_READY) applyMode(resolveMode());
 
     if (FIREBASE_READY){
       try{
         const app = initializeApp(firebaseConfig);
         db = getFirestore(app);
         onSnapshot(doc(db, "config", "site_settings"),
-          (snap)=> applyMode(resolveMode(snap.exists() ? snap.data().siteMode : "live")),
-          (err)=>{ console.warn("site_settings listen failed:", err); if(!resolved) applyMode("live"); });
+          (snap)=> applyMode(resolveMode(snap.exists() ? snap.data().siteMode : null)),
+          (err)=>{ console.warn("site_settings listen failed:", err); if(!resolved) applyMode(resolveMode()); });
         logTraffic();
-      }catch(e){ console.warn("Firebase init failed:", e); if(!resolved) applyMode("live"); }
+      }catch(e){ console.warn("Firebase init failed:", e); if(!resolved) applyMode(resolveMode()); }
     }
     /* Fail-open: never leave the visitor stuck on the loader */
-    setTimeout(()=>{ if(!resolved) applyMode("live"); }, 3500);
+    setTimeout(()=>{ if(!resolved) applyMode(resolveMode()); }, 3500);
 
     /* Lightweight traffic analytics (once per browser session) */
     function logTraffic(){
