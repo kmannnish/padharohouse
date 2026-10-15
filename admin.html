@@ -120,6 +120,7 @@
       <a data-tab="packages" data-perm="managePackages"><i data-lucide="sparkles" class="w-4 h-4"></i> Packages</a>
       <a data-tab="site" data-perm="manageSettings"><i data-lucide="settings" class="w-4 h-4"></i> Site &amp; Brand</a>
       <a data-tab="payments" data-perm="manageSettings"><i data-lucide="wallet" class="w-4 h-4"></i> Payments</a>
+      <a data-tab="promo" data-perm="manageSettings"><i data-lucide="megaphone" class="w-4 h-4"></i> Influencers &amp; Promo</a>
       <a data-tab="analytics" data-perm="viewAnalytics"><i data-lucide="trending-up" class="w-4 h-4"></i> Analytics</a>
       <a data-tab="team" data-perm="manageTeam"><i data-lucide="users" class="w-4 h-4"></i> Team &amp; Roles</a>
     </nav>
@@ -634,6 +635,78 @@
         </div>
       </section>
 
+      <!-- ============ INFLUENCERS & PROMO ============ -->
+      <section data-panel="promo" hidden>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Campaigns</div><div class="font-serif text-3xl text-terra mt-1" id="rfCount">–</div></div>
+          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Link clicks</div><div class="font-serif text-3xl text-terra mt-1" id="rfClicks">–</div></div>
+          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Bookings won</div><div class="font-serif text-3xl text-terra mt-1" id="rfBookings">–</div></div>
+          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Revenue generated</div><div class="font-serif text-3xl text-terra mt-1" id="rfRevenue">–</div></div>
+        </div>
+
+        <div class="grid xl:grid-cols-[1fr_400px] gap-5 items-start">
+          <!-- leaderboard -->
+          <div class="card overflow-hidden">
+            <div class="p-4 border-b border-[#f1e9dd] flex items-center justify-between">
+              <div><h3 class="font-serif text-lg">Influencer ROI leaderboard</h3><p class="text-xs text-muted">Ranked by revenue generated.</p></div>
+              <i data-lucide="trophy" class="w-5 h-5 text-gold"></i>
+            </div>
+            <div class="overflow-x-auto">
+              <table>
+                <thead><tr><th>Code</th><th>Influencer</th><th>Clicks</th><th>Leads</th><th>Bookings</th><th>Usage</th><th>Revenue</th><th>Status</th><th></th></tr></thead>
+                <tbody id="rfBody"></tbody>
+              </table>
+            </div>
+            <div id="rfEmpty" class="p-10 text-center text-sm text-muted" hidden>No campaigns yet — create your first code.</div>
+          </div>
+
+          <!-- campaign builder -->
+          <div class="card p-5">
+            <h3 class="font-serif text-lg mb-4" id="rfFormTitle">New campaign</h3>
+            <input type="hidden" id="rfId" />
+            <div class="space-y-3">
+              <div class="grid grid-cols-2 gap-3">
+                <div><label class="lbl">Influencer name</label><input class="inp" id="rfName" placeholder="Priya Sharma" /></div>
+                <div><label class="lbl">Handle</label><input class="inp" id="rfHandle" placeholder="@priyatravels" /></div>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div><label class="lbl">Platform</label>
+                  <select class="inp" id="rfPlatform">
+                    <option value="instagram">Instagram</option><option value="youtube">YouTube</option>
+                    <option value="blog">Blog</option><option value="other">Other</option>
+                  </select>
+                </div>
+                <div><label class="lbl">Promo code</label><input class="inp uppercase font-mono" id="rfCode" placeholder="PRIYA10" /></div>
+              </div>
+              <div class="bg-cream rounded-lg p-3">
+                <div class="text-[11px] uppercase tracking-wider text-muted font-semibold mb-1">Share link</div>
+                <div class="flex gap-2 items-center">
+                  <code class="text-[11px] flex-1 break-all" id="rfLink">https://padharohouse.in/?ref=…</code>
+                  <button class="btn btn-g" id="rfCopy" type="button" title="Copy"><i data-lucide="copy" class="w-4 h-4"></i></button>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div><label class="lbl">Discount type</label>
+                  <select class="inp" id="rfType"><option value="percent">% off</option><option value="flat">Flat &#8377; off</option></select>
+                </div>
+                <div><label class="lbl">Value</label><input class="inp" type="number" min="0" id="rfValue" placeholder="10" /></div>
+                <div><label class="lbl">Max uses</label><input class="inp" type="number" min="0" id="rfMax" placeholder="25" /></div>
+                <div><label class="lbl">Valid for (days)</label><input class="inp" type="number" min="0" id="rfDays" placeholder="60" /></div>
+                <div><label class="lbl">Starts</label><input class="inp" type="date" id="rfStart" /></div>
+                <div><label class="lbl">Ends</label><input class="inp" type="date" id="rfEnd" /></div>
+              </div>
+              <p class="text-[11px] text-muted">Enter days <em>or</em> an end date — days are counted from the start date. Leave both blank for no expiry.</p>
+              <label class="flex items-center gap-2.5 cursor-pointer"><input type="checkbox" id="rfActive" class="w-4 h-4 accent-[#A0472A]" checked /><span class="text-sm font-semibold">Campaign active</span></label>
+            </div>
+            <div id="rfErr" class="err mt-3" hidden></div>
+            <div class="flex gap-2 mt-4">
+              <button class="btn btn-p flex-1" id="rfSave"><i data-lucide="save" class="w-4 h-4"></i> Save campaign</button>
+              <button class="btn btn-g" id="rfCancel" hidden>Cancel</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- ============ ANALYTICS ============ -->
       <section data-panel="analytics" hidden>
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -1036,7 +1109,8 @@ function applyRole(){
   $('modeNote').hidden = can('manageSettings');
   const allowed = { dashboard:true, bookings:'viewBookings', calendar:'manageCalendar',
     whatsapp:'whatsappQueue', pricing:'managePricing', packages:'managePackages',
-    site:'manageSettings', payments:'manageSettings', analytics:'viewAnalytics', team:'manageTeam' };
+    site:'manageSettings', payments:'manageSettings', promo:'manageSettings',
+    analytics:'viewAnalytics', team:'manageTeam' };
   const need = allowed[currentTab];
   if (need !== true && !can(need)) show('dashboard');
 }
@@ -1053,6 +1127,7 @@ const TITLES = {
   packages:['Packages','Curated experiences shown at booking'],
   site:['Site & Brand Settings','Everything on the public site, editable'],
   payments:['Payment Gateways','Which methods guests may use'],
+  promo:['Influencers & Promo','Referral campaigns and their return'],
   analytics:['Traffic Analytics','Where your visitors come from'],
   team:['Team & Roles','Console access']
 };
@@ -1066,6 +1141,7 @@ function show(tab){
   if (tab === 'bookings') renderBookings();
   if (tab === 'whatsapp') renderQueue();
   if (tab === 'analytics') renderAnalytics();
+  if (tab === 'promo') renderReferrals();
   if (tab === 'team') { renderTeam(); renderAudit(); }
   icons();
 }
@@ -1134,6 +1210,7 @@ function boot(){
 
   unsubs.push(onSnapshot(collection(db,'referrals'), s => {
     REFERRALS = s.docs.map(d => ({ id:d.id, ...d.data() }));
+    renderReferrals();
   }, e => console.warn('referrals', e)));
 
   unsubs.push(onSnapshot(collection(db,'packages'), s => {
@@ -1144,7 +1221,7 @@ function boot(){
 
   unsubs.push(onSnapshot(collection(db,'bookings'), s => {
     BOOKINGS = s.docs.map(d => ({ id:d.id, ...d.data() }));
-    renderBookings(); renderDash(); renderQueue(); renderCalendar(); renderAnalytics();
+    renderBookings(); renderDash(); renderQueue(); renderCalendar(); renderAnalytics(); renderReferrals();
   }, e => console.warn('bookings', e)));
 
   unsubs.push(onSnapshot(collection(db,'blocked_dates'), s => {
@@ -1154,7 +1231,7 @@ function boot(){
 
   unsubs.push(onSnapshot(collection(db,'leads'), s => {
     LEADS = s.docs.map(d => ({ id:d.id, ...d.data() }));
-    renderQueue(); renderAnalytics();
+    renderQueue(); renderAnalytics(); renderReferrals();
   }, e => console.warn('leads', e)));
 
   unsubs.push(onSnapshot(query(collection(db,'traffic_analytics'), orderBy('date','desc'), limit(200)), s => {
@@ -1458,6 +1535,165 @@ $('savePay').addEventListener('click', async () => {
     logAudit('PAYMENTS_SAVED',''); toast('Payment settings saved');
   } catch (ex) { fail(ex, 'save the payment settings'); }
 });
+
+/* =========================================================
+   INFLUENCERS & PROMO CODES  (referrals)  — ROI leaderboard
+   ========================================================= */
+const PLATFORM_ICON = { instagram:'instagram', youtube:'youtube', blog:'rss', other:'link' };
+
+/* clicks come from the stored counter; leads, bookings and revenue are derived
+   live from the real data, so the leaderboard cannot drift out of step */
+function referralStats(r){
+  const code = String(r.code || '').toUpperCase();
+  const leads = LEADS.filter(l => String(l.source || '').toUpperCase() === code).length;
+  const bk = BOOKINGS.filter(b => String(b.promoCode || '').toUpperCase() === code && !b.cancelled);
+  const confirmed = bk.filter(b => b.status === 'CONFIRMED' || b.utrVerified);
+  return {
+    clicks: Number(r.clicks) || 0,
+    leads,
+    bookings: confirmed.length,
+    pending: bk.length - confirmed.length,
+    revenue: confirmed.reduce((s,b) => s + (Number(b.totalAmount) || 0), 0),
+    uses: Number(r.uses) || 0
+  };
+}
+function referralState(r){
+  const today = iso(new Date());
+  if (r.active === false) return { label:'Paused', cls:'bdg-gray' };
+  if (r.startDate && today < r.startDate) return { label:'Scheduled', cls:'bdg-blue' };
+  if (r.endDate && today > r.endDate) return { label:'Expired', cls:'bdg-red' };
+  if (r.maxUses && (Number(r.uses) || 0) >= Number(r.maxUses)) return { label:'Limit reached', cls:'bdg-amber' };
+  return { label:'Active', cls:'bdg-green' };
+}
+function renderReferrals(){
+  if (!$('rfBody')) return;
+  const rows = REFERRALS.map(r => ({ r, s: referralStats(r) }))
+    .sort((a,b) => b.s.revenue - a.s.revenue || b.s.clicks - a.s.clicks);
+  $('rfEmpty').hidden = rows.length > 0;
+  $('rfCount').textContent = REFERRALS.length;
+  $('rfClicks').textContent = rows.reduce((s,x) => s + x.s.clicks, 0);
+  $('rfBookings').textContent = rows.reduce((s,x) => s + x.s.bookings, 0);
+  $('rfRevenue').textContent = MONEY(rows.reduce((s,x) => s + x.s.revenue, 0));
+
+  $('rfBody').innerHTML = rows.map(({ r, s }, i) => {
+    const st = referralState(r);
+    const conv = s.clicks ? Math.round(s.bookings / s.clicks * 100) : 0;
+    return `<tr>
+      <td>
+        <b class="font-mono">${esc(String(r.code || '').toUpperCase())}</b>
+        ${i === 0 && s.revenue > 0 ? ' <span class="bdg bdg-amber">top</span>' : ''}
+        <div class="text-[11px] text-muted flex items-center gap-1 mt-0.5">
+          <i data-lucide="${PLATFORM_ICON[r.platform] || 'link'}" class="w-3 h-3"></i> ${esc(r.platform || 'other')}
+        </div>
+      </td>
+      <td><b class="text-xs">${esc(r.influencerName || '—')}</b><div class="text-[11px] text-muted">${esc(r.handle || '')}</div></td>
+      <td>${s.clicks}</td>
+      <td>${s.leads}</td>
+      <td><b>${s.bookings}</b>${s.pending ? `<div class="text-[11px] text-muted">${s.pending} pending</div>` : ''}</td>
+      <td>${s.uses}${r.maxUses ? ' / ' + r.maxUses : ' / ∞'}</td>
+      <td><b>${MONEY(s.revenue)}</b>${s.clicks && s.bookings ? `<div class="text-[11px] text-muted">${conv}% of clicks</div>` : ''}</td>
+      <td><span class="bdg ${st.cls}">${st.label}</span></td>
+      <td>
+        <div class="flex gap-1.5 justify-end">
+          <button class="btn btn-g" data-rf-copy="${esc(r.code || '')}" title="Copy share link"><i data-lucide="copy" class="w-4 h-4"></i></button>
+          <button class="btn btn-g" data-rf-edit="${r.id}" title="Edit"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+          <button class="btn ${r.active === false ? 'btn-o' : 'btn-d'}" data-rf-tog="${r.id}" title="${r.active === false ? 'Resume' : 'Pause'}">
+            <i data-lucide="${r.active === false ? 'play' : 'pause'}" class="w-4 h-4"></i></button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+  $('rfBody').querySelectorAll('[data-rf-edit]').forEach(b => b.addEventListener('click', () => editRef(b.dataset.rfEdit)));
+  $('rfBody').querySelectorAll('[data-rf-tog]').forEach(b => b.addEventListener('click', () => toggleRef(b.dataset.rfTog)));
+  $('rfBody').querySelectorAll('[data-rf-copy]').forEach(b => b.addEventListener('click', () => copyLink(b.dataset.rfCopy)));
+  icons();
+}
+const shareLink = code => 'https://padharohouse.in/?ref=' + String(code || '').toUpperCase();
+function copyLink(code){
+  const url = shareLink(code);
+  navigator.clipboard?.writeText(url).then(() => toast('Share link copied'), () => toast(url));
+}
+function paintRfLink(){ $('rfLink').textContent = shareLink($('rfCode').value.trim() || '…'); }
+$('rfCode').addEventListener('input', e => {
+  e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  paintRfLink();
+});
+$('rfCopy').addEventListener('click', () => {
+  const c = $('rfCode').value.trim(); if (!c) { toast('Enter a code first'); return; }
+  copyLink(c);
+});
+function clearRefForm(){
+  ['rfId','rfName','rfHandle','rfCode','rfValue','rfMax','rfDays','rfStart','rfEnd'].forEach(k => $(k).value = '');
+  $('rfPlatform').value = 'instagram'; $('rfType').value = 'percent'; $('rfActive').checked = true;
+  $('rfFormTitle').textContent = 'New campaign'; $('rfCancel').hidden = true; $('rfErr').hidden = true;
+  paintRfLink();
+}
+function editRef(id){
+  const r = REFERRALS.find(x => x.id === id); if (!r) return;
+  $('rfId').value = r.id;
+  $('rfName').value = r.influencerName || ''; $('rfHandle').value = r.handle || '';
+  $('rfPlatform').value = r.platform || 'instagram';
+  $('rfCode').value = String(r.code || '').toUpperCase();
+  $('rfType').value = r.discountType || 'percent';
+  $('rfValue').value = r.discountValue ?? '';
+  $('rfMax').value = r.maxUses ?? '';
+  $('rfStart').value = r.startDate || ''; $('rfEnd').value = r.endDate || ''; $('rfDays').value = '';
+  $('rfActive').checked = r.active !== false;
+  $('rfFormTitle').textContent = 'Edit campaign'; $('rfCancel').hidden = false;
+  paintRfLink(); $('rfName').focus();
+}
+$('rfCancel').addEventListener('click', clearRefForm);
+$('rfSave').addEventListener('click', async () => {
+  const err = $('rfErr');
+  const code = $('rfCode').value.trim().toUpperCase();
+  const value = Number($('rfValue').value) || 0;
+  const type = $('rfType').value;
+  const id = $('rfId').value;
+  const problems = [];
+  if (code.length < 3) problems.push('Give the code at least 3 characters (letters and numbers only).');
+  if (!value) problems.push('Enter the discount value.');
+  if (type === 'percent' && value > 50) problems.push('A percentage over 50% looks like a mistake — lower it or use a flat amount.');
+  if (REFERRALS.some(x => String(x.code||'').toUpperCase() === code && x.id !== id))
+    problems.push('That code already exists — pick another.');
+  let start = $('rfStart').value, end = $('rfEnd').value;
+  const days = Number($('rfDays').value) || 0;
+  if (days && start) {
+    const d = parseISO(start); d.setDate(d.getDate() + days); end = iso(d);
+  } else if (days && !start) {
+    start = iso(new Date());
+    const d = new Date(); d.setDate(d.getDate() + days); end = iso(d);
+  }
+  if (start && end && start > end) problems.push('The start date is after the end date.');
+  if (problems.length) { err.innerHTML = problems.join('<br>'); err.hidden = false; return; }
+  err.hidden = true;
+  const data = {
+    influencerName: $('rfName').value.trim(), handle: $('rfHandle').value.trim(),
+    platform: $('rfPlatform').value, code,
+    discountType: type, discountValue: value,
+    maxUses: Math.max(0, Number($('rfMax').value) || 0),
+    startDate: start || '', endDate: end || '',
+    active: $('rfActive').checked,
+    shareLink: shareLink(code),
+    updatedAt: serverTimestamp(), updatedBy: ME.email
+  };
+  try {
+    if (id) { await updateDoc(doc(db,'referrals',id), data); logAudit('PROMO_SAVED', code); toast('Campaign updated'); }
+    else {
+      await addDoc(collection(db,'referrals'), { ...data, clicks:0, uses:0, revenue:0, createdAt: serverTimestamp() });
+      logAudit('PROMO_CREATED', code); toast('Campaign ' + code + ' created');
+    }
+    clearRefForm();
+  } catch (ex) { fail(ex, 'save that campaign'); }
+});
+async function toggleRef(id){
+  const r = REFERRALS.find(x => x.id === id); if (!r) return;
+  const pause = r.active !== false;
+  try {
+    await updateDoc(doc(db,'referrals',id), { active: !pause, updatedAt: serverTimestamp(), updatedBy: ME.email });
+    logAudit(pause ? 'PROMO_PAUSED' : 'PROMO_RESUMED', r.code);
+    toast(pause ? 'Campaign paused' : 'Campaign resumed');
+  } catch (ex) { fail(ex, 'change that campaign'); }
+}
 
 /* =========================================================
    SEASONAL TARIFF TEMPLATES  (tariff_templates)

@@ -350,7 +350,8 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, collection, onSnapshot, addDoc, writeBatch, serverTimestamp }
+import { getFirestore, doc, collection, onSnapshot, addDoc, writeBatch, serverTimestamp,
+         updateDoc, increment }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* ============================================================
@@ -971,6 +972,19 @@ $('submitBooking').addEventListener('click', async () => {
     err.hidden = false;
     btn.disabled = false; btn.innerHTML = '<i data-lucide="check-circle-2" class="w-4 h-4"></i> Submit booking'; icons();
     return;
+  }
+
+  // count the promo use and the revenue it brought in (counters only — the
+  // rules forbid the browser touching the discount, cap or dates)
+  if (QUOTE.promoCode) {
+    const r = REFERRALS.find(x => String(x.code || '').toUpperCase() === QUOTE.promoCode);
+    if (r) {
+      updateDoc(doc(db, 'referrals', r.id), {
+        uses: increment(1),
+        revenue: increment(QUOTE.total),
+        lastUsedAt: serverTimestamp()
+      }).catch(e => console.warn('promo counter not updated', e));
+    }
   }
 
   const sent = await sendWebhook({
