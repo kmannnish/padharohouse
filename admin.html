@@ -300,7 +300,8 @@
 
       <!-- ============ TARIFF ============ -->
       <section data-panel="pricing" hidden>
-        <div class="card p-6 max-w-2xl">
+        <div class="grid xl:grid-cols-[420px_1fr] gap-5 items-start">
+        <div class="card p-6">
           <h3 class="font-serif text-xl mb-1">Property tariff</h3>
           <p class="text-xs text-muted mb-5">One unit, entire private homestay. Base rate includes 2 guests.</p>
           <div class="grid sm:grid-cols-2 gap-4">
@@ -332,6 +333,45 @@
             <span class="text-xs text-muted" id="pricingMeta"></span>
           </div>
         </div>
+
+        <!-- SEASONAL TARIFF TEMPLATES -->
+        <div class="space-y-5">
+          <div class="card p-6">
+            <h3 class="font-serif text-xl mb-1">Saved tariff templates</h3>
+            <p class="text-xs text-muted mb-4">Seasonal presets. Activate one now, or let the booking page pick the right one automatically from the guest's dates.</p>
+            <label class="flex items-start gap-3 cursor-pointer bg-cream rounded-lg p-4 mb-4">
+              <input type="checkbox" id="tplAuto" class="w-5 h-5 mt-0.5 accent-[#A0472A]" />
+              <span>
+                <b class="text-sm">Auto-apply by calendar date</b>
+                <p class="text-[11px] text-muted mt-0.5">When a guest picks dates, the template whose range covers their check-in is used. If none matches, the base tariff above applies.</p>
+              </span>
+            </label>
+            <div id="tplList" class="space-y-2"></div>
+            <p class="text-xs text-muted mt-3" id="tplEmpty" hidden>No templates yet — create your first season below.</p>
+          </div>
+
+          <div class="card p-6">
+            <h3 class="font-serif text-lg mb-4" id="tplFormTitle">Create a template</h3>
+            <input type="hidden" id="tplId" />
+            <div class="grid sm:grid-cols-2 gap-3">
+              <div class="sm:col-span-2"><label class="lbl">Name</label><input class="inp" id="tplName" placeholder="Royal Winter Peak (Oct–Mar)" /></div>
+              <div><label class="lbl">Weekday rate (&#8377;)</label><input class="inp" type="number" min="0" id="tplWeekday" /></div>
+              <div><label class="lbl">Weekend rate (&#8377;)</label><input class="inp" type="number" min="0" id="tplWeekend" /></div>
+              <div><label class="lbl">Extra guest (&#8377; / night)</label><input class="inp" type="number" min="0" id="tplExtra" /></div>
+              <div><label class="lbl">Tax %</label><input class="inp" type="number" min="0" max="100" step="0.5" id="tplTax" /></div>
+              <div><label class="lbl">Weekly discount % <span class="text-muted font-normal">7+ nights</span></label><input class="inp" type="number" min="0" max="60" step="1" id="tplWeekly" /></div>
+              <div></div>
+              <div><label class="lbl">Valid from <span class="text-muted font-normal">(optional)</span></label><input class="inp" type="date" id="tplFrom" /></div>
+              <div><label class="lbl">Valid to</label><input class="inp" type="date" id="tplTo" /></div>
+            </div>
+            <div class="flex gap-2 mt-4">
+              <button class="btn btn-p flex-1" id="tplSave"><i data-lucide="save" class="w-4 h-4"></i> Save template</button>
+              <button class="btn btn-g" id="tplCancel" hidden>Cancel</button>
+            </div>
+            <p class="text-[11px] text-muted mt-2">Leave the dates blank for an always-available preset (e.g. "Inaugural Offer") that you activate by hand.</p>
+          </div>
+        </div>
+        </div>
       </section>
 
       <!-- ============ PACKAGES ============ -->
@@ -347,12 +387,29 @@
             <input type="hidden" id="pkgId" />
             <div class="space-y-3">
               <div><label class="lbl">Title</label><input class="inp" id="pkgTitle" placeholder="Amer Sunrise &amp; Stepwell Heritage Walk" /></div>
-              <div><label class="lbl">Description</label><textarea class="inp" rows="3" id="pkgDesc" placeholder="A guided dawn walk to the fort and Panna Meena ka Kund…"></textarea></div>
+              <div><label class="lbl">Short description</label><textarea class="inp" rows="2" id="pkgDesc" placeholder="A guided dawn walk to the fort and Panna Meena ka Kund…"></textarea></div>
               <div class="grid grid-cols-2 gap-3">
                 <div><label class="lbl">Price (₹)</label><input class="inp" type="number" min="0" id="pkgPrice" placeholder="1500" /></div>
                 <div><label class="lbl">Per</label>
                   <select class="inp" id="pkgUnit"><option value="stay">stay</option><option value="night">night</option><option value="guest">guest</option></select>
                 </div>
+                <div><label class="lbl">Duration badge</label><input class="inp" id="pkgDuration" placeholder="2.5 Hours" /></div>
+                <div><label class="lbl">Highlight badge</label><input class="inp" id="pkgHighlight" placeholder="Most Popular" /></div>
+              </div>
+              <div>
+                <label class="lbl">What's included — one per line</label>
+                <textarea class="inp text-xs" rows="4" id="pkgIncl" placeholder="Expert local guide&#10;Chai at a rooftop viewpoint&#10;Hotel pickup &amp; drop"></textarea>
+              </div>
+              <div>
+                <label class="lbl">Cover photo</label>
+                <div id="pkgCoverPrev" class="mb-2" hidden>
+                  <div class="mm-row">
+                    <img id="pkgCoverImg" alt="" />
+                    <div class="mm-grow text-[11px] text-muted break-all" id="pkgCoverUrl"></div>
+                    <div class="mm-btns"><button class="btn btn-d" id="pkgCoverDel" type="button"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>
+                  </div>
+                </div>
+                <div id="pkgCoverDrop"></div>
               </div>
               <label class="flex items-center gap-2.5 cursor-pointer"><input type="checkbox" id="pkgActive" class="w-4 h-4 accent-[#A0472A]" checked /><span class="text-sm">Show on booking page</span></label>
             </div>
@@ -662,27 +719,63 @@
       <div class="grid sm:grid-cols-2 gap-3">
         <div><label class="lbl">Guest name *</label><input class="inp" id="fName" /></div>
         <div><label class="lbl">Phone (WhatsApp) *</label><input class="inp" id="fPhone" inputmode="tel" placeholder="9461884005" /></div>
+        <div class="sm:col-span-2"><label class="lbl">Guest email</label><input class="inp" id="fEmail" type="email" placeholder="guest@example.com" /></div>
         <div><label class="lbl">Check-in *</label><input class="inp" type="date" id="fIn" /></div>
         <div><label class="lbl">Check-out *</label><input class="inp" type="date" id="fOut" /></div>
-        <div><label class="lbl">Guests</label><input class="inp" type="number" min="1" max="3" id="fGuests" value="2" /></div>
-        <div><label class="lbl">Package</label><select class="inp" id="fPkg"><option value="">Stay only</option></select></div>
-        <div><label class="lbl">Total amount (₹)</label><input class="inp" type="number" min="0" id="fTotal" /></div>
-        <div><label class="lbl">Advance paid (₹)</label><input class="inp" type="number" min="0" id="fAdv" value="0" /></div>
-        <div><label class="lbl">Payment UTR / ref</label><input class="inp" id="fUtr" /></div>
+        <div><label class="lbl">Guests</label><input class="inp" type="number" min="1" max="6" id="fGuests" value="2" /></div>
         <div><label class="lbl">Source</label>
           <select class="inp" id="fSource"><option value="direct">Direct / WhatsApp</option><option value="website">Website</option><option value="airbnb">Airbnb</option><option value="instagram">Instagram</option><option value="walkin">Walk-in</option></select>
         </div>
       </div>
+
+      <div>
+        <label class="lbl">Experiences <span class="text-muted font-normal">(tick any number)</span></label>
+        <div id="fPkgBox" class="bg-cream rounded-lg p-3 space-y-1 max-h-36 overflow-y-auto"></div>
+      </div>
+
+      <div class="bg-cream rounded-lg p-4">
+        <div class="text-sm font-semibold mb-1">Government ID &amp; compliance</div>
+        <p class="text-[11px] text-muted mb-3">Record the ID you check in person at arrival. Staff only — never shown on the website.</p>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div><label class="lbl">ID type</label>
+            <select class="inp" id="fIdType">
+              <option value="">&mdash; not recorded &mdash;</option>
+              <option value="aadhaar">Aadhaar</option><option value="passport">Passport</option>
+              <option value="driving_license">Driving licence</option><option value="voter_id">Voter ID</option>
+            </select>
+          </div>
+          <div><label class="lbl">ID number</label><input class="inp" id="fIdNum" placeholder="last 4 digits are enough" /></div>
+          <div class="sm:col-span-2"><label class="lbl">Nationality</label><input class="inp" id="fNationality" placeholder="Indian" /></div>
+        </div>
+        <p class="text-[11px] text-muted mt-2">For Aadhaar, recording only the <b>last 4 digits</b> is safer and is usually enough for your guest register.</p>
+      </div>
+
+      <div class="bg-white border border-[#eee5d9] rounded-lg p-4">
+        <div class="flex items-center justify-between mb-3">
+          <div class="text-sm font-semibold">Billing</div>
+          <button class="btn btn-g text-xs" id="fRecalc" type="button"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Recalculate</button>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div><label class="lbl">Promo code</label><input class="inp uppercase" id="fPromo" placeholder="PRIYA10" /></div>
+          <div><label class="lbl">Custom discount (&#8377;)</label><input class="inp" type="number" min="0" id="fDiscount" value="0" /></div>
+          <div><label class="lbl">On-property extra bills (&#8377;) <span class="text-muted font-normal">food, transport</span></label><input class="inp" type="number" min="0" id="fExtras" value="0" /></div>
+          <div><label class="lbl">Total amount (&#8377;)</label><input class="inp font-semibold" type="number" min="0" id="fTotal" /></div>
+          <div><label class="lbl">Advance paid (&#8377;)</label><input class="inp" type="number" min="0" id="fAdv" value="0" /></div>
+          <div><label class="lbl">Payment UTR / ref</label><input class="inp" id="fUtr" /></div>
+        </div>
+        <div id="fCalcNote" class="text-[11px] text-muted mt-2"></div>
+        <div class="bg-cream rounded-lg px-4 py-3 text-sm flex justify-between mt-3">
+          <span class="text-muted">Balance due</span><b id="fBalance">&#8377;0</b>
+        </div>
+      </div>
+
       <div><label class="lbl">Notes</label><textarea class="inp" rows="2" id="fNotes"></textarea></div>
       <div class="flex flex-wrap gap-4 pt-1">
         <label class="flex items-center gap-2 cursor-pointer text-sm"><input type="checkbox" id="fUtrOk" class="w-4 h-4 accent-[#A0472A]" /> UTR verified</label>
         <label class="flex items-center gap-2 cursor-pointer text-sm"><input type="checkbox" id="fCheckedIn" class="w-4 h-4 accent-[#A0472A]" /> Checked in</label>
         <label class="flex items-center gap-2 cursor-pointer text-sm"><input type="checkbox" id="fCancelled" class="w-4 h-4 accent-[#A0472A]" /> Cancelled</label>
       </div>
-      <div class="bg-cream rounded-lg px-4 py-3 text-sm flex justify-between">
-        <span class="text-muted">Balance due</span><b id="fBalance">₹0</b>
-      </div>
-      <div id="bkFormErr" class="text-xs text-[#a12626] bg-[#fdeaea] rounded-lg px-3 py-2" hidden></div>
+      <div id="bkFormErr" class="err" hidden></div>
     </div>
     <div class="px-5 py-4 border-t border-[#f1e9dd] flex gap-2 sticky bottom-0 bg-white">
       <button class="btn btn-p flex-1" id="bkSave"><i data-lucide="save" class="w-4 h-4"></i> Save booking</button>
@@ -1028,7 +1121,18 @@ function boot(){
     $('pTaxOn').checked = !!PRICING.taxEnabled;
     $('pTaxWrap').style.opacity = PRICING.taxEnabled ? '1' : '.5';
     $('pricingMeta').textContent = PRICING.updatedBy ? ('Last saved by ' + PRICING.updatedBy) : '';
+    renderTemplates();
   }, e => console.warn('pricing', e)));
+
+  unsubs.push(onSnapshot(collection(db,'tariff_templates'), s => {
+    TEMPLATES_T = s.docs.map(d => ({ id:d.id, ...d.data() }))
+      .sort((a,b) => String(a.validFrom||'zz').localeCompare(String(b.validFrom||'zz')));
+    renderTemplates();
+  }, e => console.warn('tariff_templates', e)));
+
+  unsubs.push(onSnapshot(collection(db,'referrals'), s => {
+    REFERRALS = s.docs.map(d => ({ id:d.id, ...d.data() }));
+  }, e => console.warn('referrals', e)));
 
   unsubs.push(onSnapshot(collection(db,'packages'), s => {
     PACKAGES = s.docs.map(d => ({ id:d.id, ...d.data() }))
@@ -1341,6 +1445,153 @@ $('savePay').addEventListener('click', async () => {
 });
 
 /* =========================================================
+   SEASONAL TARIFF TEMPLATES  (tariff_templates)
+   ========================================================= */
+let TEMPLATES_T = [], REFERRALS = [];
+
+/* the tariff in force for a given check-in date */
+function tariffFor(dateISO){
+  const base = {
+    name: '', weekday: Number(PRICING.baseWeekday) || 0,
+    weekend: Number(PRICING.weekend) || Number(PRICING.baseWeekday) || 0,
+    extraGuest: Number(PRICING.extraGuestCharge) || 0,
+    taxPercent: PRICING.taxEnabled ? (Number(PRICING.taxPercent) || 0) : 0,
+    weeklyDiscount: 0
+  };
+  if (!PRICING.autoApplyTemplates || !dateISO) return base;
+  const t = TEMPLATES_T.find(x => x.validFrom && x.validTo && dateISO >= x.validFrom && dateISO <= x.validTo);
+  if (!t) return base;
+  return {
+    name: t.name, weekday: Number(t.weekday) || base.weekday,
+    weekend: Number(t.weekend) || Number(t.weekday) || base.weekend,
+    extraGuest: Number(t.extraGuest) || 0,
+    taxPercent: Number(t.taxPercent) || 0,
+    weeklyDiscount: Number(t.weeklyDiscount) || 0
+  };
+}
+
+/* promo / influencer code -> discount, validated for expiry and usage */
+function promoDiscount(code, amount){
+  if (!code) return { amount: 0, label: '', ref: null };
+  const r = REFERRALS.find(x => String(x.code || '').toUpperCase() === code);
+  if (!r) return { amount: 0, label: '', ref: null, error: 'unknown code' };
+  const today = iso(new Date());
+  if (r.active === false) return { amount: 0, label: '', ref: r, error: 'code switched off' };
+  if (r.startDate && today < r.startDate) return { amount: 0, label: '', ref: r, error: 'not started yet' };
+  if (r.endDate && today > r.endDate) return { amount: 0, label: '', ref: r, error: 'expired' };
+  if (r.maxUses && (Number(r.uses) || 0) >= Number(r.maxUses)) return { amount: 0, label: '', ref: r, error: 'usage limit reached' };
+  const off = r.discountType === 'flat'
+    ? Math.min(Number(r.discountValue) || 0, amount)
+    : Math.round(amount * (Number(r.discountValue) || 0) / 100);
+  return { amount: Math.max(0, off), label: 'Promo ' + code, ref: r };
+}
+
+function renderTemplates(){
+  if (!$('tplList')) return;
+  $('tplAuto').checked = !!PRICING.autoApplyTemplates;
+  $('tplEmpty').hidden = TEMPLATES_T.length > 0;
+  const today = iso(new Date());
+  $('tplList').innerHTML = TEMPLATES_T.map(t => {
+    const dated = t.validFrom && t.validTo;
+    const live = dated && today >= t.validFrom && today <= t.validTo;
+    return `<div class="bg-white border border-[#eee5d9] rounded-lg p-3">
+      <div class="flex items-start justify-between gap-2 flex-wrap">
+        <div class="min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <b class="font-serif">${esc(t.name)}</b>
+            ${live ? '<span class="bdg bdg-green">in season now</span>' : (dated ? '<span class="bdg bdg-gray">out of season</span>' : '<span class="bdg bdg-blue">manual</span>')}
+          </div>
+          <div class="text-[11px] text-muted mt-1">
+            Weekday ${INR(t.weekday)} · Weekend ${INR(t.weekend || t.weekday)} · Extra guest ${INR(t.extraGuest)} · Tax ${t.taxPercent || 0}%${t.weeklyDiscount ? ' · Weekly −' + t.weeklyDiscount + '%' : ''}
+          </div>
+          <div class="text-[11px] text-muted">${dated ? fmtShort(t.validFrom) + ' → ' + fmtShort(t.validTo) : 'no date range'}</div>
+        </div>
+        <div class="flex gap-1.5 flex-none">
+          <button class="btn btn-o text-xs" data-tpl-use="${t.id}" title="Copy into the base tariff now">Activate now</button>
+          <button class="btn btn-g" data-tpl-edit="${t.id}"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+          <button class="btn btn-d" data-tpl-del="${t.id}"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  $('tplList').querySelectorAll('[data-tpl-use]').forEach(b => b.addEventListener('click', () => activateTpl(b.dataset.tplUse)));
+  $('tplList').querySelectorAll('[data-tpl-edit]').forEach(b => b.addEventListener('click', () => editTpl(b.dataset.tplEdit)));
+  $('tplList').querySelectorAll('[data-tpl-del]').forEach(b => b.addEventListener('click', () => delTpl(b.dataset.tplDel)));
+  icons();
+}
+function clearTplForm(){
+  ['tplId','tplName','tplWeekday','tplWeekend','tplExtra','tplTax','tplWeekly','tplFrom','tplTo']
+    .forEach(k => $(k).value = '');
+  $('tplFormTitle').textContent = 'Create a template'; $('tplCancel').hidden = true;
+}
+function editTpl(id){
+  const t = TEMPLATES_T.find(x => x.id === id); if (!t) return;
+  $('tplId').value = t.id; $('tplName').value = t.name || '';
+  $('tplWeekday').value = t.weekday ?? ''; $('tplWeekend').value = t.weekend ?? '';
+  $('tplExtra').value = t.extraGuest ?? ''; $('tplTax').value = t.taxPercent ?? '';
+  $('tplWeekly').value = t.weeklyDiscount ?? '';
+  $('tplFrom').value = t.validFrom || ''; $('tplTo').value = t.validTo || '';
+  $('tplFormTitle').textContent = 'Edit template'; $('tplCancel').hidden = false;
+  $('tplName').focus();
+}
+$('tplCancel').addEventListener('click', clearTplForm);
+$('tplSave').addEventListener('click', async () => {
+  const name = $('tplName').value.trim();
+  if (!name) { toast('Give the template a name'); return; }
+  const from = $('tplFrom').value, to = $('tplTo').value;
+  if ((from && !to) || (to && !from)) { toast('Set both dates, or leave both blank'); return; }
+  if (from && to && from > to) { toast('“Valid from” must be before “valid to”'); return; }
+  const data = {
+    name,
+    weekday: Math.max(0, Number($('tplWeekday').value) || 0),
+    weekend: Math.max(0, Number($('tplWeekend').value) || 0),
+    extraGuest: Math.max(0, Number($('tplExtra').value) || 0),
+    taxPercent: Math.max(0, Number($('tplTax').value) || 0),
+    weeklyDiscount: Math.max(0, Number($('tplWeekly').value) || 0),
+    validFrom: from || '', validTo: to || '',
+    updatedAt: serverTimestamp(), updatedBy: ME.email
+  };
+  try {
+    const id = $('tplId').value;
+    if (id) await updateDoc(doc(db,'tariff_templates',id), data);
+    else await addDoc(collection(db,'tariff_templates'), { ...data, createdAt: serverTimestamp() });
+    logAudit('TARIFF_TEMPLATE_SAVED', name);
+    toast('Template saved'); clearTplForm();
+  } catch (ex) { fail(ex, 'save that template'); }
+});
+async function delTpl(id){
+  const t = TEMPLATES_T.find(x => x.id === id);
+  if (!confirm('Delete the template “' + (t ? t.name : '') + '”?')) return;
+  try { await deleteDoc(doc(db,'tariff_templates',id)); logAudit('TARIFF_TEMPLATE_DELETED', t ? t.name : id); toast('Template deleted'); }
+  catch (ex) { fail(ex, 'delete that template'); }
+}
+async function activateTpl(id){
+  const t = TEMPLATES_T.find(x => x.id === id); if (!t) return;
+  if (!confirm('Copy “' + t.name + '” into the live base tariff now?\n\nThis overwrites the rates on the left.')) return;
+  try {
+    await setDoc(doc(db,'property','pricing'), {
+      baseWeekday: Number(t.weekday) || 0,
+      weekend: Number(t.weekend) || Number(t.weekday) || 0,
+      extraGuestCharge: Number(t.extraGuest) || 0,
+      taxPercent: Number(t.taxPercent) || 0,
+      taxEnabled: (Number(t.taxPercent) || 0) > 0,
+      activeTemplate: t.name,
+      updatedAt: serverTimestamp(), updatedBy: ME.email
+    }, { merge:true });
+    logAudit('TARIFF_TEMPLATE_ACTIVATED', t.name);
+    toast('“' + t.name + '” is now the live tariff');
+  } catch (ex) { fail(ex, 'activate that template'); }
+}
+$('tplAuto').addEventListener('change', async e => {
+  try {
+    await setDoc(doc(db,'property','pricing'),
+      { autoApplyTemplates: e.target.checked, updatedAt: serverTimestamp(), updatedBy: ME.email }, { merge:true });
+    logAudit('TARIFF_AUTOAPPLY', e.target.checked ? 'on' : 'off');
+    toast(e.target.checked ? 'Seasonal auto-apply is on' : 'Seasonal auto-apply is off');
+  } catch (ex) { fail(ex, 'change that setting'); e.target.checked = !e.target.checked; }
+});
+
+/* =========================================================
    2a. TARIFF
    ========================================================= */
 $('pTaxOn').addEventListener('change', e => { $('pTaxWrap').style.opacity = e.target.checked ? '1' : '.5'; });
@@ -1365,43 +1616,89 @@ $('savePricing').addEventListener('click', async () => {
 /* =========================================================
    2b. PACKAGES CRUD
    ========================================================= */
+let PKG_COVER = '';
+function paintPkgCover(){
+  $('pkgCoverPrev').hidden = !PKG_COVER;
+  if (PKG_COVER) { $('pkgCoverImg').src = PKG_COVER; $('pkgCoverUrl').textContent = PKG_COVER; }
+  icons();
+}
+PHUpload.mount($('pkgCoverDrop'), { spec:'packageCover', onDone: url => { PKG_COVER = url; paintPkgCover(); } });
+$('pkgCoverDel').addEventListener('click', () => { PKG_COVER = ''; paintPkgCover(); });
+
 function renderPackages(){
   const box = $('pkgList');
   $('pkgEmpty').hidden = PACKAGES.length > 0;
-  box.innerHTML = PACKAGES.map(p => `
+  box.innerHTML = PACKAGES.map((p, i) => `
     <div class="p-4 flex items-start gap-3">
+      ${p.coverImage
+        ? `<img src="${esc(p.coverImage)}" alt="" loading="lazy" style="width:120px;height:90px;object-fit:cover;border-radius:.5rem" class="flex-none" />`
+        : `<div style="width:120px;height:90px;border-radius:.5rem;background:#f4efe8;display:grid;place-items:center;color:#b9b1a6" class="flex-none"><i data-lucide="image" class="w-5 h-5"></i></div>`}
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-2 flex-wrap">
           <b class="font-serif">${esc(p.title)}</b>
-          <span class="bdg ${p.active ? 'bdg-green' : 'bdg-gray'}">${p.active ? 'Live' : 'Hidden'}</span>
+          ${p.highlight ? `<span class="bdg bdg-amber">${esc(p.highlight)}</span>` : ''}
+          ${p.duration ? `<span class="bdg bdg-blue">${esc(p.duration)}</span>` : ''}
+          <span class="bdg ${p.active !== false ? 'bdg-green' : 'bdg-gray'}">${p.active !== false ? 'Live' : 'Hidden'}</span>
         </div>
         <p class="text-xs text-muted mt-1">${esc(p.description || '')}</p>
+        ${Array.isArray(p.inclusions) && p.inclusions.length
+          ? `<div class="text-[11px] text-muted mt-1.5">${p.inclusions.slice(0,4).map(x => '✦ ' + esc(x)).join(' &nbsp; ')}${p.inclusions.length>4 ? ' +' + (p.inclusions.length-4) + ' more' : ''}</div>` : ''}
         <div class="text-sm text-terra font-semibold mt-1.5">${INR(p.price)} <span class="text-xs text-muted font-normal">/ ${esc(p.unit || 'stay')}</span></div>
       </div>
-      <div class="flex gap-1.5 shrink-0">
-        <button class="btn btn-g" data-pkg-edit="${p.id}"><i data-lucide="pencil" class="w-4 h-4"></i></button>
-        <button class="btn btn-d" data-pkg-del="${p.id}"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+      <div class="flex flex-col gap-1.5 flex-none">
+        <div class="flex gap-1.5">
+          <button class="btn btn-g" data-pkg-up="${i}" ${i===0?'disabled':''} title="Move up"><i data-lucide="chevron-up" class="w-4 h-4"></i></button>
+          <button class="btn btn-g" data-pkg-down="${i}" ${i===PACKAGES.length-1?'disabled':''} title="Move down"><i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+        </div>
+        <div class="flex gap-1.5">
+          <button class="btn btn-g" data-pkg-edit="${p.id}"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+          <button class="btn btn-d" data-pkg-del="${p.id}"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+        </div>
       </div>
     </div>`).join('');
   box.querySelectorAll('[data-pkg-edit]').forEach(b => b.addEventListener('click', () => editPkg(b.dataset.pkgEdit)));
   box.querySelectorAll('[data-pkg-del]').forEach(b => b.addEventListener('click', () => delPkg(b.dataset.pkgDel)));
+  box.querySelectorAll('[data-pkg-up]').forEach(b => b.addEventListener('click', () => movePkg(+b.dataset.pkgUp, -1)));
+  box.querySelectorAll('[data-pkg-down]').forEach(b => b.addEventListener('click', () => movePkg(+b.dataset.pkgDown, 1)));
   icons();
 }
+async function movePkg(i, dir){
+  const j = i + dir;
+  if (j < 0 || j >= PACKAGES.length) return;
+  const a = PACKAGES[i], b = PACKAGES[j];
+  try {
+    const batch = writeBatch(db);
+    batch.update(doc(db,'packages',a.id), { order: j });
+    batch.update(doc(db,'packages',b.id), { order: i });
+    await batch.commit();
+  } catch (ex) { fail(ex, 'reorder the experiences'); }
+}
 function fillPkgSelect(){
-  const sel = $('fPkg'), cur = sel.value;
-  sel.innerHTML = '<option value="">Stay only</option>' +
-    PACKAGES.map(p => `<option value="${esc(p.id)}">${esc(p.title)}</option>`).join('');
-  sel.value = cur;
+  // multi-select checkboxes in the Add Booking modal
+  const box = $('fPkgBox'); if (!box) return;
+  const live = PACKAGES.filter(p => p.active !== false);
+  box.innerHTML = live.length
+    ? live.map(p => `<label class="flex items-center gap-2 cursor-pointer text-sm py-0.5">
+        <input type="checkbox" class="w-4 h-4 accent-[#A0472A]" data-fpkg="${esc(p.id)}" />
+        <span class="flex-1">${esc(p.title)}</span>
+        <span class="text-xs text-muted">${INR(p.price)}/${esc(p.unit||'stay')}</span></label>`).join('')
+    : '<p class="text-xs text-muted">No experiences yet.</p>';
+  box.querySelectorAll('[data-fpkg]').forEach(cb => cb.addEventListener('change', recalcBooking));
 }
 function clearPkgForm(){
   $('pkgId').value=''; $('pkgTitle').value=''; $('pkgDesc').value=''; $('pkgPrice').value='';
   $('pkgUnit').value='stay'; $('pkgActive').checked=true;
+  $('pkgDuration').value=''; $('pkgHighlight').value=''; $('pkgIncl').value='';
+  PKG_COVER=''; paintPkgCover();
   $('pkgFormTitle').textContent='Add an experience'; $('pkgCancel').hidden=true;
 }
 function editPkg(id){
   const p = PACKAGES.find(x => x.id === id); if (!p) return;
   $('pkgId').value=p.id; $('pkgTitle').value=p.title||''; $('pkgDesc').value=p.description||'';
-  $('pkgPrice').value=p.price??''; $('pkgUnit').value=p.unit||'stay'; $('pkgActive').checked=!!p.active;
+  $('pkgPrice').value=p.price??''; $('pkgUnit').value=p.unit||'stay'; $('pkgActive').checked=p.active!==false;
+  $('pkgDuration').value=p.duration||''; $('pkgHighlight').value=p.highlight||'';
+  $('pkgIncl').value=(Array.isArray(p.inclusions)?p.inclusions:[]).join('\n');
+  PKG_COVER=p.coverImage||''; paintPkgCover();
   $('pkgFormTitle').textContent='Edit experience'; $('pkgCancel').hidden=false;
   $('pkgTitle').focus();
 }
@@ -1414,14 +1711,20 @@ $('pkgSave').addEventListener('click', async () => {
     description: $('pkgDesc').value.trim(),
     price: Math.max(0, Number($('pkgPrice').value) || 0),
     unit: $('pkgUnit').value,
+    duration: $('pkgDuration').value.trim(),
+    highlight: $('pkgHighlight').value.trim(),
+    inclusions: $('pkgIncl').value.split('\n').map(s => s.trim()).filter(Boolean),
+    coverImage: PKG_COVER,
     active: $('pkgActive').checked,
-    order: PACKAGES.length,
     updatedAt: serverTimestamp(), updatedBy: ME.email
   };
   try {
     const id = $('pkgId').value;
-    if (id) { delete data.order; await updateDoc(doc(db,'packages',id), data); logAudit('PACKAGE_SAVED', title); toast('Experience updated'); }
-    else { await addDoc(collection(db,'packages'), { ...data, createdAt: serverTimestamp() }); logAudit('PACKAGE_SAVED', title); toast('Experience added'); }
+    if (id) { await updateDoc(doc(db,'packages',id), data); logAudit('PACKAGE_SAVED', title); toast('Experience updated'); }
+    else {
+      await addDoc(collection(db,'packages'), { ...data, order: PACKAGES.length, createdAt: serverTimestamp() });
+      logAudit('PACKAGE_SAVED', title); toast('Experience added');
+    }
     clearPkgForm();
   } catch (ex) { fail(ex, 'save the experience'); }
 });
@@ -1672,6 +1975,59 @@ async function verifyUtr(id){
 }
 
 /* ---- booking modal ---- */
+const selectedModalPkgs = () => {
+  const out = [];
+  $('fPkgBox').querySelectorAll('[data-fpkg]').forEach(cb => {
+    if (cb.checked) { const p = PACKAGES.find(x => x.id === cb.dataset.fpkg); if (p) out.push(p); }
+  });
+  return out;
+};
+/* auto-price the stay from the tariff in force for those dates */
+function recalcBooking(){
+  const ci = $('fIn').value, co = $('fOut').value;
+  const note = $('fCalcNote');
+  if (!ci || !co || nightsBetween(ci,co) < 1) { note.textContent = 'Enter check-in and check-out to auto-price.'; calcBalance(); return; }
+  const t = tariffFor(ci);                                  // seasonal template or base tariff
+  const guests = Math.max(1, Number($('fGuests').value) || 2);
+  const nights = nightList(ci, co);
+  let room = 0, wknd = 0;
+  nights.forEach(k => {
+    const d = parseISO(k), isWknd = [0,5,6].includes(d.getDay());
+    if (isWknd) wknd++;
+    room += isWknd ? (t.weekend || t.weekday) : t.weekday;
+  });
+  const base = Number(SITE.baseGuests) || 2;
+  const extra = Math.max(0, guests - base) * (t.extraGuest || 0) * nights.length;
+  const pkgTotal = selectedModalPkgs().reduce((s,p) => {
+    const mult = p.unit === 'night' ? nights.length : p.unit === 'guest' ? guests : 1;
+    return s + (Number(p.price)||0) * mult;
+  }, 0);
+  const weekly = (nights.length >= 7 && t.weeklyDiscount) ? Math.round(room * t.weeklyDiscount / 100) : 0;
+  const promo = promoDiscount($('fPromo').value.trim().toUpperCase(), room + extra + pkgTotal - weekly);
+  const custom = Math.max(0, Number($('fDiscount').value) || 0);
+  const extras = Math.max(0, Number($('fExtras').value) || 0);
+  const sub = Math.max(0, room + extra + pkgTotal - weekly - promo.amount - custom);
+  const tax = t.taxPercent ? Math.round(sub * t.taxPercent / 100) : 0;
+  const total = sub + tax + extras;
+  $('fTotal').value = total;
+  note.innerHTML = [
+    t.name ? '<b>' + esc(t.name) + '</b>' : 'Base tariff',
+    nights.length + ' night' + (nights.length>1?'s':'') + ' (' + wknd + ' weekend)',
+    'room ' + INR(room),
+    extra ? 'extra guest ' + INR(extra) : '',
+    pkgTotal ? 'experiences ' + INR(pkgTotal) : '',
+    weekly ? 'weekly −' + INR(weekly) : '',
+    promo.amount ? promo.label + ' −' + INR(promo.amount) : '',
+    custom ? 'discount −' + INR(custom) : '',
+    tax ? 'tax ' + t.taxPercent + '% ' + INR(tax) : '',
+    extras ? 'on-property ' + INR(extras) : ''
+  ].filter(Boolean).join(' · ');
+  calcBalance();
+}
+['fIn','fOut','fGuests','fPromo','fDiscount','fExtras'].forEach(k =>
+  $(k).addEventListener('input', recalcBooking));
+$('fRecalc').addEventListener('click', recalcBooking);
+
 function openBooking(id){
   const b = id ? BOOKINGS.find(x => x.id === id) : null;
   $('bkFormErr').hidden = true;
@@ -1679,20 +2035,29 @@ function openBooking(id){
   $('fId').value = b ? b.id : '';
   $('fName').value = b?.guestName || '';
   $('fPhone').value = b?.phone || '';
+  $('fEmail').value = b?.email || '';
   $('fIn').value = b?.checkIn || '';
   $('fOut').value = b?.checkOut || '';
   $('fGuests').value = b?.guests || 2;
   $('fTotal').value = b?.totalAmount ?? '';
   $('fAdv').value = b?.advancePaid ?? 0;
-  $('fUtr').value = b?.utr || '';
+  $('fUtr').value = b?.utr || b?.paymentRef || '';
   $('fSource').value = b?.source || 'direct';
   $('fNotes').value = b?.notes || '';
+  $('fPromo').value = b?.promoCode || '';
+  $('fDiscount').value = b?.customDiscount ?? 0;
+  $('fExtras').value = b?.onPropertyExtras ?? 0;
+  $('fIdType').value = b?.idType || '';
+  $('fIdNum').value = b?.idNumber || '';
+  $('fNationality').value = b?.nationality || '';
   $('fUtrOk').checked = !!b?.utrVerified;
   $('fCheckedIn').checked = !!b?.checkedIn;
   $('fCancelled').checked = !!b?.cancelled;
-  fillPkgSelect(); $('fPkg').value = b?.packageId || '';
+  fillPkgSelect();
+  const chosenIds = Array.isArray(b?.packages) ? b.packages.map(p => p.id) : (b?.packageId ? [b.packageId] : []);
+  $('fPkgBox').querySelectorAll('[data-fpkg]').forEach(cb => { cb.checked = chosenIds.includes(cb.dataset.fpkg); });
   $('bkDelete').hidden = !(b && ME.role === 'super_admin');
-  calcBalance();
+  if (!b) recalcBooking(); else { $('fCalcNote').textContent = 'Saved total shown. Press Recalculate to re-price.'; calcBalance(); }
   $('bkModal').classList.add('open'); icons();
 }
 function calcBalance(){
@@ -1737,20 +2102,27 @@ $('bkSave').addEventListener('click', async () => {
   const id = $('fId').value;
   const prev = id ? BOOKINGS.find(x => x.id === id) : null;
   const nights = nightList(ci, co);
-  const pkg = PACKAGES.find(p => p.id === $('fPkg').value);
+  const picked = selectedModalPkgs();
   const data = {
     guestName: name, phone,
+    email: $('fEmail').value.trim(),
     checkIn: ci, checkOut: co,
     nights: nightsBetween(ci,co),
     guests: Math.max(1, Number($('fGuests').value) || 2),
     totalAmount: Math.max(0, Number($('fTotal').value) || 0),
     advancePaid: Math.max(0, Number($('fAdv').value) || 0),
+    promoCode: $('fPromo').value.trim().toUpperCase(),
+    customDiscount: Math.max(0, Number($('fDiscount').value) || 0),
+    onPropertyExtras: Math.max(0, Number($('fExtras').value) || 0),
+    idType: $('fIdType').value,
+    idNumber: $('fIdNum').value.trim(),
+    nationality: $('fNationality').value.trim(),
     utr: $('fUtr').value.trim(),
     utrVerified: $('fUtrOk').checked,
     checkedIn: $('fCheckedIn').checked,
     cancelled: $('fCancelled').checked,
-    packageId: $('fPkg').value || '',
-    packageTitle: pkg ? pkg.title : '',
+    packages: picked.map(p => ({ id:p.id, title:p.title, price:Number(p.price)||0, unit:p.unit||'stay' })),
+    packageTitle: picked.map(p => p.title).join(', '),
     source: $('fSource').value,
     notes: $('fNotes').value.trim(),
     blockedDates: $('fCancelled').checked ? [] : nights,

@@ -756,7 +756,8 @@
   <!-- ============ FIREBASE DYNAMIC MODE + ANALYTICS ============ -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, doc, onSnapshot, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, doc, onSnapshot, collection, addDoc, serverTimestamp,
+             getDocs, query, where, limit, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     /* ====== Firebase web config (project: padharo-house) ======
        Everything here is filled in except apiKey — paste the value that starts
        with "AIza..." from: Firebase console -> Project settings -> General ->
@@ -929,6 +930,22 @@
     } else {
       applySite();
     }
+
+    /* ---- influencer referral: remember the code and count the click ---- */
+    (function trackReferral(){
+      const code = (params.get('ref') || '').toUpperCase();
+      if (!code || !db) return;
+      try { localStorage.setItem('ph_ref', code); } catch (e) {}
+      // one click per browser session, so refreshes do not inflate the count
+      if (sessionStorage.getItem('ph_ref_counted') === code) return;
+      try { sessionStorage.setItem('ph_ref_counted', code); } catch (e) {}
+      getDocs(query(collection(db, 'referrals'), where('code', '==', code), limit(1)))
+        .then(snap => {
+          if (snap.empty) return;
+          return updateDoc(snap.docs[0].ref, { clicks: increment(1), lastClickAt: serverTimestamp() });
+        })
+        .catch(e => console.warn('referral click not counted', e));
+    })();
 
     /* ---- CORS-safe email webhook (text/plain avoids the preflight) ---- */
     async function sendWebhook(payload){

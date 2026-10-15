@@ -147,6 +147,14 @@
               <div><label class="lbl" for="gPhone">Phone / WhatsApp *</label><input class="inp" id="gPhone" inputmode="tel" autocomplete="tel" placeholder="+91 …" /></div>
               <div class="sm:col-span-2"><label class="lbl" for="gEmail">Email *</label><input class="inp" id="gEmail" type="email" autocomplete="email" placeholder="you@example.com" /></div>
               <div class="sm:col-span-2"><label class="lbl" for="gNotes">Anything we should know?</label><textarea class="inp" rows="2" id="gNotes" placeholder="Arrival time, anniversary, dietary needs…"></textarea></div>
+              <div class="sm:col-span-2">
+                <label class="lbl" for="gPromo">Promo or referral code <span class="text-muted font-normal">(optional)</span></label>
+                <div class="flex gap-2">
+                  <input class="inp uppercase" id="gPromo" placeholder="PRIYA10" autocomplete="off" />
+                  <button class="btn btn-outline text-sm" id="gPromoApply" type="button">Apply</button>
+                </div>
+                <p class="text-[11px] mt-1" id="promoMsg"></p>
+              </div>
             </div>
             <div id="formErr" class="err mt-4" hidden></div>
             <button class="btn btn-primary w-full justify-center mt-5" id="toStep2">Continue to payment <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
@@ -387,7 +395,54 @@ const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&
 const icons = () => { if (window.lucide) try{ window.lucide.createIcons(); }catch(e){} };
 
 /* ---------------- state ---------------- */
-let PRICING = null, PACKAGES = [], BLOCKED = new Set();
+let PRICING = null, PACKAGES = [], BLOCKED = new Set(), TEMPLATES_T = [], REFERRALS = [];
+/* a code arriving as ?ref=CODE is remembered, so it survives the whole visit */
+let PROMO = (new URLSearchParams(location.search).get('ref') || localStorage.getItem('ph_ref') || '').toUpperCase();
+
+/* validate an influencer / promo code against its window and usage cap */
+function promoDiscount(code, amount){
+  if (!code) return { amount:0, label:'', ref:null };
+  const r = REFERRALS.find(x => String(x.code || '').toUpperCase() === code);
+  if (!r) return { amount:0, label:'', ref:null, error:'That code was not recognised.' };
+  const today = iso(new Date());
+  if (r.active === false) return { amount:0, label:'', ref:r, error:'That code is no longer active.' };
+  if (r.startDate && today < r.startDate) return { amount:0, label:'', ref:r, error:'That code is not valid yet.' };
+  if (r.endDate && today > r.endDate) return { amount:0, label:'', ref:r, error:'That code has expired.' };
+  if (r.maxUses && (Number(r.uses) || 0) >= Number(r.maxUses))
+    return { amount:0, label:'', ref:r, error:'That code has reached its usage limit.' };
+  const off = r.discountType === 'flat'
+    ? Math.min(Number(r.discountValue) || 0, amount)
+    : Math.round(amount * (Number(r.discountValue) || 0) / 100);
+  const label = (r.discountType === 'flat' ? 'Code ' + code : 'Code ' + code + ' (' + (Number(r.discountValue)||0) + '% off)');
+  return { amount: Math.max(0, off), label, ref:r };
+}
+function paintPromo(){
+  const m = $('promoMsg'); if (!m) return;
+  if (!PROMO) { m.textContent = ''; return; }
+  const r = promoDiscount(PROMO, QUOTE ? QUOTE.room + QUOTE.extra + QUOTE.pkgTotal : 10000);
+  if (r.error) { m.className = 'text-[11px] mt-1 text-[#a12626]'; m.textContent = r.error; }
+  else { m.className = 'text-[11px] mt-1 text-[#1f7a43]'; m.textContent = '✓ ' + r.label + ' applied.'; }
+}
+/* the seasonal tariff in force for a check-in date, or the base tariff */
+function tariffFor(dateISO){
+  const base = {
+    name:'', weekday: Number(PRICING && PRICING.baseWeekday) || 0,
+    weekend: Number(PRICING && PRICING.weekend) || Number(PRICING && PRICING.baseWeekday) || 0,
+    extraGuest: Number(PRICING && PRICING.extraGuestCharge) || 0,
+    taxPercent: (PRICING && PRICING.taxEnabled) ? (Number(PRICING.taxPercent) || 0) : 0,
+    weeklyDiscount: 0
+  };
+  if (!PRICING || !PRICING.autoApplyTemplates || !dateISO) return base;
+  const t = TEMPLATES_T.find(x => x.validFrom && x.validTo && dateISO >= x.validFrom && dateISO <= x.validTo);
+  if (!t) return base;
+  return {
+    name: t.name, weekday: Number(t.weekday) || base.weekday,
+    weekend: Number(t.weekend) || Number(t.weekday) || base.weekend,
+    extraGuest: Number(t.extraGuest) || 0,
+    taxPercent: Number(t.taxPercent) || 0,
+    weeklyDiscount: Number(t.weeklyDiscount) || 0
+  };
+}
 let fp = null, checkIn = null, checkOut = null, guests = 2;
 const chosen = new Set();
 let QUOTE = null, BOOKING_REF = null;
@@ -481,6 +536,14 @@ function paintDates(){
 onSnapshot(doc(db,'property','pricing'), s => { PRICING = s.exists() ? s.data() : {}; quote(); },
   e => { console.warn('pricing', e); PRICING = {}; quote(); });
 
+onSnapshot(collection(db,'referrals'), s => {
+  REFERRALS = s.docs.map(d => ({ id:d.id, ...d.data() })); quote(); paintPromo();
+}, e => console.warn('referrals', e));
+
+onSnapshot(collection(db,'tariff_templates'), s => {
+  TEMPLATES_T = s.docs.map(d => ({ id:d.id, ...d.data() })); quote();
+}, e => console.warn('tariff_templates', e));
+
 onSnapshot(collection(db,'packages'), s => {
   PACKAGES = s.docs.map(d => ({ id:d.id, ...d.data() })).filter(p => p.active !== false)
     .sort((a,b)=>(a.order??0)-(b.order??0));
@@ -491,14 +554,24 @@ function renderPackages(){
   const box = $('pkgBox');
   if (!PACKAGES.length) { box.innerHTML = '<p class="text-sm text-muted">No add-on experiences right now — just ask us when you arrive.</p>'; return; }
   box.innerHTML = PACKAGES.map(p => `
-    <label class="pkg${chosen.has(p.id)?' on':''}" data-p="${esc(p.id)}">
-      <input type="checkbox" class="mt-1 w-4 h-4 accent-[#A0472A]" ${chosen.has(p.id)?'checked':''} />
-      <span class="flex-1">
-        <span class="flex items-baseline justify-between gap-3">
-          <b class="font-serif text-base">${esc(p.title)}</b>
-          <b class="text-terra text-sm whitespace-nowrap">+${INR(p.price)}<span class="text-muted font-normal text-xs"> / ${esc(p.unit||'stay')}</span></b>
+    <label class="pkg${chosen.has(p.id)?' on':''}" data-p="${esc(p.id)}" style="padding:0;overflow:hidden">
+      ${p.coverImage ? `<img src="${esc(p.coverImage)}" alt="${esc(p.title)}" loading="lazy"
+           style="width:118px;height:100%;min-height:118px;object-fit:cover;flex:0 0 auto" />` : ''}
+      <span class="flex-1 p-4 flex gap-3">
+        <input type="checkbox" class="mt-1 w-4 h-4 accent-[#A0472A] flex-none" ${chosen.has(p.id)?'checked':''} />
+        <span class="flex-1 min-w-0">
+          <span class="flex items-baseline justify-between gap-3">
+            <b class="font-serif text-base">${esc(p.title)}</b>
+            <b class="text-terra text-sm whitespace-nowrap">+${INR(p.price)}<span class="text-muted font-normal text-xs"> / ${esc(p.unit||'stay')}</span></b>
+          </span>
+          <span class="flex items-center gap-1.5 flex-wrap mt-1.5">
+            ${p.highlight ? `<span class="pill" style="background:#fdf0d9;color:#8a5d0c;border-color:#f0dcb0">${esc(p.highlight)}</span>` : ''}
+            ${p.duration ? `<span class="pill">⏱ ${esc(p.duration)}</span>` : ''}
+          </span>
+          ${p.description ? `<span class="block text-xs text-muted mt-1.5">${esc(p.description)}</span>` : ''}
+          ${Array.isArray(p.inclusions) && p.inclusions.length
+            ? `<span class="block text-[11px] text-muted mt-1.5">${p.inclusions.map(x => '<span class="inline-block mr-2.5">✦ ' + esc(x) + '</span>').join('')}</span>` : ''}
         </span>
-        ${p.description ? `<span class="block text-xs text-muted mt-1">${esc(p.description)}</span>` : ''}
       </span>
     </label>`).join('');
   box.querySelectorAll('.pkg').forEach(el => {
@@ -522,8 +595,8 @@ function inPeak(k){
 function quote(){
   const box = $('bill');
   if (!PRICING) { box.innerHTML = '<p class="text-sm text-muted py-6 text-center">Loading rates…</p>'; return; }
-  const weekday = Number(PRICING.baseWeekday) || 0;
-  const weekend = Number(PRICING.weekend) || weekday;
+  const T = tariffFor(checkIn);
+  const weekday = T.weekday, weekend = T.weekend || T.weekday;
 
   if (!checkIn || !checkOut || !weekday) {
     QUOTE = null;
@@ -544,7 +617,7 @@ function quote(){
   });
 
   const extraGuests = Math.max(0, guests - (Number(S('baseGuests')) || 2));
-  const extra = extraGuests * (Number(PRICING.extraGuestCharge) || 0) * nights.length;
+  const extra = extraGuests * (T.extraGuest || 0) * nights.length;
 
   const picked = PACKAGES.filter(p => chosen.has(p.id)).map(p => {
     const unit = p.unit || 'stay';
@@ -553,18 +626,24 @@ function quote(){
   });
   const pkgTotal = picked.reduce((s,p) => s + p.amount, 0);
 
-  const sub = room + peak + extra + pkgTotal;
-  const taxPct = PRICING.taxEnabled ? (Number(PRICING.taxPercent) || 0) : 0;
+  // long-stay saving, then any influencer / promo code
+  const weekly = (nights.length >= 7 && T.weeklyDiscount) ? Math.round(room * T.weeklyDiscount / 100) : 0;
+  const preDiscount = room + peak + extra + pkgTotal - weekly;
+  const promo = promoDiscount(PROMO, preDiscount);
+  const sub = Math.max(0, preDiscount - promo.amount);
+  const taxPct = T.taxPercent || 0;
   const tax = Math.round(sub * taxPct / 100);
   const total = sub + tax;
   const advance = Math.round(total * 0.30);
   const balance = total - advance;
 
   QUOTE = { nights:nights.length, nightList:nights, room, peak, extra, extraGuests,
-            packages:picked, pkgTotal, sub, taxPct, tax, total, advance, balance, wkndCount };
+            packages:picked, pkgTotal, sub, taxPct, tax, total, advance, balance, wkndCount,
+            weekly, promo:promo.amount, promoCode:promo.amount ? PROMO : '', tariffName:T.name };
 
   const row = (l,v,cls='') => `<div class="flex justify-between gap-3 py-1.5 ${cls}"><span>${l}</span><span class="whitespace-nowrap">${v}</span></div>`;
   box.innerHTML = `
+    ${T.name ? '<div class="pill mb-3">' + esc(T.name) + '</div>' : ''}
     <div class="flex items-center justify-between pb-3 mb-1 border-b border-[#eee5d9] text-sm">
       <div><div class="text-[11px] text-muted">CHECK-IN</div><b>${fmtD(checkIn)}</b></div>
       <div class="text-gold">&rarr;</div>
@@ -576,6 +655,8 @@ function quote(){
       ${peak ? row('Peak season surcharge', INR(peak)) : ''}
       ${extra ? row(`Extra guest (${extraGuests} &times; ${nights.length} night${nights.length>1?'s':''})`, INR(extra)) : ''}
       ${picked.map(p => row(esc(p.title) + (p.mult>1?`<span class="block text-[11px] text-muted">${p.mult} × ${INR(p.price)}</span>`:''), INR(p.amount))).join('')}
+      ${weekly ? row('Weekly stay saving (' + T.weeklyDiscount + '%)', '&minus; ' + INR(weekly), 'text-[#1f7a43]') : ''}
+      ${promo.amount ? row(esc(promo.label), '&minus; ' + INR(promo.amount), 'text-[#1f7a43]') : ''}
       <div class="flex justify-between py-1.5 border-t border-[#eee5d9] mt-1"><span class="text-muted">Subtotal</span><b>${INR(sub)}</b></div>
       ${taxPct ? row(`Taxes &amp; fees (${taxPct}%)`, INR(tax), 'text-muted') : ''}
     </div>
@@ -864,6 +945,10 @@ $('submitBooking').addEventListener('click', async () => {
     utr: manual ? utr : '',
     utrVerified: false, checkedIn: false, cancelled: false,
     notes: $('gNotes').value.trim(),
+    promoCode: QUOTE.promoCode || '',
+    promoDiscount: QUOTE.promo || 0,
+    weeklyDiscount: QUOTE.weekly || 0,
+    tariffName: QUOTE.tariffName || '',
     blockedDates: QUOTE.nightList,
     createdAt: serverTimestamp(),
     dispatch: {}
@@ -919,7 +1004,15 @@ $('submitBooking').addEventListener('click', async () => {
   icons();
 });
 
-applySite(); setGuests(2); quote(); icons();
+$('gPromoApply').addEventListener('click', () => {
+  PROMO = $('gPromo').value.trim().toUpperCase();
+  if (PROMO) localStorage.setItem('ph_ref', PROMO); else localStorage.removeItem('ph_ref');
+  quote(); paintPromo();
+});
+$('gPromo').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('gPromoApply').click(); } });
+if (PROMO) $('gPromo').value = PROMO;
+
+applySite(); setGuests(2); quote(); paintPromo(); icons();
 </script>
 </body>
 </html>

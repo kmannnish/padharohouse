@@ -82,11 +82,30 @@ service cloud.firestore {
     }
     match /property/{docId} {
       allow read: if true;
-      allow write: if isSuper();
+      allow write: if hasPerm('managePricing');
     }
     match /packages/{docId} {
       allow read: if true;
-      allow write: if isSuper();
+      allow write: if hasPerm('managePackages');
+    }
+    // Seasonal tariff presets — the booking page needs to read them to price a
+    // stay, so they are public like the base tariff. No personal data here.
+    match /tariff_templates/{docId} {
+      allow read: if true;
+      allow write: if hasPerm('managePricing');
+    }
+    // Influencer / promo campaigns. Publicly readable so the booking page can
+    // validate a code's window and usage cap, and so a ?ref= landing can count
+    // its own click. A visitor may ONLY bump the counters — never the discount,
+    // the cap or the dates — so a code cannot be made more generous or revived.
+    match /referrals/{docId} {
+      allow read: if true;
+      allow create, delete: if hasPerm('manageSettings');
+      allow update: if hasPerm('manageSettings')
+                    || request.resource.data.diff(resource.data)
+                         .affectedKeys()
+                         .hasOnly(['clicks', 'uses', 'leads', 'revenue',
+                                   'lastClickAt', 'lastUsedAt']);
     }
     match /blocked_dates/{docId} {
       allow read: if true;                 // public availability calendar
