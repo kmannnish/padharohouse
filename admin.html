@@ -17,6 +17,7 @@
     }}};
   </script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="assets/uploader.js"></script>
   <style>
     body{font-family:'Inter',system-ui,sans-serif;background:#f4efe8;color:#2B2620;}
     h1,h2,h3,.font-serif{font-family:'Playfair Display',Georgia,serif;}
@@ -375,10 +376,89 @@
               <div><label class="lbl">Hero headline</label><input class="inp" id="sHeadline" placeholder="A New Beginning, A Dream Come True." /></div>
               <div><label class="lbl">Hero subtitle</label><input class="inp" id="sTagline" placeholder="Introducing Padharo House — Where Heritage Meets Hospitality" /></div>
               <div><label class="lbl">Hero paragraph</label><textarea class="inp" rows="3" id="sIntro"></textarea></div>
+            </div>
+          </div>
+
+          <!-- MEDIA STORAGE -->
+          <div class="card p-6">
+            <h3 class="font-serif text-xl mb-1">Media storage <span class="bdg bdg-green ml-1">Cloudinary free CDN</span></h3>
+            <p class="text-xs text-muted mb-4">Lets you upload photos and video straight from your laptop or phone. Create a free account at cloudinary.com, then add an <b>unsigned</b> upload preset.</p>
+            <div class="grid sm:grid-cols-2 gap-3">
+              <div><label class="lbl">Cloud name</label><input class="inp font-mono text-xs" id="sCloudName" placeholder="dxyz123ab" /></div>
+              <div><label class="lbl">Unsigned upload preset</label><input class="inp font-mono text-xs" id="sCloudPreset" placeholder="padharo_unsigned" /></div>
+            </div>
+            <div class="flex items-center gap-3 mt-4">
+              <button class="btn btn-o" id="testUpload"><i data-lucide="plug-zap" class="w-4 h-4"></i> Test upload connection</button>
+              <span class="text-xs" id="testMsg"></span>
+            </div>
+            <div class="mt-4 bg-[#fdf0d9] border border-[#f0dcb0] rounded-lg p-3 text-[11px] leading-relaxed">
+              In Cloudinary, open <b>Settings → Upload → your preset</b> and restrict it: set <b>allowed formats</b> to jpg,png,webp,mp4,webm and a <b>max file size</b>. An unsigned preset is visible in the page source — restricting it is what stops someone else using your quota.
+            </div>
+          </div>
+
+          <!-- HERO MEDIA -->
+          <div class="card p-6 lg:col-span-2">
+            <h3 class="font-serif text-xl mb-1">Hero media</h3>
+            <p class="text-xs text-muted mb-5">What visitors see first on the homepage.</p>
+
+            <label class="lbl">Display mode</label>
+            <div class="seg mb-6" id="heroModeSeg">
+              <button data-hm="photos">Photo slider only</button>
+              <button data-hm="video">10–15s video loop</button>
+              <button data-hm="hybrid">Hybrid (video + slides)</button>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-6">
               <div>
-                <label class="lbl">Slider image URLs — one per line</label>
-                <textarea class="inp font-mono text-xs" rows="6" id="sSlides" placeholder="assets/img/p2.jpg&#10;assets/img/p8.jpg"></textarea>
-                <p class="text-[11px] text-muted mt-1">Use a path like <code>assets/img/p2.jpg</code> or a full https:// URL. Blank falls back to the built-in photos.</p>
+                <div class="text-sm font-semibold mb-2">Slider photos</div>
+                <div id="heroPhotoDrop" class="mb-3"></div>
+                <div id="heroPhotoList" class="space-y-2"></div>
+                <p class="text-[11px] text-muted mt-2" id="heroPhotoEmpty" hidden>No photos yet — the built-in set is used.</p>
+              </div>
+              <div>
+                <div class="text-sm font-semibold mb-2">Background video <span class="text-muted font-normal">(10–15 seconds, muted loop)</span></div>
+                <div id="heroVideoDrop" class="mb-3"></div>
+                <div id="heroVideoBox" hidden>
+                  <div class="mm-row">
+                    <video id="heroVideoPrev" muted playsinline preload="metadata"></video>
+                    <div class="mm-grow">
+                      <div class="text-xs font-semibold">Current video</div>
+                      <div class="text-[11px] text-muted break-all" id="heroVideoUrl"></div>
+                    </div>
+                    <div class="mm-btns"><button class="btn btn-d" id="heroVideoDel"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- REELS -->
+          <div class="card p-6 lg:col-span-2">
+            <h3 class="font-serif text-xl mb-1">Instagram reels &amp; vertical video showcase</h3>
+            <p class="text-xs text-muted mb-5">Paste a reel link from @padharo_house, or upload your own 9:16 clip.</p>
+            <div class="grid lg:grid-cols-[1fr_1.1fr] gap-6 items-start">
+              <div class="space-y-3">
+                <div>
+                  <label class="lbl">Instagram reel URL</label>
+                  <div class="flex gap-2">
+                    <input class="inp" id="reelUrl" placeholder="https://www.instagram.com/reel/…" />
+                    <button class="btn btn-g" id="reelAddUrl" type="button">Add</button>
+                  </div>
+                </div>
+                <div>
+                  <label class="lbl">…or upload a vertical video</label>
+                  <div id="reelDrop"></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div><label class="lbl">Caption</label><input class="inp" id="reelCaption" placeholder="Sunrise over Amer Fort" /></div>
+                  <div><label class="lbl">CTA button text</label><input class="inp" id="reelCta" placeholder="Book this view" /></div>
+                </div>
+                <p class="text-[11px] text-muted">Fill the caption and CTA before adding, and they attach to the new reel.</p>
+              </div>
+              <div>
+                <div class="text-sm font-semibold mb-2">Showcase order</div>
+                <div id="reelList" class="space-y-2"></div>
+                <p class="text-[11px] text-muted mt-2" id="reelEmpty" hidden>No reels added yet.</p>
               </div>
             </div>
           </div>
@@ -1025,8 +1105,15 @@ function paintSite(){
   $('sHeadline').value = v('headline');
   $('sTagline').value = v('tagline');
   $('sIntro').value = v('intro');
-  const slides = Array.isArray(SITE.sliderImages) ? SITE.sliderImages : SITE_DEFAULTS.sliderImages;
-  $('sSlides').value = slides.join('\n');
+  $('sCloudName').value = SITE.cloudinaryCloudName || '';
+  $('sCloudPreset').value = SITE.cloudinaryUploadPreset || '';
+  PHUpload.setConfig({ cloudName: SITE.cloudinaryCloudName, uploadPreset: SITE.cloudinaryUploadPreset });
+  HERO_PHOTOS = Array.isArray(SITE.heroPhotos) ? SITE.heroPhotos.slice()
+    : (Array.isArray(SITE.sliderImages) ? SITE.sliderImages.map(u => ({ url:u, alt:'' })) : []);
+  REELS = Array.isArray(SITE.reels) ? SITE.reels.slice() : [];
+  HERO_VIDEO = SITE.heroVideoUrl || '';
+  HERO_MODE = SITE.heroMode || 'photos';
+  paintHeroMedia();
   $('sWa').value = v('whatsappNumber');
   $('sPhone').value = v('displayPhone');
   $('sEmail').value = v('email');
@@ -1040,8 +1127,129 @@ function paintSite(){
   $('sWebhook').value = v('googleAppsScriptWebhookUrl');
   $('siteMeta').textContent = SITE.updatedBy ? ('Last saved by ' + SITE.updatedBy) : '';
 }
+
+/* ---------- hero photos / video / reels managers ---------- */
+let HERO_PHOTOS = [], REELS = [], HERO_VIDEO = '', HERO_MODE = 'photos';
+
+function paintHeroMedia(){
+  // mode
+  $('heroModeSeg').querySelectorAll('button').forEach(b =>
+    b.classList.toggle('on', b.dataset.hm === HERO_MODE));
+  // photos
+  $('heroPhotoEmpty').hidden = HERO_PHOTOS.length > 0;
+  $('heroPhotoList').innerHTML = HERO_PHOTOS.map((p, i) => `
+    <div class="mm-row">
+      <img src="${esc(p.url)}" alt="" loading="lazy" />
+      <div class="mm-grow">
+        <input class="inp text-xs" data-alt="${i}" placeholder="SEO alt text — e.g. Amer Fort from the suite window" value="${esc(p.alt || '')}" />
+        <div class="text-[10px] text-muted mt-1 break-all">${esc(p.url)}</div>
+      </div>
+      <div class="mm-btns">
+        <button class="btn btn-g" data-up="${i}" ${i===0?'disabled':''} title="Move up"><i data-lucide="chevron-up" class="w-4 h-4"></i></button>
+        <button class="btn btn-g" data-down="${i}" ${i===HERO_PHOTOS.length-1?'disabled':''} title="Move down"><i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+        <button class="btn btn-d" data-del="${i}" title="Remove"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+      </div>
+    </div>`).join('');
+  $('heroPhotoList').querySelectorAll('[data-alt]').forEach(inp => inp.addEventListener('input', e => {
+    HERO_PHOTOS[+e.target.dataset.alt].alt = e.target.value;
+  }));
+  $('heroPhotoList').querySelectorAll('[data-up]').forEach(b => b.addEventListener('click', () => {
+    const i = +b.dataset.up; [HERO_PHOTOS[i-1], HERO_PHOTOS[i]] = [HERO_PHOTOS[i], HERO_PHOTOS[i-1]]; paintHeroMedia();
+  }));
+  $('heroPhotoList').querySelectorAll('[data-down]').forEach(b => b.addEventListener('click', () => {
+    const i = +b.dataset.down; [HERO_PHOTOS[i+1], HERO_PHOTOS[i]] = [HERO_PHOTOS[i], HERO_PHOTOS[i+1]]; paintHeroMedia();
+  }));
+  $('heroPhotoList').querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => {
+    HERO_PHOTOS.splice(+b.dataset.del, 1); paintHeroMedia();
+  }));
+  // video
+  $('heroVideoBox').hidden = !HERO_VIDEO;
+  if (HERO_VIDEO) { $('heroVideoPrev').src = HERO_VIDEO; $('heroVideoUrl').textContent = HERO_VIDEO; }
+  // reels
+  $('reelEmpty').hidden = REELS.length > 0;
+  $('reelList').innerHTML = REELS.map((r, i) => `
+    <div class="mm-row vert">
+      ${r.type === 'video'
+        ? `<video src="${esc(r.url)}" muted playsinline preload="metadata"></video>`
+        : `<div style="width:46px;height:82px;border-radius:.4rem;background:#f1ece4;display:grid;place-items:center;color:#A0472A"><i data-lucide="instagram" class="w-5 h-5"></i></div>`}
+      <div class="mm-grow">
+        <div class="text-xs font-semibold">${r.type === 'video' ? 'Uploaded clip' : 'Instagram reel'} ${r.active === false ? '<span class="bdg bdg-gray">hidden</span>' : '<span class="bdg bdg-green">live</span>'}</div>
+        <div class="text-[11px] text-muted">${esc(r.caption || 'no caption')}${r.cta ? ' · CTA: ' + esc(r.cta) : ''}</div>
+        <div class="text-[10px] text-muted break-all">${esc(r.url)}</div>
+      </div>
+      <div class="mm-btns">
+        <button class="btn btn-g" data-rup="${i}" ${i===0?'disabled':''}><i data-lucide="chevron-up" class="w-4 h-4"></i></button>
+        <button class="btn btn-g" data-rdown="${i}" ${i===REELS.length-1?'disabled':''}><i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+        <button class="btn btn-g" data-rtog="${i}" title="Show / hide"><i data-lucide="${r.active === false ? 'eye' : 'eye-off'}" class="w-4 h-4"></i></button>
+        <button class="btn btn-d" data-rdel="${i}"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+      </div>
+    </div>`).join('');
+  $('reelList').querySelectorAll('[data-rup]').forEach(b => b.addEventListener('click', () => {
+    const i = +b.dataset.rup; [REELS[i-1], REELS[i]] = [REELS[i], REELS[i-1]]; paintHeroMedia();
+  }));
+  $('reelList').querySelectorAll('[data-rdown]').forEach(b => b.addEventListener('click', () => {
+    const i = +b.dataset.rdown; [REELS[i+1], REELS[i]] = [REELS[i], REELS[i+1]]; paintHeroMedia();
+  }));
+  $('reelList').querySelectorAll('[data-rtog]').forEach(b => b.addEventListener('click', () => {
+    const i = +b.dataset.rtog; REELS[i].active = REELS[i].active === false; paintHeroMedia();
+  }));
+  $('reelList').querySelectorAll('[data-rdel]').forEach(b => b.addEventListener('click', () => {
+    REELS.splice(+b.dataset.rdel, 1); paintHeroMedia();
+  }));
+  icons();
+}
+function newReelMeta(){
+  const caption = $('reelCaption').value.trim(), cta = $('reelCta').value.trim();
+  $('reelCaption').value = ''; $('reelCta').value = '';
+  return { caption, cta, active: true };
+}
+$('heroModeSeg').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  HERO_MODE = b.dataset.hm; paintHeroMedia();
+});
+$('reelAddUrl').addEventListener('click', () => {
+  const u = $('reelUrl').value.trim();
+  if (!/^https?:\/\/(www\.)?instagram\.com\/(reel|p|tv)\//i.test(u)) {
+    toast('Paste a full instagram.com/reel/… link'); return;
+  }
+  REELS.push({ type:'instagram', url:u, ...newReelMeta() });
+  $('reelUrl').value = ''; paintHeroMedia(); toast('Reel added — press Save site settings');
+});
+$('heroVideoDel').addEventListener('click', () => { HERO_VIDEO = ''; paintHeroMedia(); });
+
+/* mount the three upload zones once the DOM exists */
+PHUpload.mount($('heroPhotoDrop'), { spec:'heroPhoto', onDone: url => {
+  HERO_PHOTOS.push({ url, alt:'' }); paintHeroMedia(); toast('Photo added — press Save site settings');
+}});
+PHUpload.mount($('heroVideoDrop'), { spec:'heroVideo', onDone: url => {
+  HERO_VIDEO = url; if (HERO_MODE === 'photos') HERO_MODE = 'hybrid';
+  paintHeroMedia(); toast('Video added — press Save site settings');
+}});
+PHUpload.mount($('reelDrop'), { spec:'reel', onDone: url => {
+  REELS.push({ type:'video', url, ...newReelMeta() }); paintHeroMedia(); toast('Clip added — press Save site settings');
+}});
+
+/* test the Cloudinary connection with a tiny generated image */
+$('testUpload').addEventListener('click', async () => {
+  const msg = $('testMsg');
+  const cloudName = $('sCloudName').value.trim(), uploadPreset = $('sCloudPreset').value.trim();
+  if (!cloudName || !uploadPreset) { msg.className = 'text-xs text-[#a12626]'; msg.textContent = 'Enter both values first.'; return; }
+  PHUpload.setConfig({ cloudName, uploadPreset });
+  msg.className = 'text-xs text-muted'; msg.textContent = 'Testing…';
+  const c = document.createElement('canvas'); c.width = c.height = 40;
+  const x = c.getContext('2d'); x.fillStyle = '#A0472A'; x.fillRect(0,0,40,40);
+  c.toBlob(async blob => {
+    try {
+      const r = await PHUpload.upload(new File([blob],'ph-test.webp',{type:'image/webp'}), { folder:'test' });
+      msg.className = 'text-xs text-[#1f7a43]';
+      msg.textContent = '✓ Connected — uploaded to ' + (r.public_id || 'Cloudinary') + '. Press Save to keep these settings.';
+    } catch (ex) {
+      msg.className = 'text-xs text-[#a12626]';
+      msg.textContent = '✗ ' + ex.message + (/preset/i.test(ex.message) ? ' — is the preset set to Unsigned?' : '');
+    }
+  }, 'image/webp', 0.8);
+});
 $('saveSite').addEventListener('click', async () => {
-  const slides = $('sSlides').value.split('\n').map(s => s.trim()).filter(Boolean);
   const base = Math.max(1, Number($('sBaseGuests').value) || 2);
   const max  = Math.max(base, Number($('sMaxGuests').value) || base);
   const hook = $('sWebhook').value.trim();
@@ -1054,7 +1262,13 @@ $('saveSite').addEventListener('click', async () => {
       headline: $('sHeadline').value.trim(),
       tagline: $('sTagline').value.trim(),
       intro: $('sIntro').value.trim(),
-      sliderImages: slides,
+      heroPhotos: HERO_PHOTOS,
+      sliderImages: HERO_PHOTOS.map(p => p.url),     // kept for older cached pages
+      heroVideoUrl: HERO_VIDEO,
+      heroMode: HERO_MODE,
+      reels: REELS,
+      cloudinaryCloudName: $('sCloudName').value.trim(),
+      cloudinaryUploadPreset: $('sCloudPreset').value.trim(),
       whatsappNumber: $('sWa').value.replace(/\D/g,''),
       displayPhone: $('sPhone').value.trim(),
       email: $('sEmail').value.trim(),

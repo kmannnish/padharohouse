@@ -889,9 +889,24 @@
       if (Array.isArray(SITE.sliderImages) && SITE.sliderImages.length) {
         const box = document.getElementById('heroSlides');
         if (box) {
-          box.innerHTML = SITE.sliderImages.map((src, i) =>
-            '<img class="slide' + (i === 0 ? ' active' : '') + '" src="' + String(src).replace(/"/g,'&quot;') +
-            '" alt="Padharo House, Amer" />').join('');
+          const photos = Array.isArray(SITE.heroPhotos) && SITE.heroPhotos.length
+            ? SITE.heroPhotos
+            : SITE.sliderImages.map(u => ({ url:u, alt:'' }));
+          const mode = SITE.heroMode || 'photos';
+          const vid = SITE.heroVideoUrl || '';
+          let html = '';
+          // a 10–15s muted loop sits under the slides in video / hybrid mode
+          if (vid && (mode === 'video' || mode === 'hybrid')) {
+            html += '<video class="slide active" autoplay muted loop playsinline preload="metadata" ' +
+                    'src="' + String(vid).replace(/"/g,'&quot;') + '"></video>';
+          }
+          if (mode !== 'video') {
+            html += photos.map((p, i) =>
+              '<img class="slide' + (i === 0 && !(vid && mode === 'hybrid') ? ' active' : '') +
+              '" src="' + String(p.url).replace(/"/g,'&quot;') +
+              '" alt="' + String(p.alt || 'Padharo House, Amer').replace(/"/g,'&quot;') + '" />').join('');
+          }
+          box.innerHTML = html;
           document.dispatchEvent(new CustomEvent('ph:slides'));
         }
       }

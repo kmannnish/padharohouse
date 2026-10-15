@@ -211,3 +211,37 @@ h1,h2,h3,h4,.font-serif{font-family:'Playfair Display',Georgia,serif;}
   .place-card,.place-card .pc-media img{transition:none !important;}
   html{scroll-behavior:auto;}
 }
+
+/* ===========================================================
+   MEDIA UPLOADER (PHUpload)
+   =========================================================== */
+.phu{font-size:.85rem;}
+.phu-zone{border:1.5px dashed #dcc9ad;border-radius:.75rem;background:#fffdf9;padding:1.1rem;text-align:center;
+  cursor:pointer;transition:.18s;outline:none;}
+.phu-zone:hover,.phu-zone:focus-visible{border-color:var(--terra);background:#FBF6EE;}
+.phu-zone.over{border-color:var(--terra);background:#f6e9d9;transform:scale(1.01);}
+.phu-ico{font-size:1.15rem;color:var(--terra);line-height:1;}
+.phu-cta{margin-top:.3rem;}
+.phu-cta b{color:var(--terra);}
+.phu-hint{margin-top:.35rem;font-size:.7rem;color:var(--muted);line-height:1.45;}
+.phu-bar{margin-top:.6rem;height:20px;border-radius:999px;background:#eee7dd;position:relative;overflow:hidden;}
+.phu-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--terra),var(--gold));transition:width .2s ease;}
+.phu-bar span{position:absolute;inset:0;display:grid;place-items:center;font-size:.68rem;font-weight:700;color:#4a4036;}
+.phu-msg{margin-top:.5rem;font-size:.75rem;border-radius:.45rem;padding:.45rem .6rem;line-height:1.45;}
+.phu-ok{background:#e6f4ea;color:#1f7a43;}
+.phu-err{background:#fdeaea;color:#a12626;}
+.phu-warn{background:#fdf0d9;color:#8a5d0c;}
+.phu-info{background:#e6eefb;color:#28569e;}
+.phu-or{margin-top:.6rem;font-size:.7rem;color:var(--muted);}
+.phu-urlrow{display:flex;gap:.4rem;margin-top:.3rem;}
+.phu-urlrow input{flex:1;border:1px solid #e6d8c6;border-radius:.45rem;padding:.45rem .6rem;font-size:.78rem;}
+.phu-urlrow button{border:0;background:#eee7dd;color:#5b5247;border-radius:.45rem;padding:.45rem .8rem;
+  font-size:.75rem;font-weight:700;cursor:pointer;}
+.phu-urlrow button:hover{background:#e4dbcd;}
+
+/* media manager rows (hero photos, reels) */
+.mm-row{display:flex;gap:.75rem;align-items:center;background:#fff;border:1px solid #eee5d9;border-radius:.6rem;padding:.6rem;}
+.mm-row img,.mm-row video{width:104px;height:60px;object-fit:cover;border-radius:.4rem;background:#f1ece4;flex:0 0 auto;}
+.mm-row.vert img,.mm-row.vert video{width:46px;height:82px;}
+.mm-grow{flex:1;min-width:0;}
+.mm-btns{display:flex;gap:.3rem;flex:0 0 auto;}
