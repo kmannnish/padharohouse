@@ -178,8 +178,23 @@ service cloud.firestore {
     // visitor referrers/devices are not exposed publicly.
     match /traffic_analytics/{docId} {
       allow create: if true;
-      allow read: if isStaff();
+      allow read: if hasPerm('viewAnalytics');
       allow update, delete: if false;
+    }
+
+    // Rolling counters so the console's KPI cards cost ONE read instead of
+    // paging the whole visit log. A visitor may only bump counters — the
+    // affectedKeys guard means no other field can be written, and nothing can
+    // be read back publicly or erased.
+    match /analytics_summary/{docId} {
+      allow read: if hasPerm('viewAnalytics');
+      allow create: if request.resource.data.keys()
+                      .hasOnly(['visits','updatedAt',
+                                'src_instagram','src_google','src_direct','src_referral','src_other']);
+      allow update: if request.resource.data.diff(resource.data).affectedKeys()
+                      .hasOnly(['visits','updatedAt',
+                                'src_instagram','src_google','src_direct','src_referral','src_other']);
+      allow delete: if false;
     }
 
     // WhatsApp message templates — staff only.

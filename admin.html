@@ -709,16 +709,53 @@
 
       <!-- ============ ANALYTICS ============ -->
       <section data-panel="analytics" hidden>
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Total visits</div><div class="font-serif text-3xl text-terra mt-1" id="aVisits">–</div></div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Total visits</div><div class="font-serif text-3xl text-terra mt-1" id="aVisits">–</div><div class="text-[10px] text-muted mt-0.5" id="aVisitsNote">from the counter doc</div></div>
           <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Instagram clicks</div><div class="font-serif text-3xl text-terra mt-1" id="aIg">–</div></div>
           <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Waitlist leads</div><div class="font-serif text-3xl text-terra mt-1" id="aLeads">–</div></div>
           <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Confirmed revenue</div><div class="font-serif text-3xl text-terra mt-1" id="aRevenue">–</div></div>
         </div>
+
         <div class="card overflow-hidden">
-          <div class="p-4 border-b border-[#f1e9dd] flex items-center justify-between">
-            <h3 class="font-serif text-lg">Recent visits</h3>
-            <span class="text-xs text-muted" id="aNote">Live from Firestore</span>
+          <div class="p-4 border-b border-[#f1e9dd] space-y-3">
+            <div class="flex items-center justify-between gap-3 flex-wrap">
+              <h3 class="font-serif text-lg">Visit log</h3>
+              <span class="text-xs text-muted" id="aNote"></span>
+            </div>
+            <div class="flex flex-wrap items-end gap-3">
+              <div>
+                <label class="lbl">Period</label>
+                <select class="inp" id="aRange" style="width:auto">
+                  <option value="today">Today</option>
+                  <option value="7">Last 7 days</option>
+                  <option value="month">This month</option>
+                  <option value="all" selected>All time</option>
+                  <option value="custom">Custom…</option>
+                </select>
+              </div>
+              <div id="aCustom" class="flex items-end gap-2" hidden>
+                <div><label class="lbl">From</label><input class="inp" type="date" id="aFrom" style="width:auto" /></div>
+                <div><label class="lbl">To</label><input class="inp" type="date" id="aTo" style="width:auto" /></div>
+              </div>
+              <div>
+                <label class="lbl">Source</label>
+                <select class="inp" id="aSource" style="width:auto">
+                  <option value="all">All sources</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="google">Google / search</option>
+                  <option value="direct">Direct</option>
+                  <option value="referral">Influencer referral</option>
+                  <option value="other">Other referrers</option>
+                </select>
+              </div>
+              <div>
+                <label class="lbl">Rows</label>
+                <select class="inp" id="aSize" style="width:auto">
+                  <option value="25" selected>25</option><option value="50">50</option><option value="100">100</option>
+                </select>
+              </div>
+              <button class="btn btn-o" id="aApply"><i data-lucide="filter" class="w-4 h-4"></i> Apply</button>
+            </div>
           </div>
           <div class="overflow-x-auto">
             <table>
@@ -726,7 +763,14 @@
               <tbody id="aBody"></tbody>
             </table>
           </div>
-          <div id="aEmpty" class="p-10 text-center text-sm text-muted" hidden>No visits recorded yet.</div>
+          <div id="aEmpty" class="p-10 text-center text-sm text-muted" hidden>No visits match those filters.</div>
+          <div class="p-3 border-t border-[#f1e9dd] flex items-center justify-between gap-3">
+            <span class="text-xs text-muted" id="aPageInfo">—</span>
+            <div class="flex gap-2">
+              <button class="btn btn-g" id="aPrev" disabled><i data-lucide="chevron-left" class="w-4 h-4"></i> Previous</button>
+              <button class="btn btn-g" id="aNext" disabled>Next <i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -940,7 +984,8 @@ import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged,
          verifyBeforeUpdateEmail, reauthenticateWithCredential, EmailAuthProvider }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, addDoc, collection,
-         onSnapshot, query, orderBy, limit, serverTimestamp, writeBatch }
+         onSnapshot, query, orderBy, limit, serverTimestamp, writeBatch,
+         getDocs, where, startAfter }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* ---------------- config ---------------- */
@@ -1019,7 +1064,7 @@ const can = p => ME.role === 'super_admin' || !!(ME.perms && ME.perms[p]);
 const MONEY = n => can('viewRevenue') ? INR(n) : '•••';
 
 let ME = { uid:null, email:null, role:null, perms:{} };
-let BOOKINGS = [], LEADS = [], PACKAGES = [], VISITS = [];
+let BOOKINGS = [], LEADS = [], PACKAGES = [];
 let BLOCKED = new Map();           // iso -> {reason}
 let PRICING = {}, TEMPLATES = {}, SITE = {}, PAY = {};
 let calView = (()=>{ const d = today0(); d.setDate(1); return d; })();
@@ -1234,10 +1279,12 @@ function boot(){
     renderQueue(); renderAnalytics(); renderReferrals();
   }, e => console.warn('leads', e)));
 
-  unsubs.push(onSnapshot(query(collection(db,'traffic_analytics'), orderBy('date','desc'), limit(200)), s => {
-    VISITS = s.docs.map(d => ({ id:d.id, ...d.data() }));
+  // one cheap read powers the KPI cards; the log itself is paginated
+  unsubs.push(onSnapshot(doc(db,'analytics_summary','totals'), s => {
+    A_SUMMARY = s.exists() ? s.data() : {};
     renderAnalytics();
-  }, e => { console.warn('traffic_analytics', e); $('aNote').textContent = 'Needs a Firestore index or permission'; }));
+  }, e => console.warn('analytics_summary', e)));
+  if (can('viewAnalytics')) loadVisits('first');
 
   unsubs.push(onSnapshot(doc(db,'templates','whatsapp'), s => {
     TEMPLATES = s.exists() ? s.data() : {};
@@ -2126,7 +2173,9 @@ function renderBookings(){
       <td>${MONEY(b.totalAmount)}</td>
       <td><b>${MONEY(b.advancePaid)}</b>${(bal>0 && !b.cancelled)?`<div class="text-[11px] text-[#a12626]">${MONEY(bal)} unpaid</div>`:''}</td>
       <td><span class="bdg bdg-gray">${esc(b.source||'direct')}</span></td>
-      <td><button class="btn btn-g" data-edit="${b.id}"><i data-lucide="pencil" class="w-4 h-4"></i></button></td>
+      <td><div class="flex gap-1.5 justify-end">
+        <button class="btn btn-g" data-inv="${b.id}" title="Printable invoice"><i data-lucide="file-text" class="w-4 h-4"></i></button>
+        <button class="btn btn-g" data-edit="${b.id}"><i data-lucide="pencil" class="w-4 h-4"></i></button></div></td>
     </tr>`;
     return `<tr>
       <td><b>${esc(b.guestName)}</b><div class="text-[11px] text-muted">${esc(b.bookingId||b.id.slice(0,6))} · ${n} night${n>1?'s':''} · ${esc(b.guests||2)} guests</div></td>
@@ -2147,6 +2196,7 @@ function renderBookings(){
         <div class="flex gap-1.5">
           ${!b.utrVerified ? `<button class="btn btn-p" data-vc="${b.id}">Verify &amp; Confirm</button>` : ''}
           ${!b.checkedIn ? `<button class="btn btn-o" data-checkin="${b.id}">Check-in</button>` : ''}
+          <button class="btn btn-g" data-inv="${b.id}" title="Printable invoice"><i data-lucide="file-text" class="w-4 h-4"></i></button>
           <button class="btn btn-g" data-edit="${b.id}"><i data-lucide="pencil" class="w-4 h-4"></i></button>
         </div>
       </td>
@@ -2157,6 +2207,7 @@ function renderBookings(){
   body.querySelectorAll('[data-checkin]').forEach(x => x.addEventListener('click', () => markCheckedIn(x.dataset.checkin)));
   body.querySelectorAll('[data-utr]').forEach(x => x.addEventListener('click', () => verifyUtr(x.dataset.utr)));
   body.querySelectorAll('[data-vc]').forEach(x => x.addEventListener('click', () => verifyAndConfirm(x.dataset.vc)));
+  body.querySelectorAll('[data-inv]').forEach(x => x.addEventListener('click', () => invoiceFor(x.dataset.inv)));
 
   // past ledger stats
   const past = BOOKINGS.filter(b => phaseOf(b) === 'past');
@@ -2223,6 +2274,114 @@ async function verifyUtr(id){
   }
   try { await updateDoc(doc(db,'bookings',id), patch); toast('Payment verified'); }
   catch (ex) { fail(ex, 'verify that payment'); }
+}
+
+/* =========================================================
+   PRINTABLE INVOICE  (opens a print view — "Save as PDF")
+   ========================================================= */
+function invoiceFor(id){
+  const b = BOOKINGS.find(x => x.id === id); if (!b) return;
+  if (!can('viewRevenue')) { toast('You do not have permission to see invoices'); return; }
+  const n = nightsBetween(b.checkIn, b.checkOut) || 1;
+  const bal = balanceOf(b);
+  const line = (label, qty, amount) =>
+    '<tr><td>' + esc(label) + '</td><td class="num">' + (qty || '') + '</td><td class="num">' + INR(amount) + '</td></tr>';
+  const rows = [
+    line('Exclusive suite — ' + fmtD(b.checkIn) + ' to ' + fmtD(b.checkOut),
+         n + ' night' + (n>1?'s':''), b.roomTotal ?? b.totalAmount ?? 0),
+    (b.peakTotal ? line('Peak season surcharge', '', b.peakTotal) : ''),
+    (b.extraGuestTotal ? line('Extra guest charge', '', b.extraGuestTotal) : ''),
+    ...((Array.isArray(b.packages) ? b.packages : []).map(p => line(p.title, '', p.amount ?? p.price ?? 0))),
+    (b.weeklyDiscount ? line('Weekly stay saving', '', -b.weeklyDiscount) : ''),
+    (b.promoDiscount ? line('Promo ' + (b.promoCode || ''), '', -b.promoDiscount) : ''),
+    (b.customDiscount ? line('Discount', '', -b.customDiscount) : ''),
+    (b.taxAmount ? line('Taxes & fees' + (b.taxPercent ? ' (' + b.taxPercent + '%)' : ''), '', b.taxAmount) : ''),
+    (b.onPropertyExtras ? line('On-property extras (food, transport)', '', b.onPropertyExtras) : '')
+  ].filter(Boolean).join('');
+
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8" />
+<title>Invoice ${esc(b.bookingId || b.id)} — Padharo House</title>
+<style>
+  @page{margin:16mm}
+  *{box-sizing:border-box}
+  body{font-family:Georgia,'Times New Roman',serif;color:#2B2620;max-width:760px;margin:0 auto;padding:10px}
+  .top{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #A0472A;padding-bottom:14px}
+  h1{color:#A0472A;font-size:26px;margin:0}
+  .sub{color:#C0923B;letter-spacing:.18em;font-size:9px;text-transform:uppercase;margin-top:4px}
+  .meta{text-align:right;font-size:12px;color:#6E645A;line-height:1.7}
+  .meta b{color:#2B2620}
+  h2{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#8b8075;margin:22px 0 8px}
+  .grid{display:flex;gap:30px;font-size:13px;line-height:1.7}
+  .grid>div{flex:1}
+  table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
+  th{text-align:left;background:#FBF6EE;padding:8px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#8b8075}
+  td{padding:8px 10px;border-bottom:1px solid #f1e9dd}
+  .num{text-align:right;white-space:nowrap}
+  tfoot td{border:0;padding:5px 10px}
+  tfoot .tot td{border-top:2px solid #A0472A;font-size:16px;font-weight:bold;padding-top:10px}
+  .bal{background:#FBF6EE}
+  .note{margin-top:26px;font-size:11px;color:#6E645A;line-height:1.7;border-top:1px solid #e8dcc9;padding-top:12px}
+  .paid{display:inline-block;border:2px solid #1f7a43;color:#1f7a43;padding:4px 12px;border-radius:4px;font-size:12px;letter-spacing:.1em}
+</style></head><body>
+  <div class="top">
+    <div>
+      <h1>Padharo House</h1>
+      <div class="sub">Where heritage meets hospitality</div>
+      <div style="font-size:11px;color:#6E645A;margin-top:8px;line-height:1.6">
+        Opposite Amer Fort, Amer, Jaipur, Rajasthan 302028<br>
+        ${esc(SITE.displayPhone || '+91 94618 84005')} · ${esc(SITE.email || 'padharohouse@gmail.com')}<br>
+        GSTIN 08BEPPG3869F1Z4
+      </div>
+    </div>
+    <div class="meta">
+      <div style="font-size:16px;color:#A0472A"><b>INVOICE</b></div>
+      <div>No. <b>${esc(b.bookingId || b.id)}</b></div>
+      <div>Date <b>${esc(new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}))}</b></div>
+      ${bal === 0 ? '<div style="margin-top:8px"><span class="paid">PAID IN FULL</span></div>' : ''}
+    </div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <h2>Billed to</h2>
+      <b>${esc(b.guestName)}</b><br>
+      ${esc(b.phone || '')}${b.email ? '<br>' + esc(b.email) : ''}
+      ${b.nationality ? '<br>' + esc(b.nationality) : ''}
+      ${b.idType ? '<br><span style="color:#6E645A;font-size:12px">ID: ' + esc(b.idType.replace('_',' ')) + (b.idNumber ? ' · ' + esc(b.idNumber) : '') + '</span>' : ''}
+    </div>
+    <div>
+      <h2>Stay</h2>
+      Check-in <b>${esc(fmtD(b.checkIn))}</b> ${esc(SITE.checkInTime || '2:00 PM')}<br>
+      Check-out <b>${esc(fmtD(b.checkOut))}</b> ${esc(SITE.checkOutTime || '11:00 AM')}<br>
+      ${n} night${n>1?'s':''} · ${esc(String(b.guests || 2))} guest${(b.guests||2)>1?'s':''}<br>
+      <span style="color:#6E645A;font-size:12px">Entire property · exclusive use</span>
+    </div>
+  </div>
+
+  <h2>Charges</h2>
+  <table>
+    <thead><tr><th>Description</th><th class="num">Qty</th><th class="num">Amount</th></tr></thead>
+    <tbody>${rows}</tbody>
+    <tfoot>
+      <tr class="tot"><td>Total</td><td></td><td class="num">${INR(b.totalAmount)}</td></tr>
+      <tr><td>Received${b.paymentMethod ? ' (' + esc(String(b.paymentMethod).replace('_',' ').toLowerCase()) + ')' : ''}</td><td></td><td class="num">− ${INR(b.advancePaid)}</td></tr>
+      <tr class="bal"><td><b>Balance due</b></td><td></td><td class="num"><b>${INR(bal)}</b></td></tr>
+    </tfoot>
+  </table>
+
+  <div class="note">
+    ${b.paymentRef || b.utr ? 'Payment reference: <b>' + esc(b.paymentRef || b.utr) + '</b><br>' : ''}
+    ${b.notes ? 'Notes: ' + esc(b.notes) + '<br>' : ''}
+    Padharo House is a single-suite boutique heritage homestay, hardly a 50 metre walk from the Amer Fort.
+    Thank you for staying with us — we would be delighted to welcome you again.
+  </div>
+  <script>window.onload=function(){setTimeout(function(){window.print()},350)}<\/script>
+</body></html>`;
+
+  const w = window.open('', '_blank');
+  if (!w) { toast('Allow pop-ups to print the invoice'); return; }
+  w.document.write(html); w.document.close();
+  logAudit('INVOICE_PRINTED', (b.bookingId || b.id) + ' · ' + b.guestName);
 }
 
 /* ---- booking modal ---- */
@@ -2522,32 +2681,125 @@ $('resetTpl').addEventListener('click', () => {
 });
 
 /* =========================================================
-   6. TRAFFIC ANALYTICS
+   6. TRAFFIC ANALYTICS — cursor pagination, filters, 1-read KPIs
    ========================================================= */
-function renderAnalytics(){
+let A_SUMMARY = {};          // analytics_summary/totals — one read, not 200
+let A_ROWS = [], A_CURSORS = [], A_PAGE = 0, A_MORE = false, A_BUSY = false;
+
+const SRC_OF = v => v.src || (
+  String(v.utm_source||'').toLowerCase() === 'instagram' || String(v.ref||'').toLowerCase() === 'ig'
+    || /instagram/i.test(String(v.referrer||'')) ? 'instagram'
+  : (v.ref ? 'referral'
+  : /google|bing|duckduckgo|yahoo/i.test(String(v.referrer||'')) ? 'google'
+  : (v.referrer && v.referrer !== 'direct') ? 'other' : 'direct'));
+
+/* junk we never want in the numbers, even if older rows contain it */
+const isJunk = v => {
+  const h = String(v.host || '');
+  const p = String(v.path || '');
+  return !!(h === 'localhost' || h === '127.0.0.1' || h.endsWith('.localhost') ||
+            h.endsWith('.test') || h.endsWith('.local') ||
+            /admin\.html/i.test(p) || String(v.referrer||'').startsWith('file://'));
+};
+
+function rangeBounds(){
+  const mode = $('aRange').value, now = new Date();
+  const startOf = d => { const x = new Date(d); x.setHours(0,0,0,0); return x; };
+  const endOf   = d => { const x = new Date(d); x.setHours(23,59,59,999); return x; };
+  if (mode === 'today') return [startOf(now), endOf(now)];
+  if (mode === '7')     { const s = new Date(now); s.setDate(s.getDate()-6); return [startOf(s), endOf(now)]; }
+  if (mode === 'month') return [startOf(new Date(now.getFullYear(), now.getMonth(), 1)), endOf(now)];
+  if (mode === 'custom') {
+    const f = parseISO($('aFrom').value), t = parseISO($('aTo').value);
+    return [f ? startOf(f) : null, t ? endOf(t) : null];
+  }
+  return [null, null];
+}
+
+async function loadVisits(dir){
+  if (A_BUSY || !can('viewAnalytics')) return;
+  A_BUSY = true;
+  const size = Number($('aSize').value) || 25;
+  const [from, to] = rangeBounds();
+  const srcWanted = $('aSource').value;
+  try {
+    const parts = [collection(db,'traffic_analytics')];
+    if (from) parts.push(where('date','>=',from));
+    if (to)   parts.push(where('date','<=',to));
+    parts.push(orderBy('date','desc'));
+    if (dir === 'next' && A_CURSORS[A_PAGE]) parts.push(startAfter(A_CURSORS[A_PAGE]));
+    if (dir === 'prev' && A_PAGE > 1 && A_CURSORS[A_PAGE-2]) parts.push(startAfter(A_CURSORS[A_PAGE-2]));
+    // over-fetch a little so client-side source filtering still fills a page
+    parts.push(limit(size + 1));
+    const snap = await getDocs(query(...parts));
+    const docs = snap.docs;
+    A_MORE = docs.length > size;
+    const page = docs.slice(0, size);
+    if (dir === 'next') A_PAGE++;
+    else if (dir === 'prev') A_PAGE = Math.max(0, A_PAGE - 1);
+    else { A_PAGE = 0; A_CURSORS = []; }
+    if (page.length) A_CURSORS[A_PAGE] = page[page.length - 1];
+
+    A_ROWS = page.map(d => ({ id:d.id, ...d.data() })).filter(v => !isJunk(v));
+    if (srcWanted !== 'all') A_ROWS = A_ROWS.filter(v => SRC_OF(v) === srcWanted);
+    $('aNote').textContent = '';
+    renderVisits();
+  } catch (ex) {
+    console.error('traffic query failed', ex);
+    $('aNote').innerHTML = ex.code === 'failed-precondition'
+      ? 'Firestore wants a one-time index for this filter — open the browser console (F12) and click the link it prints.'
+      : 'Could not load visits: ' + (ex.code || ex.message);
+    $('aNote').className = 'text-xs text-[#a12626]';
+  } finally { A_BUSY = false; }
+}
+
+function renderVisits(){
   if (!$('aBody')) return;
-  const igClicks = VISITS.filter(v =>
-    String(v.utm_source||'').toLowerCase() === 'instagram' ||
-    String(v.ref||'').toLowerCase() === 'ig' ||
-    /instagram/i.test(String(v.referrer||''))).length;
-  $('aVisits').textContent = VISITS.length;
-  $('aIg').textContent = igClicks;
+  $('aEmpty').hidden = A_ROWS.length > 0;
+  $('aBody').innerHTML = A_ROWS.map(v => {
+    const d = v.date?.toDate ? v.date.toDate() : null;
+    const src = SRC_OF(v);
+    const cls = src === 'instagram' ? 'bdg-amber' : src === 'referral' ? 'bdg-blue'
+              : src === 'google' ? 'bdg-green' : 'bdg-gray';
+    return `<tr>
+      <td class="whitespace-nowrap">${d ? d.toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '—'}</td>
+      <td><span class="bdg ${cls}">${esc(src)}</span>${v.ref ? `<div class="text-[10px] text-muted mt-0.5 font-mono">${esc(v.ref)}</div>` : ''}</td>
+      <td>${esc(v.device || '—')}</td>
+      <td class="text-muted text-xs">${esc(v.path || '/')}</td>
+      <td class="text-muted text-xs" style="max-width:240px;overflow:hidden;text-overflow:ellipsis">${esc(v.referrer || 'direct')}</td>
+    </tr>`;
+  }).join('');
+  $('aPageInfo').textContent = A_ROWS.length
+    ? 'Page ' + (A_PAGE + 1) + ' · showing ' + A_ROWS.length + ' visit' + (A_ROWS.length>1?'s':'')
+    : 'Page ' + (A_PAGE + 1);
+  $('aPrev').disabled = A_PAGE === 0;
+  $('aNext').disabled = !A_MORE;
+  icons();
+}
+
+function renderAnalytics(){
+  if (!$('aVisits')) return;
+  // KPI cards from the counter doc (1 read) with a live fallback
+  const totalVisits = Number(A_SUMMARY.visits);
+  const igVisits = Number(A_SUMMARY.src_instagram);
+  $('aVisits').textContent = Number.isFinite(totalVisits) ? totalVisits.toLocaleString('en-IN') : '—';
+  $('aIg').textContent = Number.isFinite(igVisits) ? igVisits.toLocaleString('en-IN') : '—';
+  $('aVisitsNote').textContent = A_SUMMARY.updatedAt
+    ? 'unique visits · 30-min window' : 'counter starts on the next visit';
   $('aLeads').textContent = LEADS.length;
   $('aRevenue').textContent = MONEY(BOOKINGS.filter(b => !b.cancelled)
     .reduce((s,b) => s + (Number(b.advancePaid)||0), 0));
-  $('aEmpty').hidden = VISITS.length > 0;
-  $('aBody').innerHTML = VISITS.slice(0,60).map(v => {
-    const d = v.date?.toDate ? v.date.toDate() : null;
-    const src = v.utm_source || v.ref || (/instagram/i.test(String(v.referrer||'')) ? 'instagram' : 'direct');
-    return `<tr>
-      <td>${d ? d.toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '—'}</td>
-      <td><span class="bdg ${/insta/i.test(src) ? 'bdg-amber' : 'bdg-gray'}">${esc(src)}</span></td>
-      <td>${esc(v.device || '—')}</td>
-      <td class="text-muted">${esc(v.path || '/')}</td>
-      <td class="text-muted truncate max-w-[220px]">${esc(v.referrer || 'direct')}</td>
-    </tr>`;
-  }).join('');
 }
+
+$('aRange').addEventListener('change', e => {
+  $('aCustom').hidden = e.target.value !== 'custom';
+  if (e.target.value !== 'custom') loadVisits('first');
+});
+$('aApply').addEventListener('click', () => loadVisits('first'));
+$('aSource').addEventListener('change', () => loadVisits('first'));
+$('aSize').addEventListener('change', () => loadVisits('first'));
+$('aNext').addEventListener('click', () => loadVisits('next'));
+$('aPrev').addEventListener('click', () => loadVisits('prev'));
 
 /* ---------------- dashboard ---------------- */
 function renderDash(){

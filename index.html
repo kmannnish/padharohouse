@@ -812,7 +812,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, doc, onSnapshot, collection, addDoc, serverTimestamp,
-             getDocs, query, where, limit, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+             getDocs, query, where, limit, updateDoc, increment, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     /* ====== Firebase web config (project: padharo-house) ======
        Everything here is filled in except apiKey — paste the value that starts
        with "AIza..." from: Firebase console -> Project settings -> General ->
@@ -900,18 +900,47 @@
     /* Lightweight traffic analytics (once per browser session) */
     function logTraffic(){
       try{
-        if (sessionStorage.getItem("ph_logged")) return;
-        sessionStorage.setItem("ph_logged", "1");
+        /* never log the admin console, a local file, or a dev server */
+        const host = location.hostname;
+        const isLocal = location.protocol === "file:" || !host ||
+          host === "localhost" || host === "127.0.0.1" || host === "::1" ||
+          host.endsWith(".localhost") || host.endsWith(".test") || host.endsWith(".local");
+        if (isLocal || /admin\.html$/i.test(location.pathname)) return;
+
+        /* one visit per 30 minutes per browser, so refreshes do not inflate it */
+        const WINDOW_MS = 30 * 60 * 1000, now = Date.now();
+        const fresh = v => { const t = Number(v); return t && (now - t) < WINDOW_MS; };
+        let seen = null;
+        try { seen = sessionStorage.getItem("ph_seen") || localStorage.getItem("ph_seen"); } catch(e){}
+        if (fresh(seen)) return;
+        try { sessionStorage.setItem("ph_seen", String(now)); } catch(e){}
+        try { localStorage.setItem("ph_seen", String(now)); } catch(e){}
+
+        const referrer = document.referrer || "";
         const device = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? "mobile" : "desktop";
+        /* normalised source so the console can filter and count by it */
+        const src =
+          (utm === "instagram" || ref === "ig" || /instagram/i.test(referrer)) ? "instagram" :
+          (ref && ref !== "ig") ? "referral" :
+          /google|bing|duckduckgo|yahoo/i.test(referrer) ? "google" :
+          referrer ? "other" : "direct";
+
         addDoc(collection(db, "traffic_analytics"), {
           date: serverTimestamp(),
-          referrer: document.referrer || "direct",
+          referrer: referrer || "direct",
           utm_source: utm || null,
           ref: ref || null,
-          device,
+          src, device, host,
           path: location.pathname + location.search
         }).catch(()=>{});
-      }catch(e){}
+
+        /* counter doc — the admin KPI cards then cost a single read */
+        setDoc(doc(db, "analytics_summary", "totals"), {
+          visits: increment(1),
+          ["src_" + src]: increment(1),
+          updatedAt: serverTimestamp()
+        }, { merge: true }).catch(e => console.warn("summary not updated", e));
+      }catch(e){ console.warn("analytics", e); }
     }
 
     /* ============================================================
