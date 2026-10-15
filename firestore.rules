@@ -49,16 +49,55 @@ service cloud.firestore {
     }
     match /blocked_dates/{docId} {
       allow read: if true;                 // public availability calendar
-      allow write: if isStaff();           // managers handle day-to-day blocking
+      // A guest may HOLD a free night when they submit a booking, but only
+      // create: an existing hold or host block can never be overwritten or
+      // deleted from the website, so live reservations cannot be tampered with.
+      allow create: if isStaff() || (
+                      request.resource.data.source == 'guest_booking'
+                      && request.resource.data.date is string
+                      && request.resource.data.date.size() == 10
+                      && request.resource.data.bookingId is string
+                      && request.resource.data.bookingId.size() > 4
+                      && request.resource.data.bookingId.size() < 40
+                    );
+      allow update, delete: if isStaff();  // only the host unblocks
     }
 
     // ---- guest data: staff only --------------------------------------------
     // Bookings hold names, phone numbers and payment references, so they are
     // never publicly readable. Deletion is restricted to a super admin so a
     // manager cannot erase the financial record (they can mark it cancelled).
+    //
+    // A visitor may CREATE their own booking request from the website, with the
+    // shape below enforced. They cannot read any booking back (not even their
+    // own) and cannot update one, so nobody can browse guest data or alter a
+    // reservation. The host verifies the UTR and the amount before confirming —
+    // treat totals submitted here as a claim, not as proof of payment.
+    function isGuestBooking() {
+      let d = request.resource.data;
+      return d.status == 'PENDING_VERIFICATION'
+             && d.source == 'website'
+             && d.advancePaid == 0
+             && d.utrVerified == false
+             && d.cancelled == false
+             && d.keys().hasAll(['bookingId','guestName','phone','email','checkIn','checkOut','nights','guests','totalAmount','advanceDue','utr'])
+             && d.bookingId is string && d.bookingId.size() > 4 && d.bookingId.size() < 40
+             && d.guestName is string && d.guestName.size() > 1 && d.guestName.size() < 120
+             && d.phone is string && d.phone.size() > 7 && d.phone.size() < 25
+             && d.email is string && d.email.size() < 160
+             && d.checkIn is string && d.checkIn.size() == 10
+             && d.checkOut is string && d.checkOut.size() == 10
+             && d.checkIn < d.checkOut
+             && d.nights is int && d.nights > 0 && d.nights <= 60
+             && d.guests is int && d.guests > 0 && d.guests <= 6
+             && d.totalAmount is number && d.totalAmount >= 0 && d.totalAmount <= 2000000
+             && d.advanceDue is number && d.advanceDue >= 0 && d.advanceDue <= 2000000
+             && d.utr is string && d.utr.size() <= 24;
+    }
     match /bookings/{docId} {
       allow read: if isStaff();
-      allow create, update: if isStaff();
+      allow create: if isStaff() || isGuestBooking();
+      allow update: if isStaff();
       allow delete: if isSuper();
     }
 

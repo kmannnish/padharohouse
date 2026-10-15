@@ -3,11 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Book Your Stay — Padharo House</title>
-  <meta name="description" content="Check live availability at Padharo House, choose a package and see a transparent price breakdown before you pay." />
+  <title>Book the Entire Suite — Padharo House, Opposite Amer Fort, Jaipur</title>
+  <meta name="description" content="Reserve the entire exclusive heritage suite at Padharo House, 50 m from Amer Fort. Live availability, transparent pricing and direct UPI payment — no commission." />
+  <link rel="canonical" href="https://padharohouse.in/booking.html" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <meta property="og:title" content="Book Padharo House — Exclusive Heritage Suite, Amer" />
+  <meta property="og:description" content="The whole house to yourself, 50 m from the Amer Fort. Live availability and direct UPI booking." />
+  <meta property="og:image" content="https://padharohouse.in/assets/og.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { theme: { extend: {
@@ -16,11 +21,34 @@
     }}};
   </script>
   <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .step-dot{width:30px;height:30px;border-radius:999px;display:grid;place-items:center;font-size:.8rem;font-weight:700;
+      background:#eee7dd;color:#8b8075;transition:.25s;flex:0 0 auto;}
+    .step.on .step-dot{background:#A0472A;color:#fff;}
+    .step.done .step-dot{background:#1f7a43;color:#fff;}
+    .step-line{height:2px;flex:1;background:#eee7dd;}
+    .step.done + .step-line, .step-line.done{background:#1f7a43;}
+    .inp{width:100%;border:1px solid #e6d8c6;border-radius:.55rem;padding:.7rem .8rem;background:#fff;font-size:.95rem;}
+    .inp:focus{outline:2px solid #C0923B;outline-offset:-1px;}
+    .lbl{display:block;font-size:.78rem;font-weight:600;color:#6E645A;margin-bottom:.3rem;}
+    .pkg{display:flex;gap:.8rem;align-items:flex-start;border:1px solid #e6d8c6;border-radius:.75rem;padding:.9rem;cursor:pointer;transition:.18s;background:#fff;}
+    .pkg:hover{background:#FBF6EE;}
+    .pkg.on{border-color:#A0472A;background:#FBF6EE;box-shadow:0 0 0 1px #A0472A inset;}
+    .flatpickr-calendar{box-shadow:none;border:1px solid #efe6da;border-radius:.75rem;width:100%!important;max-width:none;}
+    .flatpickr-day.flatpickr-disabled{text-decoration:line-through;color:#cdc5b9!important;}
+    .flatpickr-day.selected,.flatpickr-day.startRange,.flatpickr-day.endRange{background:#A0472A!important;border-color:#A0472A!important;}
+    .flatpickr-day.inRange{background:#f6ead9!important;border-color:#f6ead9!important;box-shadow:-5px 0 0 #f6ead9,5px 0 0 #f6ead9!important;}
+    .flatpickr-months .flatpickr-month{color:#2B2620;}
+    .err{font-size:.8rem;color:#a12626;background:#fdeaea;border-radius:.5rem;padding:.6rem .75rem;}
+    .spin{width:18px;height:18px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;display:inline-block;}
+    @keyframes sp{to{transform:rotate(360deg)}}
+  </style>
 </head>
 <body>
 
-  <!-- header -->
   <header class="site-header solid">
     <div class="max-w-7xl mx-auto px-5 flex items-center justify-between h-[74px]">
       <a href="index.html" class="flex items-center gap-3">
@@ -30,115 +58,207 @@
       <nav class="hidden lg:flex items-center gap-8">
         <a href="index.html" class="nav-link">Home</a>
         <a href="index.html#suite" class="nav-link">The Suite</a>
-        <a href="index.html#gallery" class="nav-link">Gallery</a>
-        <a href="index.html#experiences" class="nav-link">Experiences</a>
+        <a href="index.html#heritage" class="nav-link">Heritage Circle</a>
         <a href="blog.html" class="nav-link">Journal</a>
       </nav>
       <div class="flex items-center gap-3">
-        <a href="booking.html" class="btn btn-primary text-sm">Book Now</a>
-        <button id="burger" class="lg:hidden nav-ico text-2xl leading-none">☰</button>
+        <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-primary text-sm"><i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp</a>
+        <button id="burger" class="lg:hidden nav-ico text-2xl leading-none">&#9776;</button>
       </div>
     </div>
     <div id="mobileNav" class="hidden lg:hidden bg-white shadow-lg mx-4 rounded-xl overflow-hidden">
       <a href="index.html" class="block px-5 py-3 border-b border-cream hover:bg-cream">Home</a>
       <a href="index.html#suite" class="block px-5 py-3 border-b border-cream hover:bg-cream">The Suite</a>
-      <a href="index.html#gallery" class="block px-5 py-3 border-b border-cream hover:bg-cream">Gallery</a>
+      <a href="index.html#heritage" class="block px-5 py-3 border-b border-cream hover:bg-cream">Heritage Circle</a>
       <a href="blog.html" class="block px-5 py-3 hover:bg-cream">Journal</a>
     </div>
   </header>
 
-  <!-- page banner -->
-  <section class="ribbon-offset bg-cream" style="padding-top:96px">
+  <!-- banner -->
+  <section class="bg-cream" style="padding-top:104px">
     <div class="max-w-7xl mx-auto px-5 pb-10 text-center">
-      <div class="eyebrow mb-3">Reserve Your Dates</div>
-      <h1 class="font-serif text-3xl md:text-4xl mb-3">Book your stay</h1>
-      <p class="text-muted max-w-xl mx-auto">Pick your dates, choose an experience, and see a fully transparent price — taxes and all — before you book.</p>
+      <div class="eyebrow mb-3">Reserve the Entire House</div>
+      <h1 class="font-serif text-3xl md:text-4xl mb-3">Book your exclusive heritage suite</h1>
+      <p class="text-muted max-w-xl mx-auto">One suite, one booking — the whole of Padharo House is yours, hardly 50 metres from the Amer Fort. Live availability, a transparent price, and payment direct to your hosts.</p>
     </div>
   </section>
 
-  <!-- booking engine -->
-  <section class="pb-24 bg-cream">
-    <div class="max-w-6xl mx-auto px-5 grid lg:grid-cols-[1.4fr_1fr] gap-8 items-start">
+  <!-- stepper -->
+  <div class="bg-cream pb-2">
+    <div class="max-w-3xl mx-auto px-5">
+      <div class="flex items-center gap-3">
+        <div class="step on" id="st1"><div class="step-dot">1</div></div>
+        <div class="step-line" id="ln1"></div>
+        <div class="step" id="st2"><div class="step-dot">2</div></div>
+        <div class="step-line" id="ln2"></div>
+        <div class="step" id="st3"><div class="step-dot">3</div></div>
+      </div>
+      <div class="flex justify-between text-[11px] font-semibold text-muted mt-2">
+        <span>Your stay &amp; details</span><span>Pay 30% by UPI</span><span>Confirm reference</span>
+      </div>
+    </div>
+  </div>
 
-      <!-- left: calendar + options -->
+  <section class="pb-24 bg-cream">
+    <div class="max-w-6xl mx-auto px-5 grid lg:grid-cols-[1.45fr_1fr] gap-7 items-start">
+
+      <!-- ===================== LEFT ===================== -->
       <div class="space-y-6">
-        <!-- calendar -->
-        <div class="bg-white rounded-2xl p-6 border border-[#efe6da]">
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="font-serif text-xl">1 · Choose your dates</h2>
-            <div class="flex items-center gap-2">
-              <button id="calPrev" class="w-9 h-9 rounded-full border border-[#e6d8c6] hover:bg-cream">‹</button>
-              <span id="calMonth" class="font-semibold text-sm w-36 text-center"></span>
-              <button id="calNext" class="w-9 h-9 rounded-full border border-[#e6d8c6] hover:bg-cream">›</button>
+
+        <!-- STEP 1 -->
+        <div id="pane1">
+          <div class="bg-white rounded-2xl p-6 border border-[#efe6da]">
+            <h2 class="font-serif text-xl mb-1">1 · Choose your dates</h2>
+            <p class="text-xs text-muted mb-4">Struck-out dates are already taken. Pick your check-in, then your check-out.</p>
+            <div id="calLoad" class="flex items-center gap-2 text-sm text-muted py-6 justify-center">
+              <span class="w-4 h-4 border-2 border-[#e6d8c6] border-t-terra rounded-full animate-spin"></span> Loading live availability…
+            </div>
+            <input type="text" id="dates" class="hidden" />
+            <div id="dateErr" class="err mt-3" hidden></div>
+            <div class="grid grid-cols-2 gap-3 mt-4">
+              <div class="bg-cream rounded-lg p-3"><div class="text-[11px] text-muted font-semibold">CHECK-IN</div><div class="font-semibold" id="dIn">—</div><div class="text-[11px] text-muted">from 2 PM</div></div>
+              <div class="bg-cream rounded-lg p-3"><div class="text-[11px] text-muted font-semibold">CHECK-OUT</div><div class="font-semibold" id="dOut">—</div><div class="text-[11px] text-muted">by 11 AM</div></div>
             </div>
           </div>
-          <div id="calendar" class="grid grid-cols-7 gap-1"></div>
-          <div class="flex flex-wrap gap-4 mt-4 text-xs text-muted">
-            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-terra inline-block"></span> Selected</span>
-            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-cream border border-[#e6d8c6] inline-block"></span> In range</span>
-            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded inline-block" style="box-shadow:inset 0 0 0 1.5px var(--gold)"></span> Today</span>
-            <span class="flex items-center gap-1.5"><s>12</s> Booked</span>
+
+          <div class="bg-white rounded-2xl p-6 border border-[#efe6da] mt-6">
+            <h2 class="font-serif text-xl mb-4">2 · Guests</h2>
+            <div class="flex items-center gap-4">
+              <button class="btn btn-outline" id="gMinus" type="button" aria-label="Fewer guests">−</button>
+              <div class="text-center">
+                <div class="font-serif text-3xl text-terra" id="gCount">2</div>
+                <div class="text-[11px] text-muted">guests</div>
+              </div>
+              <button class="btn btn-outline" id="gPlus" type="button" aria-label="More guests">+</button>
+              <p class="text-xs text-muted ml-2">Sleeps 2 comfortably; a third guest can be added on an extra mattress.</p>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl p-6 border border-[#efe6da] mt-6">
+            <h2 class="font-serif text-xl mb-1">3 · Curated heritage experiences</h2>
+            <p class="text-xs text-muted mb-4">Optional — hosted by us, around Amer.</p>
+            <div id="pkgBox" class="space-y-3"><p class="text-sm text-muted">Loading experiences…</p></div>
+          </div>
+
+          <div class="bg-white rounded-2xl p-6 border border-[#efe6da] mt-6">
+            <h2 class="font-serif text-xl mb-4">4 · Your details</h2>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div><label class="lbl" for="gName">Full name *</label><input class="inp" id="gName" autocomplete="name" /></div>
+              <div><label class="lbl" for="gPhone">Phone / WhatsApp *</label><input class="inp" id="gPhone" inputmode="tel" autocomplete="tel" placeholder="+91 …" /></div>
+              <div class="sm:col-span-2"><label class="lbl" for="gEmail">Email *</label><input class="inp" id="gEmail" type="email" autocomplete="email" placeholder="you@example.com" /></div>
+              <div class="sm:col-span-2"><label class="lbl" for="gNotes">Anything we should know?</label><textarea class="inp" rows="2" id="gNotes" placeholder="Arrival time, anniversary, dietary needs…"></textarea></div>
+            </div>
+            <div id="formErr" class="err mt-4" hidden></div>
+            <button class="btn btn-primary w-full justify-center mt-5" id="toStep2">Continue to payment <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
           </div>
         </div>
 
-        <!-- packages -->
-        <div class="bg-white rounded-2xl p-6 border border-[#efe6da]">
-          <h2 class="font-serif text-xl mb-4">2 · Add an experience</h2>
-          <div class="grid sm:grid-cols-2 gap-3">
-            <button data-pkg="room" class="text-left p-4 rounded-xl border border-[#e6d8c6] transition hover:bg-cream">
-              <div class="flex justify-between items-center"><span class="font-semibold">Stay Only</span><span class="text-sm text-muted">included</span></div>
-              <p class="text-xs text-muted mt-1">Just the suite — full royal comfort.</p>
-            </button>
-            <button data-pkg="guide" class="text-left p-4 rounded-xl border border-[#e6d8c6] transition hover:bg-cream">
-              <div class="flex justify-between items-center"><span class="font-semibold">Stay + Local Guide</span><span class="text-sm text-terra font-semibold">+₹1,500</span></div>
-              <p class="text-xs text-muted mt-1">Expert guide for Amber Fort &amp; old city.</p>
-            </button>
-            <button data-pkg="romance" class="text-left p-4 rounded-xl border border-[#e6d8c6] transition hover:bg-cream">
-              <div class="flex justify-between items-center"><span class="font-semibold">Romantic Escape</span><span class="text-sm text-terra font-semibold">+₹2,500</span></div>
-              <p class="text-xs text-muted mt-1">Décor, candlelight dinner &amp; late checkout.</p>
-            </button>
-            <button data-pkg="culture" class="text-left p-4 rounded-xl border border-[#e6d8c6] transition hover:bg-cream">
-              <div class="flex justify-between items-center"><span class="font-semibold">Cultural Retreat</span><span class="text-sm text-terra font-semibold">+₹3,200</span></div>
-              <p class="text-xs text-muted mt-1">Folk music, puppet show &amp; Rajasthani thali.</p>
-            </button>
+        <!-- STEP 2 -->
+        <div id="pane2" hidden>
+          <div class="bg-white rounded-2xl p-6 border border-[#efe6da]">
+            <div class="flex items-start justify-between gap-3 mb-1">
+              <h2 class="font-serif text-xl">Pay the 30% advance</h2>
+              <button class="btn btn-ghost text-sm" style="background:#eee7dd;color:#6E645A;border:0" id="back1" type="button">← Edit stay</button>
+            </div>
+            <p class="text-xs text-muted mb-5">Paid <b>directly to your hosts</b> by UPI — no booking platform, no commission. The balance is settled at check-in.</p>
+
+            <div class="bg-cream rounded-xl p-5 text-center mb-5">
+              <div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Pay now</div>
+              <div class="font-serif text-4xl text-terra my-1" id="payAmount">₹0</div>
+              <div class="text-xs text-muted">30% of <span id="payTotal">₹0</span> · balance <span id="payBalance">₹0</span> at check-in</div>
+            </div>
+
+            <div id="upiMissing" class="err mb-5" hidden>
+              UPI details are not configured yet. Please message us on
+              <a class="underline font-semibold" href="https://wa.me/919461884005" target="_blank" rel="noopener">WhatsApp</a>
+              and we will send payment details and confirm your dates personally.
+            </div>
+
+            <div id="upiBox" class="grid sm:grid-cols-[200px_1fr] gap-6 items-start">
+              <div class="text-center">
+                <div class="bg-white border border-[#efe6da] rounded-xl p-3 inline-block">
+                  <img id="qr" alt="UPI QR code for Padharo House" width="190" height="190" class="block" />
+                </div>
+                <p class="text-[11px] text-muted mt-2">Scan with any UPI app</p>
+              </div>
+              <div>
+                <p class="text-sm font-semibold mb-2">Or pay from this device</p>
+                <a id="upiLink" class="btn btn-primary w-full justify-center mb-3" href="#"><i data-lucide="smartphone" class="w-4 h-4"></i> Open UPI app</a>
+                <div class="text-xs text-muted space-y-1.5">
+                  <div class="flex justify-between gap-3 bg-cream rounded px-3 py-2">
+                    <span>UPI ID</span><b class="text-ink" id="vpaShow">—</b>
+                  </div>
+                  <div class="flex justify-between gap-3 bg-cream rounded px-3 py-2">
+                    <span>Payee name</span><b class="text-ink">Padharo House</b>
+                  </div>
+                  <div class="flex justify-between gap-3 bg-cream rounded px-3 py-2">
+                    <span>Reference</span><b class="text-ink" id="refShow">—</b>
+                  </div>
+                </div>
+                <p class="text-[11px] text-muted mt-3">GPay · PhonePe · Paytm · BHIM · any bank UPI app. After paying, note the <b>12-digit UTR / transaction reference</b> from your app.</p>
+              </div>
+            </div>
+
+            <button class="btn btn-primary w-full justify-center mt-6" id="toStep3" type="button">I have paid — enter reference <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
           </div>
         </div>
 
-        <!-- guests + promo -->
-        <div class="bg-white rounded-2xl p-6 border border-[#efe6da] grid sm:grid-cols-2 gap-5">
-          <div>
-            <label class="block text-sm font-semibold mb-2">Guests</label>
-            <select id="guests" class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5 bg-white">
-              <option value="1">1 guest</option><option value="2" selected>2 guests</option>
-              <option value="3">3 guests (extra bed)</option>
-            </select>
-            <p class="text-xs text-muted mt-1.5">One suite · sleeps 2 comfortably, up to 3 with an extra bed.</p>
+        <!-- STEP 3 -->
+        <div id="pane3" hidden>
+          <div class="bg-white rounded-2xl p-6 border border-[#efe6da]">
+            <div class="flex items-start justify-between gap-3 mb-1">
+              <h2 class="font-serif text-xl">Confirm your payment reference</h2>
+              <button class="btn btn-ghost text-sm" style="background:#eee7dd;color:#6E645A;border:0" id="back2" type="button">← Back</button>
+            </div>
+            <p class="text-xs text-muted mb-5">Enter the 12-digit UTR / transaction ID from your UPI app. We verify it personally and confirm on WhatsApp.</p>
+            <label class="lbl" for="utr">UPI transaction / UTR number *</label>
+            <input class="inp tracking-widest" id="utr" inputmode="numeric" maxlength="12" placeholder="123456789012" />
+            <p class="text-[11px] text-muted mt-1.5">Exactly 12 digits. In GPay it is the “UPI transaction ID”; in PhonePe the “UTR”.</p>
+            <div id="utrErr" class="err mt-4" hidden></div>
+            <button class="btn btn-primary w-full justify-center mt-5" id="submitBooking">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i> Submit booking
+            </button>
+            <p class="text-[11px] text-muted text-center mt-3">Your dates are held the moment you submit.</p>
           </div>
-          <div>
-            <label class="block text-sm font-semibold mb-2">Promo code <span class="text-xs text-muted font-normal">(try GHAR10)</span></label>
-            <input id="promo" type="text" placeholder="Enter code" class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5 uppercase" />
+        </div>
+
+        <!-- SUCCESS -->
+        <div id="paneDone" hidden>
+          <div class="bg-white rounded-2xl p-8 border border-[#efe6da] text-center">
+            <div class="w-16 h-16 rounded-full bg-[#e6f4ea] grid place-items-center mx-auto mb-4">
+              <i data-lucide="check" class="w-8 h-8 text-[#1f7a43]"></i>
+            </div>
+            <div class="eyebrow mb-2">Khamma Ghani</div>
+            <h2 class="font-serif text-2xl md:text-3xl mb-2">Your dates are held</h2>
+            <p class="text-muted max-w-md mx-auto mb-5">Thank you — we have your booking and your payment reference. We are verifying the transfer and will confirm on WhatsApp shortly.</p>
+            <div class="bg-cream rounded-xl p-5 inline-block text-left mb-6">
+              <div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Booking reference</div>
+              <div class="font-serif text-2xl text-terra" id="doneId">—</div>
+              <div class="text-sm text-muted mt-2" id="doneSummary"></div>
+            </div>
+            <div id="mailNote" class="text-xs text-muted mb-5" hidden></div>
+            <div class="flex flex-wrap gap-3 justify-center">
+              <a class="btn btn-primary" id="doneWa" href="#" target="_blank" rel="noopener"><i data-lucide="message-circle" class="w-4 h-4"></i> Message us on WhatsApp</a>
+              <a class="btn btn-outline" href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener"><i data-lucide="map-pin" class="w-4 h-4"></i> Map pin</a>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- right: sticky summary -->
-      <div class="lg:sticky lg:top-32">
+      <!-- ===================== RIGHT: live bill ===================== -->
+      <div class="lg:sticky lg:top-28">
         <div class="bg-white rounded-2xl p-6 border border-[#efe6da] shadow-sm">
-          <h2 class="font-serif text-xl mb-4">3 · Price summary</h2>
-          <div id="summary"></div>
-          <button id="bookCta" class="btn btn-primary w-full justify-center mt-5">Request to Book on WhatsApp</button>
-          <p class="text-xs text-muted text-center mt-3">No payment now — we'll confirm availability &amp; the final price with you on WhatsApp.</p>
+          <h2 class="font-serif text-xl mb-1">Your bill</h2>
+          <p class="text-[11px] text-muted mb-4">Updates live as you choose.</p>
+          <div id="bill"></div>
         </div>
         <div class="bg-white/70 rounded-xl p-4 mt-4 text-xs text-muted border border-[#efe6da]">
-          <b class="text-ink">How it works:</b> send your request and it reaches us instantly on WhatsApp. We'll confirm your dates and the final price, then share a secure way to pay the deposit and hold your stay.
+          <b class="text-ink">Exclusive use:</b> there is only one suite, so when you book, the entire Padharo House — house, terrace and views — is yours alone. No other guests, no reception desk.
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Online payment (Razorpay) arrives in Phase 2; for now booking is request-to-book via WhatsApp. -->
-
-  <!-- footer -->
   <footer class="bg-ink text-white/75 pt-16 pb-8">
     <div class="max-w-7xl mx-auto px-5 grid md:grid-cols-4 gap-10">
       <div class="md:col-span-2">
@@ -146,48 +266,428 @@
           <img src="assets/logo-mark-white.png" alt="" class="h-12 w-auto" />
           <span class="font-serif text-xl text-white">Padharo House</span>
         </div>
-        <p class="text-sm max-w-md">A luxury boutique homestay in Amer, Jaipur — Rajasthani heritage charm with modern comfort, moments from the Amber Fort.</p>
+        <p class="text-sm max-w-md">An exclusive single-suite boutique heritage homestay in Amer, Jaipur — opposite the Amer Fort, with panoramic Jaigarh Fort views.</p>
       </div>
       <div>
         <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Explore</h4>
         <ul class="space-y-2 text-sm">
           <li><a href="index.html#suite" class="hover:text-gold">The Suite</a></li>
-          <li><a href="index.html#gallery" class="hover:text-gold">Gallery</a></li>
-          <li><a href="blog.html" class="hover:text-gold">Journal &amp; Reviews</a></li>
+          <li><a href="amer-fort.html" class="hover:text-gold">Amer Fort</a></li>
+          <li><a href="jaigarh-fort.html" class="hover:text-gold">Jaigarh Fort</a></li>
+          <li><a href="blog.html" class="hover:text-gold">Journal</a></li>
         </ul>
       </div>
       <div>
         <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Contact</h4>
         <ul class="space-y-2 text-sm">
-          <li>Amer, Jaipur, Rajasthan</li>
+          <li>Opposite Amer Fort, Amer, Jaipur</li>
           <li><a href="mailto:padharohouse@gmail.com" class="hover:text-gold">padharohouse@gmail.com</a></li>
           <li><a href="tel:+919461884005" class="hover:text-gold">+91 94618 84005</a></li>
         </ul>
       </div>
     </div>
     <div class="max-w-7xl mx-auto px-5 mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between gap-2 text-xs">
-      <span>© 2026 Padharo House · GSTIN 08BEPPG3869F1Z4 · All rights reserved.</span>
-      <span>Amer, Jaipur · Opposite the Amber Fort</span>
+      <span>&copy; 2026 Padharo House &middot; GSTIN 08BEPPG3869F1Z4 &middot; All rights reserved.</span>
+      <span>Amer, Jaipur &middot; Opposite the Amer Fort</span>
     </div>
   </footer>
 
-  <!-- floating WhatsApp -->
-  <a href="https://wa.me/919461884005?text=Hi%20Padharo%20House%2C%20I%27d%20like%20to%20check%20availability%20for%20my%20dates."
-     target="_blank" rel="noopener"
-     class="wa-float fixed bottom-5 right-5 z-[70] flex items-center gap-2 bg-[#25D366] text-white rounded-full shadow-lg pl-3.5 pr-4 py-3 hover:brightness-95 transition"
-     aria-label="Chat with Padharo House on WhatsApp">
-    <svg viewBox="0 0 32 32" class="w-6 h-6 fill-current" aria-hidden="true"><path d="M16 3C9 3 3.3 8.7 3.3 15.7c0 2.5.7 4.8 1.9 6.8L3 29l6.7-2.1c1.9 1 4 1.6 6.3 1.6 7 0 12.7-5.7 12.7-12.7S23 3 16 3zm0 23.1c-2 0-3.9-.6-5.5-1.5l-.4-.2-4 1.2 1.2-3.9-.3-.4c-1.1-1.7-1.7-3.7-1.7-5.8C5.3 9.8 10.1 5 16 5s10.7 4.8 10.7 10.7S21.9 26.1 16 26.1zm6-8c-.3-.2-1.9-1-2.2-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1 1.3-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.6-.1-.2-.8-1.9-1-2.5-.3-.7-.5-.6-.8-.6h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.3 1.4 3.5c.2.2 2.4 3.7 5.9 5.2 2.2.9 3 1 4.1.9.7-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>
-    <span class="text-sm font-semibold hidden sm:block">Chat with us</span>
-  </a>
-
   <nav class="mobile-cta" aria-label="Quick actions">
-    <a href="booking.html" class="primary"><i data-lucide="calendar-check" class="w-5 h-5"></i> Book</a>
-    <a href="https://wa.me/919461884005" target="_blank" rel="noopener"><i data-lucide="message-circle" class="w-5 h-5"></i> WhatsApp</a>
+    <a href="index.html"><i data-lucide="home" class="w-5 h-5"></i> Home</a>
+    <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="primary"><i data-lucide="message-circle" class="w-5 h-5"></i> WhatsApp</a>
     <a href="tel:+919461884005"><i data-lucide="phone" class="w-5 h-5"></i> Call</a>
     <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener"><i data-lucide="map-pin" class="w-5 h-5"></i> Map</a>
   </nav>
 
   <script src="assets/app.js"></script>
-  <script>if(window.lucide){try{window.lucide.createIcons()}catch(e){}}</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, collection, onSnapshot, addDoc, writeBatch, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ============================================================
+   CONFIG — two values to fill in
+   ============================================================ */
+const UPI_VPA  = "PASTE_UPI_ID@bank";                 // e.g. padharohouse@okaxis
+const SCRIPT_URL = "PASTE_APPS_SCRIPT_WEB_APP_URL";   // Apps Script deployment URL
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB-WSDavLU99Tw-P95wFFO7KX_f50Z0fOo",
+  authDomain: "padharo-house.firebaseapp.com",
+  projectId: "padharo-house",
+  storageBucket: "padharo-house.firebasestorage.app",
+  messagingSenderId: "357110206597",
+  appId: "1:357110206597:web:4826cfc4903f69677d99ec"
+};
+const ADVANCE_PCT = 0.30;
+const WA = "919461884005";
+const MAP_LINK = "https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521";
+const UPI_READY = !/PASTE_/.test(UPI_VPA);
+const MAIL_READY = !/PASTE_/.test(SCRIPT_URL);
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* ---------------- helpers ---------------- */
+const $ = id => document.getElementById(id);
+const MS = 86400000;
+const INR = n => '₹' + Math.round(Number(n)||0).toLocaleString('en-IN');
+const iso = d => { const t = new Date(d); t.setHours(12,0,0,0);
+  return t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0'); };
+const parseISO = s => { const [y,m,d]=String(s||'').split('-').map(Number);
+  return (y&&m&&d)?new Date(y,m-1,d):null; };
+const fmtD = s => { const d=parseISO(s);
+  return d?d.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'}):'—'; };
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const icons = () => { if (window.lucide) try{ window.lucide.createIcons(); }catch(e){} };
+
+/* ---------------- state ---------------- */
+let PRICING = null, PACKAGES = [], BLOCKED = new Set();
+let fp = null, checkIn = null, checkOut = null, guests = 2;
+const chosen = new Set();
+let QUOTE = null, BOOKING_REF = null;
+
+/* ============================================================
+   1. LIVE AVAILABILITY
+   ============================================================ */
+onSnapshot(collection(db,'blocked_dates'), snap => {
+  BLOCKED = new Set(snap.docs.map(d => d.id));
+  buildPicker();
+  // if a held date slipped into the current selection, clear it
+  if (checkIn && checkOut && rangeHasBlocked(checkIn, checkOut)) {
+    checkIn = checkOut = null; if (fp) fp.clear();
+    showDateErr('Sorry — one of those nights was just taken. Please choose again.');
+    paintDates(); quote();
+  }
+}, err => {
+  console.warn('blocked_dates', err);
+  $('calLoad').innerHTML = '<span class="text-[#a12626]">Could not load availability. Please message us on WhatsApp.</span>';
+});
+
+function nightsOf(a, b){
+  const out = [], s = parseISO(a), e = parseISO(b);
+  if (!s || !e) return out;
+  for (let t = +s; t < +e; t += MS) out.push(iso(new Date(t)));
+  return out;                                  // check-out night is not occupied
+}
+const rangeHasBlocked = (a,b) => nightsOf(a,b).some(k => BLOCKED.has(k));
+
+function buildPicker(){
+  const disable = Array.from(BLOCKED);
+  if (fp) { fp.set('disable', disable); return; }
+  $('calLoad').hidden = true;
+  $('dates').classList.remove('hidden');
+  fp = flatpickr('#dates', {
+    mode: 'range', inline: true, minDate: 'today', dateFormat: 'Y-m-d',
+    showMonths: window.innerWidth >= 1024 ? 2 : 1,
+    disable,
+    onChange: sel => {
+      hideDateErr();
+      if (sel.length < 2) { checkIn = sel.length ? iso(sel[0]) : null; checkOut = null; paintDates(); quote(); return; }
+      const a = iso(sel[0]), b = iso(sel[1]);
+      if (a === b) { showDateErr('Please select at least one night.'); checkIn = a; checkOut = null; paintDates(); quote(); return; }
+      if (rangeHasBlocked(a,b)) {
+        showDateErr('Those dates include a night that is already taken. Please pick a clear range.');
+        fp.clear(); checkIn = checkOut = null; paintDates(); quote(); return;
+      }
+      checkIn = a; checkOut = b; paintDates(); quote();
+    }
+  });
+}
+const showDateErr = m => { $('dateErr').textContent = m; $('dateErr').hidden = false; };
+const hideDateErr = () => { $('dateErr').hidden = true; };
+function paintDates(){
+  $('dIn').textContent  = checkIn ? fmtD(checkIn) : '—';
+  $('dOut').textContent = checkOut ? fmtD(checkOut) : '—';
+}
+
+/* ============================================================
+   2. LIVE RATES, PACKAGES & BILLING
+   ============================================================ */
+onSnapshot(doc(db,'property','pricing'), s => { PRICING = s.exists() ? s.data() : {}; quote(); },
+  e => { console.warn('pricing', e); PRICING = {}; quote(); });
+
+onSnapshot(collection(db,'packages'), s => {
+  PACKAGES = s.docs.map(d => ({ id:d.id, ...d.data() })).filter(p => p.active !== false)
+    .sort((a,b)=>(a.order??0)-(b.order??0));
+  renderPackages(); quote();
+}, e => console.warn('packages', e));
+
+function renderPackages(){
+  const box = $('pkgBox');
+  if (!PACKAGES.length) { box.innerHTML = '<p class="text-sm text-muted">No add-on experiences right now — just ask us when you arrive.</p>'; return; }
+  box.innerHTML = PACKAGES.map(p => `
+    <label class="pkg${chosen.has(p.id)?' on':''}" data-p="${esc(p.id)}">
+      <input type="checkbox" class="mt-1 w-4 h-4 accent-[#A0472A]" ${chosen.has(p.id)?'checked':''} />
+      <span class="flex-1">
+        <span class="flex items-baseline justify-between gap-3">
+          <b class="font-serif text-base">${esc(p.title)}</b>
+          <b class="text-terra text-sm whitespace-nowrap">+${INR(p.price)}<span class="text-muted font-normal text-xs"> / ${esc(p.unit||'stay')}</span></b>
+        </span>
+        ${p.description ? `<span class="block text-xs text-muted mt-1">${esc(p.description)}</span>` : ''}
+      </span>
+    </label>`).join('');
+  box.querySelectorAll('.pkg').forEach(el => {
+    const cb = el.querySelector('input');
+    el.addEventListener('click', e => {
+      if (e.target !== cb) { e.preventDefault(); cb.checked = !cb.checked; }
+      const id = el.dataset.p;
+      cb.checked ? chosen.add(id) : chosen.delete(id);
+      el.classList.toggle('on', cb.checked);
+      quote();
+    });
+  });
+}
+
+const isWeekend = d => [0,5,6].includes(d.getDay());          // Fri, Sat, Sun nights
+function inPeak(k){
+  if (!PRICING || !PRICING.peakStart || !PRICING.peakEnd) return false;
+  return k >= PRICING.peakStart && k <= PRICING.peakEnd;
+}
+
+function quote(){
+  const box = $('bill');
+  if (!PRICING) { box.innerHTML = '<p class="text-sm text-muted py-6 text-center">Loading rates…</p>'; return; }
+  const weekday = Number(PRICING.baseWeekday) || 0;
+  const weekend = Number(PRICING.weekend) || weekday;
+
+  if (!checkIn || !checkOut || !weekday) {
+    QUOTE = null;
+    box.innerHTML = `<p class="text-sm text-muted py-6 text-center">${
+      weekday ? 'Pick your dates to see a full price breakdown.' :
+      'Rates are being updated — please message us on WhatsApp for a quote.'}</p>`;
+    return;
+  }
+
+  const nights = nightsOf(checkIn, checkOut);
+  let room = 0, peak = 0, wkndCount = 0;
+  nights.forEach(k => {
+    const d = parseISO(k);
+    const wk = isWeekend(d);
+    if (wk) wkndCount++;
+    room += wk ? weekend : weekday;
+    if (inPeak(k)) peak += Number(PRICING.peakSurcharge) || 0;
+  });
+
+  const extraGuests = Math.max(0, guests - 2);
+  const extra = extraGuests * (Number(PRICING.extraGuestCharge) || 0) * nights.length;
+
+  const picked = PACKAGES.filter(p => chosen.has(p.id)).map(p => {
+    const unit = p.unit || 'stay';
+    const mult = unit === 'night' ? nights.length : unit === 'guest' ? guests : 1;
+    return { id:p.id, title:p.title, price:Number(p.price)||0, unit, amount:(Number(p.price)||0)*mult, mult };
+  });
+  const pkgTotal = picked.reduce((s,p) => s + p.amount, 0);
+
+  const sub = room + peak + extra + pkgTotal;
+  const taxPct = PRICING.taxEnabled ? (Number(PRICING.taxPercent) || 0) : 0;
+  const tax = Math.round(sub * taxPct / 100);
+  const total = sub + tax;
+  const advance = Math.round(total * ADVANCE_PCT);
+  const balance = total - advance;
+
+  QUOTE = { nights:nights.length, nightList:nights, room, peak, extra, extraGuests,
+            packages:picked, pkgTotal, sub, taxPct, tax, total, advance, balance, wkndCount };
+
+  const row = (l,v,cls='') => `<div class="flex justify-between gap-3 py-1.5 ${cls}"><span>${l}</span><span class="whitespace-nowrap">${v}</span></div>`;
+  box.innerHTML = `
+    <div class="flex items-center justify-between pb-3 mb-1 border-b border-[#eee5d9] text-sm">
+      <div><div class="text-[11px] text-muted">CHECK-IN</div><b>${fmtD(checkIn)}</b></div>
+      <div class="text-gold">&rarr;</div>
+      <div class="text-right"><div class="text-[11px] text-muted">CHECK-OUT</div><b>${fmtD(checkOut)}</b></div>
+    </div>
+    <div class="text-sm">
+      ${row(`Suite &times; ${nights.length} night${nights.length>1?'s':''}` +
+            (wkndCount ? `<span class="block text-[11px] text-muted">${wkndCount} weekend · ${nights.length-wkndCount} weekday</span>` : ''), INR(room))}
+      ${peak ? row('Peak season surcharge', INR(peak)) : ''}
+      ${extra ? row(`Extra guest (${extraGuests} &times; ${nights.length} night${nights.length>1?'s':''})`, INR(extra)) : ''}
+      ${picked.map(p => row(esc(p.title) + (p.mult>1?`<span class="block text-[11px] text-muted">${p.mult} × ${INR(p.price)}</span>`:''), INR(p.amount))).join('')}
+      <div class="flex justify-between py-1.5 border-t border-[#eee5d9] mt-1"><span class="text-muted">Subtotal</span><b>${INR(sub)}</b></div>
+      ${taxPct ? row(`Taxes &amp; fees (${taxPct}%)`, INR(tax), 'text-muted') : ''}
+    </div>
+    <div class="flex justify-between items-center mt-2 pt-3 border-t-2 border-terra">
+      <span class="font-serif text-lg">Total</span><span class="font-serif text-2xl text-terra">${INR(total)}</span>
+    </div>
+    <div class="bg-cream rounded-lg p-3 mt-4 text-sm space-y-1">
+      <div class="flex justify-between"><span class="text-muted">Pay now (30%)</span><b class="text-terra">${INR(advance)}</b></div>
+      <div class="flex justify-between"><span class="text-muted">Due at check-in</span><b>${INR(balance)}</b></div>
+    </div>`;
+}
+
+/* guests */
+function setGuests(n){
+  guests = Math.min(3, Math.max(1, n));
+  $('gCount').textContent = guests;
+  $('gMinus').disabled = guests <= 1;
+  $('gPlus').disabled = guests >= 3;
+  quote();
+}
+$('gMinus').addEventListener('click', () => setGuests(guests-1));
+$('gPlus').addEventListener('click', () => setGuests(guests+1));
+
+/* ============================================================
+   3. STEPS + UPI
+   ============================================================ */
+function step(n){
+  [1,2,3].forEach(i => { $('pane'+i).hidden = i !== n; });
+  $('paneDone').hidden = true;
+  $('st1').className = 'step ' + (n>1?'done':'on');
+  $('st2').className = 'step ' + (n>2?'done':(n===2?'on':''));
+  $('st3').className = 'step ' + (n===3?'on':'');
+  $('ln1').className = 'step-line' + (n>1?' done':'');
+  $('ln2').className = 'step-line' + (n>2?' done':'');
+  window.scrollTo({ top: 220, behavior:'smooth' });
+  icons();
+}
+const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+const phoneDigits = v => String(v||'').replace(/\D/g,'');
+
+$('toStep2').addEventListener('click', () => {
+  const err = $('formErr');
+  const name = $('gName').value.trim(), phone = $('gPhone').value.trim(), email = $('gEmail').value.trim();
+  const problems = [];
+  if (!checkIn || !checkOut) problems.push('choose your check-in and check-out dates');
+  if (name.length < 2) problems.push('enter your full name');
+  if (phoneDigits(phone).length < 10) problems.push('enter a valid phone number');
+  if (!emailOk(email)) problems.push('enter a valid email address');
+  if (!QUOTE || !QUOTE.total) problems.push('we could not price those dates — please message us');
+  if (problems.length) {
+    err.innerHTML = 'Please ' + problems.join(', ') + '.';
+    err.hidden = false; return;
+  }
+  err.hidden = true;
+  BOOKING_REF = 'PH-' + new Date().getFullYear() + '-' +
+    Math.random().toString(36).slice(2,6).toUpperCase();
+  paintPayment();
+  step(2);
+});
+$('back1').addEventListener('click', () => step(1));
+$('back2').addEventListener('click', () => step(2));
+$('toStep3').addEventListener('click', () => step(3));
+
+function paintPayment(){
+  $('payAmount').textContent  = INR(QUOTE.advance);
+  $('payTotal').textContent   = INR(QUOTE.total);
+  $('payBalance').textContent = INR(QUOTE.balance);
+  $('refShow').textContent    = BOOKING_REF;
+  $('upiMissing').hidden = UPI_READY;
+  $('upiBox').hidden = !UPI_READY;
+  if (!UPI_READY) return;
+  const note = 'Padharo House ' + BOOKING_REF;
+  const uri = 'upi://pay?pa=' + encodeURIComponent(UPI_VPA) +
+              '&pn=' + encodeURIComponent('Padharo House') +
+              '&am=' + QUOTE.advance + '&cu=INR' +
+              '&tn=' + encodeURIComponent(note) +
+              '&tr=' + encodeURIComponent(BOOKING_REF.replace(/-/g,''));
+  $('upiLink').href = uri;
+  $('vpaShow').textContent = UPI_VPA;
+  $('qr').src = 'https://api.qrserver.com/v1/create-qr-code/?size=380x380&margin=0&data=' + encodeURIComponent(uri);
+}
+
+/* ============================================================
+   4. SUBMIT → FIRESTORE → EMAIL
+   ============================================================ */
+$('utr').addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g,'').slice(0,12); });
+
+$('submitBooking').addEventListener('click', async () => {
+  const btn = $('submitBooking'), err = $('utrErr');
+  const utr = $('utr').value.trim();
+  if (!/^\d{12}$/.test(utr)) {
+    err.textContent = 'Please enter the full 12-digit UPI transaction / UTR number.';
+    err.hidden = false; return;
+  }
+  if (!QUOTE || !checkIn || !checkOut) { err.textContent = 'Your selection expired — please pick your dates again.'; err.hidden = false; step(1); return; }
+  if (rangeHasBlocked(checkIn, checkOut)) {
+    err.textContent = 'Sorry — one of those nights was just booked. Please choose new dates; do not worry, we will refund or re-apply your payment.';
+    err.hidden = false; return;
+  }
+  err.hidden = true;
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Submitting…';
+
+  const name = $('gName').value.trim(), phone = $('gPhone').value.trim(), email = $('gEmail').value.trim();
+  const pkgTitles = QUOTE.packages.map(p => p.title).join(', ');
+  const record = {
+    bookingId: BOOKING_REF,
+    status: 'PENDING_VERIFICATION',
+    source: 'website',
+    guestName: name, phone, email,
+    checkIn, checkOut,
+    nights: QUOTE.nights, guests,
+    packages: QUOTE.packages.map(p => ({ id:p.id, title:p.title, amount:p.amount })),
+    packageTitle: pkgTitles,
+    roomTotal: QUOTE.room, peakTotal: QUOTE.peak, extraGuestTotal: QUOTE.extra,
+    packagesTotal: QUOTE.pkgTotal, taxPercent: QUOTE.taxPct, taxAmount: QUOTE.tax,
+    totalAmount: QUOTE.total,
+    advanceDue: QUOTE.advance,
+    advanceClaimed: QUOTE.advance,
+    advancePaid: 0,                 // host sets this when the UTR is verified
+    balanceDue: QUOTE.balance,
+    utr, utrVerified: false, checkedIn: false, cancelled: false,
+    notes: $('gNotes').value.trim(),
+    blockedDates: QUOTE.nightList,
+    createdAt: serverTimestamp(),
+    dispatch: {}
+  };
+
+  try {
+    await addDoc(collection(db,'bookings'), record);
+    // hold the nights so nobody else can take them
+    const batch = writeBatch(db);
+    QUOTE.nightList.forEach(k => batch.set(doc(db,'blocked_dates',k), {
+      date: k, reason: 'booking', source: 'guest_booking',
+      bookingId: BOOKING_REF, createdAt: serverTimestamp()
+    }));
+    await batch.commit();
+  } catch (ex) {
+    console.error('booking save failed', ex);
+    err.innerHTML = 'We could not save your booking just now. Your payment is safe — please ' +
+      '<a class="underline font-semibold" href="https://wa.me/' + WA + '?text=' +
+      encodeURIComponent('Hi Padharo House, I paid the advance (UTR ' + utr + ') but the website could not save my booking ' + BOOKING_REF + '.') +
+      '" target="_blank" rel="noopener">send us this on WhatsApp</a> and we will confirm manually.';
+    err.hidden = false;
+    btn.disabled = false; btn.innerHTML = '<i data-lucide="check-circle-2" class="w-4 h-4"></i> Submit booking'; icons();
+    return;
+  }
+
+  // confirmation emails (best effort — never blocks the booking)
+  if (MAIL_READY) {
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          bookingId: BOOKING_REF, guestName: name, phone, email,
+          checkIn: fmtD(checkIn), checkOut: fmtD(checkOut),
+          nights: QUOTE.nights, guests,
+          packageTitle: pkgTitles || 'Stay only',
+          totalAmount: QUOTE.total, advanceClaimed: QUOTE.advance,
+          balanceDue: QUOTE.balance, utr
+        })
+      });
+    } catch (ex) { console.warn('email trigger failed', ex); }
+  } else {
+    $('mailNote').textContent = 'Email confirmations are not switched on yet — we will message you on WhatsApp instead.';
+    $('mailNote').hidden = false;
+  }
+
+  $('doneId').textContent = BOOKING_REF;
+  $('doneSummary').innerHTML =
+    fmtD(checkIn) + ' → ' + fmtD(checkOut) + ' · ' + QUOTE.nights + ' night' + (QUOTE.nights>1?'s':'') +
+    ' · ' + guests + ' guest' + (guests>1?'s':'') +
+    '<br>Paid ' + INR(QUOTE.advance) + ' · ' + INR(QUOTE.balance) + ' due at check-in';
+  $('doneWa').href = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(
+    'Khamma Ghani! I have just booked Padharo House.\n\nRef: ' + BOOKING_REF +
+    '\nName: ' + name + '\nDates: ' + fmtD(checkIn) + ' to ' + fmtD(checkOut) +
+    '\nUTR: ' + utr);
+  [1,2,3].forEach(i => $('pane'+i).hidden = true);
+  $('paneDone').hidden = false;
+  $('st3').className = 'step done'; $('ln2').className = 'step-line done';
+  window.scrollTo({ top: 220, behavior:'smooth' });
+  icons();
+});
+
+setGuests(2); quote(); icons();
+</script>
 </body>
 </html>

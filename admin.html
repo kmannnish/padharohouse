@@ -306,6 +306,14 @@
             <div><label class="lbl">Peak season / festival surcharge</label><input class="inp" type="number" min="0" id="pPeak" placeholder="2000" /></div>
             <div><label class="lbl">Extra guest mattress (per guest / night above 2)</label><input class="inp" type="number" min="0" id="pExtra" placeholder="1200" /></div>
           </div>
+          <div class="mt-4 bg-cream rounded-lg p-4">
+            <div class="text-sm font-semibold mb-2">Peak season window</div>
+            <p class="text-[11px] text-muted mb-3">The surcharge above is added only to nights inside these dates. Leave both blank for no peak season.</p>
+            <div class="grid sm:grid-cols-2 gap-3">
+              <div><label class="lbl">Peak starts</label><input class="inp" type="date" id="pPeakStart" /></div>
+              <div><label class="lbl">Peak ends</label><input class="inp" type="date" id="pPeakEnd" /></div>
+            </div>
+          </div>
           <div class="mt-5 bg-cream rounded-lg p-4">
             <label class="flex items-center gap-3 cursor-pointer">
               <input type="checkbox" id="pTaxOn" class="w-4 h-4 accent-[#A0472A]" />
@@ -653,6 +661,8 @@ function boot(){
     $('pWeekend').value = PRICING.weekend ?? '';
     $('pPeak').value    = PRICING.peakSurcharge ?? '';
     $('pExtra').value   = PRICING.extraGuestCharge ?? '';
+    $('pPeakStart').value = PRICING.peakStart ?? '';
+    $('pPeakEnd').value   = PRICING.peakEnd ?? '';
     $('pTaxPct').value  = PRICING.taxPercent ?? '';
     $('pTaxOn').checked = !!PRICING.taxEnabled;
     $('pTaxWrap').style.opacity = PRICING.taxEnabled ? '1' : '.5';
@@ -713,6 +723,8 @@ $('savePricing').addEventListener('click', async () => {
       weekend: num($('pWeekend').value),
       peakSurcharge: num($('pPeak').value),
       extraGuestCharge: num($('pExtra').value),
+      peakStart: $('pPeakStart').value || '',
+      peakEnd: $('pPeakEnd').value || '',
       taxPercent: num($('pTaxPct').value),
       taxEnabled: $('pTaxOn').checked,
       updatedAt: serverTimestamp(), updatedBy: ME.email
@@ -942,6 +954,7 @@ function renderBookings(){
       <td>${INR(b.advancePaid)}</td>
       <td>${bal > 0 ? `<b class="text-[#a12626]">${INR(bal)}</b>` : '<span class="bdg bdg-green">Paid</span>'}</td>
       <td>
+        ${b.status === 'PENDING_VERIFICATION' ? '<span class="bdg bdg-amber">New · verify</span>' : ''}
         ${b.checkedIn ? '<span class="bdg bdg-blue">Checked in</span>' : ''}
         ${b.utrVerified ? '<span class="bdg bdg-green">UTR ok</span>' : '<span class="bdg bdg-amber">UTR?</span>'}
       </td>
@@ -975,11 +988,18 @@ async function verifyUtr(id){
   const b = BOOKINGS.find(x => x.id === id); if (!b) return;
   let utr = b.utr;
   if (!utr) { utr = prompt('Payment UTR / reference for ' + b.guestName + ':'); if (!utr) return; }
-  try {
-    await updateDoc(doc(db,'bookings',id),
-      { utr: String(utr).trim(), utrVerified:true, utrVerifiedAt: serverTimestamp(), utrVerifiedBy: ME.email });
-    toast('Payment verified');
-  } catch (ex) { fail(ex, 'verify that payment'); }
+  const patch = { utr: String(utr).trim(), utrVerified:true,
+                  utrVerifiedAt: serverTimestamp(), utrVerifiedBy: ME.email, status: 'CONFIRMED' };
+  // website bookings record what the guest SAYS they paid; only count it as
+  // collected once the host has actually seen the money in the account
+  const claimed = Number(b.advanceClaimed) || 0;
+  if (claimed > 0 && !(Number(b.advancePaid) > 0)) {
+    if (confirm('Has ' + INR(claimed) + ' from ' + b.guestName + ' (UTR ' + utr + ') arrived in your account?\n\nOK records it as collected. Cancel marks the UTR checked without recording payment.')) {
+      patch.advancePaid = claimed;
+    }
+  }
+  try { await updateDoc(doc(db,'bookings',id), patch); toast('Payment verified'); }
+  catch (ex) { fail(ex, 'verify that payment'); }
 }
 
 /* ---- booking modal ---- */
@@ -1015,6 +1035,28 @@ $('addBooking').addEventListener('click', () => openBooking(null));
 $('bkModalClose').addEventListener('click', () => $('bkModal').classList.remove('open'));
 $('bkModal').addEventListener('click', e => { if (e.target === $('bkModal')) $('bkModal').classList.remove('open'); });
 
+/* Keep /blocked_dates in step with a booking, so the PUBLIC booking page —
+   which can only read blocked_dates, never bookings — can never double-book
+   over a reservation entered here. */
+function nightList(a, b){
+  const out = [], s = parseISO(a), e = parseISO(b);
+  if (!s || !e) return out;
+  for (let t = +s; t < +e; t += MS) out.push(iso(new Date(t)));
+  return out;                                    // the check-out night is free
+}
+async function syncBlocks(bookingRef, oldList, newList, cancelled){
+  const keep = cancelled ? [] : (newList || []);
+  const drop = (oldList || []).filter(k => !keep.includes(k));
+  if (!keep.length && !drop.length) return;
+  const batch = writeBatch(db);
+  drop.forEach(k => batch.delete(doc(db,'blocked_dates',k)));
+  keep.forEach(k => batch.set(doc(db,'blocked_dates',k), {
+    date:k, reason:'booking', source:'booking',
+    bookingId: bookingRef, blockedBy: ME.email, createdAt: serverTimestamp()
+  }));
+  await batch.commit();
+}
+
 $('bkSave').addEventListener('click', async () => {
   const err = $('bkFormErr');
   const name = $('fName').value.trim(), phone = $('fPhone').value.trim();
@@ -1024,6 +1066,8 @@ $('bkSave').addEventListener('click', async () => {
   err.hidden = true;
 
   const id = $('fId').value;
+  const prev = id ? BOOKINGS.find(x => x.id === id) : null;
+  const nights = nightList(ci, co);
   const pkg = PACKAGES.find(p => p.id === $('fPkg').value);
   const data = {
     guestName: name, phone,
@@ -1040,23 +1084,35 @@ $('bkSave').addEventListener('click', async () => {
     packageTitle: pkg ? pkg.title : '',
     source: $('fSource').value,
     notes: $('fNotes').value.trim(),
+    blockedDates: $('fCancelled').checked ? [] : nights,
     updatedAt: serverTimestamp(), updatedBy: ME.email
   };
   try {
+    let ref = prev ? (prev.bookingId || prev.id) : null;
     if (id) { await updateDoc(doc(db,'bookings',id), data); toast('Booking updated'); }
     else {
-      data.bookingId = 'PH' + iso(new Date()).replace(/-/g,'').slice(2) + '-' +
-        Math.random().toString(36).slice(2,5).toUpperCase();
+      data.bookingId = 'PH-' + new Date().getFullYear() + '-' +
+        Math.random().toString(36).slice(2,6).toUpperCase();
+      data.status = 'CONFIRMED';
       data.createdAt = serverTimestamp(); data.dispatch = {};
-      await addDoc(collection(db,'bookings'), data); toast('Booking added');
+      await addDoc(collection(db,'bookings'), data);
+      ref = data.bookingId;
+      toast('Booking added');
     }
+    try { await syncBlocks(ref, prev ? prev.blockedDates : [], nights, data.cancelled); }
+    catch (ex2) { console.warn('block sync failed', ex2); toast('Booking saved, but the calendar block failed'); }
     $('bkModal').classList.remove('open');
   } catch (ex) { fail(ex, 'save the booking'); }
 });
 $('bkDelete').addEventListener('click', async () => {
   const id = $('fId').value; if (!id) return;
   if (!confirm('Delete this booking permanently? Consider marking it Cancelled instead, so it stays in your records.')) return;
-  try { await deleteDoc(doc(db,'bookings',id)); $('bkModal').classList.remove('open'); toast('Booking deleted'); }
+  const prev = BOOKINGS.find(x => x.id === id);
+  try {
+    await deleteDoc(doc(db,'bookings',id));
+    try { await syncBlocks('', prev ? prev.blockedDates : [], [], true); } catch(e){ console.warn('unblock failed', e); }
+    $('bkModal').classList.remove('open'); toast('Booking deleted');
+  }
   catch (ex) { fail(ex, 'delete the booking'); }
 });
 
