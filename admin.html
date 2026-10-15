@@ -117,6 +117,8 @@
       <a data-tab="whatsapp"><i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Queue</a>
       <a data-tab="pricing" data-role="super_admin"><i data-lucide="indian-rupee" class="w-4 h-4"></i> Tariff</a>
       <a data-tab="packages" data-role="super_admin"><i data-lucide="sparkles" class="w-4 h-4"></i> Packages</a>
+      <a data-tab="site" data-role="super_admin"><i data-lucide="settings" class="w-4 h-4"></i> Site &amp; Brand</a>
+      <a data-tab="payments" data-role="super_admin"><i data-lucide="wallet" class="w-4 h-4"></i> Payments</a>
       <a data-tab="analytics" data-role="super_admin"><i data-lucide="trending-up" class="w-4 h-4"></i> Analytics</a>
       <a data-tab="team" data-role="super_admin"><i data-lucide="users" class="w-4 h-4"></i> Team &amp; Roles</a>
     </nav>
@@ -361,6 +363,138 @@
         </div>
       </section>
 
+      <!-- ============ SITE & BRAND SETTINGS ============ -->
+      <section data-panel="site" hidden>
+        <div class="grid lg:grid-cols-2 gap-5 items-start">
+
+          <div class="card p-6">
+            <h3 class="font-serif text-xl mb-1">Hero &amp; announcement</h3>
+            <p class="text-xs text-muted mb-5">Shown at the top of the homepage. Updates appear instantly for visitors.</p>
+            <div class="space-y-3">
+              <div><label class="lbl">Announcement badge</label><input class="inp" id="sBadge" placeholder="Exclusive Single-Suite Heritage Homestay · Amer, Jaipur" /></div>
+              <div><label class="lbl">Hero headline</label><input class="inp" id="sHeadline" placeholder="A New Beginning, A Dream Come True." /></div>
+              <div><label class="lbl">Hero subtitle</label><input class="inp" id="sTagline" placeholder="Introducing Padharo House — Where Heritage Meets Hospitality" /></div>
+              <div><label class="lbl">Hero paragraph</label><textarea class="inp" rows="3" id="sIntro"></textarea></div>
+              <div>
+                <label class="lbl">Slider image URLs — one per line</label>
+                <textarea class="inp font-mono text-xs" rows="6" id="sSlides" placeholder="assets/img/p2.jpg&#10;assets/img/p8.jpg"></textarea>
+                <p class="text-[11px] text-muted mt-1">Use a path like <code>assets/img/p2.jpg</code> or a full https:// URL. Blank falls back to the built-in photos.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-5">
+            <div class="card p-6">
+              <h3 class="font-serif text-xl mb-1">Contact &amp; links</h3>
+              <p class="text-xs text-muted mb-5">Used by every button, link and WhatsApp message across the site.</p>
+              <div class="grid sm:grid-cols-2 gap-3">
+                <div><label class="lbl">WhatsApp number (digits, with country code)</label><input class="inp" id="sWa" placeholder="919461884005" /></div>
+                <div><label class="lbl">Display phone</label><input class="inp" id="sPhone" placeholder="+91 94618 84005" /></div>
+                <div class="sm:col-span-2"><label class="lbl">Email</label><input class="inp" id="sEmail" placeholder="padharohouse@gmail.com" /></div>
+                <div class="sm:col-span-2"><label class="lbl">Instagram URL</label><input class="inp" id="sInsta" placeholder="https://www.instagram.com/padharo_house" /></div>
+                <div><label class="lbl">Map latitude</label><input class="inp" id="sLat" placeholder="26.987683983961603" /></div>
+                <div><label class="lbl">Map longitude</label><input class="inp" id="sLng" placeholder="75.8550010443521" /></div>
+              </div>
+            </div>
+
+            <div class="card p-6">
+              <h3 class="font-serif text-xl mb-1">Stay rules</h3>
+              <div class="grid sm:grid-cols-2 gap-3 mt-4">
+                <div><label class="lbl">Check-in time</label><input class="inp" id="sCheckIn" placeholder="2:00 PM" /></div>
+                <div><label class="lbl">Check-out time</label><input class="inp" id="sCheckOut" placeholder="11:00 AM" /></div>
+                <div><label class="lbl">Base guests (included in rate)</label><input class="inp" type="number" min="1" max="10" id="sBaseGuests" placeholder="2" /></div>
+                <div><label class="lbl">Maximum guests</label><input class="inp" type="number" min="1" max="12" id="sMaxGuests" placeholder="4" /></div>
+              </div>
+            </div>
+
+            <div class="card p-6">
+              <h3 class="font-serif text-xl mb-1">Email webhook</h3>
+              <p class="text-xs text-muted mb-3">Google Apps Script web app URL that sends the confirmation emails.</p>
+              <input class="inp font-mono text-xs" id="sWebhook" placeholder="https://script.google.com/macros/s/AKfy…/exec" />
+              <p class="text-[11px] text-muted mt-2">Must end in <code>/exec</code>. Leave blank to switch emails off (the site then falls back to WhatsApp).</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 mt-5">
+          <button class="btn btn-p" id="saveSite"><i data-lucide="save" class="w-4 h-4"></i> Save site settings</button>
+          <span class="text-xs text-muted" id="siteMeta"></span>
+        </div>
+      </section>
+
+      <!-- ============ PAYMENT GATEWAYS ============ -->
+      <section data-panel="payments" hidden>
+        <div class="space-y-5">
+
+          <!-- A: UPI -->
+          <div class="card p-6">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" id="gUpi" class="w-5 h-5 mt-0.5 accent-[#A0472A]" />
+              <span>
+                <span class="font-serif text-xl">Option A · Direct UPI</span>
+                <span class="bdg bdg-green ml-2">0% fee</span>
+                <p class="text-xs text-muted mt-1">Guest scans a QR or taps a UPI link. Money lands straight in your account — no platform commission. You verify the UTR yourself.</p>
+              </span>
+            </label>
+            <div class="mt-5 pl-8 grid sm:grid-cols-2 gap-3" id="upiFields">
+              <div><label class="lbl">UPI ID (VPA)</label><input class="inp" id="gUpiId" placeholder="9461884005@ybl" /></div>
+              <div><label class="lbl">Payee name shown in the UPI app</label><input class="inp" id="gPayee" placeholder="Padharo House" /></div>
+              <div class="sm:col-span-2 bg-cream rounded-lg p-4">
+                <div class="text-sm font-semibold mb-2">What the guest may pay</div>
+                <label class="flex items-center gap-2.5 cursor-pointer mb-2"><input type="checkbox" id="gAdv30" class="w-4 h-4 accent-[#A0472A]" /><span class="text-sm">Allow 30% advance (balance at check-in)</span></label>
+                <label class="flex items-center gap-2.5 cursor-pointer"><input type="checkbox" id="gFull100" class="w-4 h-4 accent-[#A0472A]" /><span class="text-sm">Allow 100% full payment</span></label>
+                <p class="text-[11px] text-muted mt-2">Tick both to let the guest choose. If neither is ticked, 30% advance is used.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- B: Razorpay -->
+          <div class="card p-6">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" id="gRzp" class="w-5 h-5 mt-0.5 accent-[#A0472A]" />
+              <span>
+                <span class="font-serif text-xl">Option B · Razorpay checkout</span>
+                <span class="bdg bdg-blue ml-2">cards · netbanking · wallets</span>
+                <p class="text-xs text-muted mt-1">Instant online payment with automatic confirmation. Razorpay charges a fee per transaction.</p>
+              </span>
+            </label>
+            <div class="mt-5 pl-8 grid sm:grid-cols-2 gap-3">
+              <div class="sm:col-span-2"><label class="lbl">Razorpay Key ID</label><input class="inp font-mono text-xs" id="gRzpKey" placeholder="rzp_live_xxxxxxxx or rzp_test_xxxxxxxx" /></div>
+              <div><label class="lbl">Gateway fee shown to guest (%)</label><input class="inp" type="number" min="0" max="10" step="0.1" id="gRzpFee" placeholder="2" /></div>
+            </div>
+            <div class="mt-4 ml-8 bg-[#fdf0d9] border border-[#f0dcb0] rounded-lg p-4 text-xs leading-relaxed">
+              <b>Only paste the Key ID here — never the Key Secret.</b> This page is public JavaScript; a secret would be exposed to the world.
+              Because there is no server signing the payment yet, a Razorpay booking is marked <b>CONFIRMED but unverified</b> — always cross-check the payment ID in your Razorpay dashboard before check-in.
+            </div>
+          </div>
+
+          <!-- C: Bank transfer -->
+          <div class="card p-6">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" id="gBank" class="w-5 h-5 mt-0.5 accent-[#A0472A]" />
+              <span>
+                <span class="font-serif text-xl">Option C · Bank transfer</span>
+                <span class="bdg bdg-gray ml-2">international guests</span>
+                <p class="text-xs text-muted mt-1">For guests without UPI — typically overseas visitors paying by SWIFT or NEFT.</p>
+              </span>
+            </label>
+            <div class="mt-5 pl-8 grid sm:grid-cols-2 gap-3">
+              <div><label class="lbl">Account holder name</label><input class="inp" id="gBankName" placeholder="Pankaj Gupta" /></div>
+              <div><label class="lbl">Bank name</label><input class="inp" id="gBankBank" placeholder="HDFC Bank, Amer Branch" /></div>
+              <div><label class="lbl">Account number</label><input class="inp" id="gBankAcc" /></div>
+              <div><label class="lbl">IFSC code</label><input class="inp" id="gBankIfsc" placeholder="HDFC0001234" /></div>
+              <div class="sm:col-span-2"><label class="lbl">SWIFT / extra instructions (optional)</label><input class="inp" id="gBankSwift" /></div>
+            </div>
+          </div>
+
+          <div id="payWarn" class="err" hidden></div>
+          <div class="flex items-center gap-3">
+            <button class="btn btn-p" id="savePay"><i data-lucide="save" class="w-4 h-4"></i> Save payment settings</button>
+            <span class="text-xs text-muted" id="payMeta"></span>
+          </div>
+        </div>
+      </section>
+
       <!-- ============ ANALYTICS ============ -->
       <section data-panel="analytics" hidden>
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -515,7 +649,7 @@ function fail(e, what){ console.error(what, e);
 let ME = { uid:null, email:null, role:null };
 let BOOKINGS = [], LEADS = [], PACKAGES = [], VISITS = [];
 let BLOCKED = new Map();           // iso -> {reason}
-let PRICING = {}, TEMPLATES = {};
+let PRICING = {}, TEMPLATES = {}, SITE = {}, PAY = {};
 let calView = (()=>{ const d = today0(); d.setDate(1); return d; })();
 let selA = null, selB = null;
 let bkSub = 'upcoming';
@@ -588,7 +722,7 @@ function applyRole(){
   $('modeSeg').querySelectorAll('button').forEach(b => b.disabled = !isSuper);
   $('modeSeg').style.opacity = isSuper ? '1' : '.55';
   $('modeNote').hidden = isSuper;
-  if (!isSuper && ['pricing','packages','analytics','team'].includes(currentTab)) show('dashboard');
+  if (!isSuper && ['pricing','packages','analytics','team','site','payments'].includes(currentTab)) show('dashboard');
 }
 function teardown(){ while (unsubs.length) { try { unsubs.pop()(); } catch(e){} } }
 
@@ -601,6 +735,8 @@ const TITLES = {
   whatsapp:['WhatsApp Queue','Manual dispatch with saved templates'],
   pricing:['Tariff','Nightly rates, surcharges and tax'],
   packages:['Packages','Curated experiences shown at booking'],
+  site:['Site & Brand Settings','Everything on the public site, editable'],
+  payments:['Payment Gateways','Which methods guests may use'],
   analytics:['Traffic Analytics','Where your visitors come from'],
   team:['Team & Roles','Console access']
 };
@@ -652,8 +788,12 @@ function boot(){
   teardown();
 
   unsubs.push(onSnapshot(doc(db,'config','site_settings'),
-    s => paintMode(s.exists() ? s.data().siteMode : 'live'),
+    s => { SITE = s.exists() ? s.data() : {}; paintMode(SITE.siteMode || 'live'); paintSite(); },
     e => console.warn('site_settings', e)));
+
+  unsubs.push(onSnapshot(doc(db,'config','payment_settings'),
+    s => { PAY = s.exists() ? s.data() : {}; paintPay(); },
+    e => console.warn('payment_settings', e)));
 
   unsubs.push(onSnapshot(doc(db,'property','pricing'), s => {
     PRICING = s.exists() ? s.data() : {};
@@ -710,6 +850,134 @@ function boot(){
   }
   show(currentTab);
 }
+
+/* =========================================================
+   SITE & BRAND SETTINGS  (config/site_settings)
+   ========================================================= */
+const SITE_DEFAULTS = {
+  badge: 'Exclusive Single-Suite Heritage Homestay · Amer, Jaipur',
+  headline: 'A New Beginning, A Dream Come True.',
+  tagline: 'Introducing Padharo House — Where Heritage Meets Hospitality',
+  intro: 'My very first Airbnb venture, nestled in the heritage charm of Jaipur, right opposite the magnificent Amer Fort — an exclusive, private heritage stay with panoramic Jaigarh Fort ramparts.',
+  sliderImages: ['assets/img/p2.jpg','assets/img/p8.jpg','assets/img/p3.jpg','assets/img/p9.jpg','assets/img/p6.jpg'],
+  whatsappNumber: '919461884005',
+  displayPhone: '+91 94618 84005',
+  email: 'padharohouse@gmail.com',
+  instagramUrl: 'https://www.instagram.com/padharo_house',
+  mapLat: '26.987683983961603',
+  mapLng: '75.8550010443521',
+  checkInTime: '2:00 PM',
+  checkOutTime: '11:00 AM',
+  baseGuests: 2,
+  maxGuests: 4,
+  googleAppsScriptWebhookUrl: ''
+};
+function paintSite(){
+  const v = (k) => SITE[k] ?? SITE_DEFAULTS[k] ?? '';
+  $('sBadge').value = v('badge');
+  $('sHeadline').value = v('headline');
+  $('sTagline').value = v('tagline');
+  $('sIntro').value = v('intro');
+  const slides = Array.isArray(SITE.sliderImages) ? SITE.sliderImages : SITE_DEFAULTS.sliderImages;
+  $('sSlides').value = slides.join('\n');
+  $('sWa').value = v('whatsappNumber');
+  $('sPhone').value = v('displayPhone');
+  $('sEmail').value = v('email');
+  $('sInsta').value = v('instagramUrl');
+  $('sLat').value = v('mapLat');
+  $('sLng').value = v('mapLng');
+  $('sCheckIn').value = v('checkInTime');
+  $('sCheckOut').value = v('checkOutTime');
+  $('sBaseGuests').value = v('baseGuests');
+  $('sMaxGuests').value = v('maxGuests');
+  $('sWebhook').value = v('googleAppsScriptWebhookUrl');
+  $('siteMeta').textContent = SITE.updatedBy ? ('Last saved by ' + SITE.updatedBy) : '';
+}
+$('saveSite').addEventListener('click', async () => {
+  const slides = $('sSlides').value.split('\n').map(s => s.trim()).filter(Boolean);
+  const base = Math.max(1, Number($('sBaseGuests').value) || 2);
+  const max  = Math.max(base, Number($('sMaxGuests').value) || base);
+  const hook = $('sWebhook').value.trim();
+  if (hook && !/^https:\/\/script\.google\.com\/.*\/exec$/.test(hook)) {
+    toast('That webhook URL does not look like a /exec Apps Script URL'); return;
+  }
+  try {
+    await setDoc(doc(db,'config','site_settings'), {
+      badge: $('sBadge').value.trim(),
+      headline: $('sHeadline').value.trim(),
+      tagline: $('sTagline').value.trim(),
+      intro: $('sIntro').value.trim(),
+      sliderImages: slides,
+      whatsappNumber: $('sWa').value.replace(/\D/g,''),
+      displayPhone: $('sPhone').value.trim(),
+      email: $('sEmail').value.trim(),
+      instagramUrl: $('sInsta').value.trim(),
+      mapLat: $('sLat').value.trim(),
+      mapLng: $('sLng').value.trim(),
+      checkInTime: $('sCheckIn').value.trim(),
+      checkOutTime: $('sCheckOut').value.trim(),
+      baseGuests: base, maxGuests: max,
+      googleAppsScriptWebhookUrl: hook,
+      updatedAt: serverTimestamp(), updatedBy: ME.email
+    }, { merge:true });                    // merge keeps siteMode untouched
+    toast('Site settings saved — live on the website');
+  } catch (ex) { fail(ex, 'save the site settings'); }
+});
+
+/* =========================================================
+   PAYMENT GATEWAYS  (config/payment_settings)
+   ========================================================= */
+function paintPay(){
+  $('gUpi').checked  = PAY.enableUpi !== false && (PAY.enableUpi === true || !!PAY.upiId);
+  $('gUpiId').value  = PAY.upiId || '';
+  $('gPayee').value  = PAY.payeeName || 'Padharo House';
+  $('gAdv30').checked   = PAY.allow30PercentAdvance !== false;
+  $('gFull100').checked = !!PAY.allow100PercentFull;
+  $('gRzp').checked  = !!PAY.enableRazorpay;
+  $('gRzpKey').value = PAY.razorpayKeyId || '';
+  $('gRzpFee').value = PAY.gatewayFeePercent ?? '';
+  $('gBank').checked = !!PAY.enableBankTransfer;
+  $('gBankName').value = PAY.bankAccountName || '';
+  $('gBankBank').value = PAY.bankName || '';
+  $('gBankAcc').value  = PAY.bankAccountNumber || '';
+  $('gBankIfsc').value = PAY.bankIfsc || '';
+  $('gBankSwift').value = PAY.bankSwift || '';
+  $('payMeta').textContent = PAY.updatedBy ? ('Last saved by ' + PAY.updatedBy) : '';
+  dimPay();
+}
+function dimPay(){
+  $('upiFields').style.opacity = $('gUpi').checked ? '1' : '.45';
+}
+$('gUpi').addEventListener('change', dimPay);
+$('savePay').addEventListener('click', async () => {
+  const warn = $('payWarn');
+  const upiOn = $('gUpi').checked, rzpOn = $('gRzp').checked, bankOn = $('gBank').checked;
+  const upiId = $('gUpiId').value.trim(), rzpKey = $('gRzpKey').value.trim();
+  const problems = [];
+  if (!upiOn && !rzpOn && !bankOn) problems.push('Turn on at least one payment method, or guests cannot pay.');
+  if (upiOn && !/^[\w.\-]{2,}@[a-zA-Z]{2,}$/.test(upiId)) problems.push('Enter a valid UPI ID, e.g. 9461884005@ybl.');
+  if (upiOn && !$('gAdv30').checked && !$('gFull100').checked) problems.push('For UPI, allow 30% advance and/or 100% full payment.');
+  if (rzpOn && !/^rzp_(live|test)_\w+$/.test(rzpKey)) problems.push('Razorpay Key ID should look like rzp_live_xxxx or rzp_test_xxxx.');
+  if (/secret/i.test(rzpKey) || rzpKey.length > 60) problems.push('That looks like a Key Secret — never put a secret on this page.');
+  if (bankOn && (!$('gBankAcc').value.trim() || !$('gBankIfsc').value.trim())) problems.push('Bank transfer needs an account number and IFSC.');
+  if (problems.length) { warn.innerHTML = problems.join('<br>'); warn.hidden = false; return; }
+  warn.hidden = true;
+  try {
+    await setDoc(doc(db,'config','payment_settings'), {
+      enableUpi: upiOn, upiId, payeeName: $('gPayee').value.trim() || 'Padharo House',
+      allow30PercentAdvance: $('gAdv30').checked,
+      allow100PercentFull: $('gFull100').checked,
+      enableRazorpay: rzpOn, razorpayKeyId: rzpKey,
+      gatewayFeePercent: Math.max(0, Number($('gRzpFee').value) || 0),
+      enableBankTransfer: bankOn,
+      bankAccountName: $('gBankName').value.trim(), bankName: $('gBankBank').value.trim(),
+      bankAccountNumber: $('gBankAcc').value.trim(), bankIfsc: $('gBankIfsc').value.trim().toUpperCase(),
+      bankSwift: $('gBankSwift').value.trim(),
+      updatedAt: serverTimestamp(), updatedBy: ME.email
+    }, { merge:true });
+    toast('Payment settings saved');
+  } catch (ex) { fail(ex, 'save the payment settings'); }
+});
 
 /* =========================================================
    2a. TARIFF
@@ -931,7 +1199,7 @@ function renderBookings(){
 
   const head = bkSub === 'past'
     ? ['Guest','Stay','Nights','Total','Collected','Source','']
-    : ['Guest','Phone','Check-in','Check-out','Total','Advance','Balance','Status',''];
+    : ['Guest','Phone','Check-in','Check-out','Payment','Total','Paid','Balance','Status',''];
   $('bkHead').innerHTML = head.map(h => `<th>${h}</th>`).join('');
 
   body.innerHTML = rows.map(b => {
@@ -950,18 +1218,20 @@ function renderBookings(){
       <td><a class="text-terra font-semibold" href="https://wa.me/${waNumber(b.phone)}" target="_blank" rel="noopener">${esc(b.phone)}</a></td>
       <td>${fmtShort(b.checkIn)}</td>
       <td>${fmtShort(b.checkOut)}</td>
+      <td>${payCell(b)}</td>
       <td>${INR(b.totalAmount)}</td>
       <td>${INR(b.advancePaid)}</td>
       <td>${bal > 0 ? `<b class="text-[#a12626]">${INR(bal)}</b>` : '<span class="bdg bdg-green">Paid</span>'}</td>
       <td>
-        ${b.status === 'PENDING_VERIFICATION' ? '<span class="bdg bdg-amber">New · verify</span>' : ''}
+        ${b.status === 'PENDING_VERIFICATION' ? '<span class="bdg bdg-amber">Verify</span>' : ''}
+        ${b.status === 'CONFIRMED' ? '<span class="bdg bdg-green">Confirmed</span>' : ''}
+        ${b.paymentMethod === 'RAZORPAY' && !b.paymentVerified ? '<span class="bdg bdg-amber">Check dashboard</span>' : ''}
         ${b.checkedIn ? '<span class="bdg bdg-blue">Checked in</span>' : ''}
-        ${b.utrVerified ? '<span class="bdg bdg-green">UTR ok</span>' : '<span class="bdg bdg-amber">UTR?</span>'}
       </td>
       <td>
         <div class="flex gap-1.5">
+          ${!b.utrVerified ? `<button class="btn btn-p" data-vc="${b.id}">Verify &amp; Confirm</button>` : ''}
           ${!b.checkedIn ? `<button class="btn btn-o" data-checkin="${b.id}">Check-in</button>` : ''}
-          ${!b.utrVerified ? `<button class="btn btn-g" data-utr="${b.id}">Verify UTR</button>` : ''}
           <button class="btn btn-g" data-edit="${b.id}"><i data-lucide="pencil" class="w-4 h-4"></i></button>
         </div>
       </td>
@@ -971,6 +1241,7 @@ function renderBookings(){
   body.querySelectorAll('[data-edit]').forEach(x => x.addEventListener('click', () => openBooking(x.dataset.edit)));
   body.querySelectorAll('[data-checkin]').forEach(x => x.addEventListener('click', () => markCheckedIn(x.dataset.checkin)));
   body.querySelectorAll('[data-utr]').forEach(x => x.addEventListener('click', () => verifyUtr(x.dataset.utr)));
+  body.querySelectorAll('[data-vc]').forEach(x => x.addEventListener('click', () => verifyAndConfirm(x.dataset.vc)));
 
   // past ledger stats
   const past = BOOKINGS.filter(b => phaseOf(b) === 'past');
@@ -984,6 +1255,43 @@ async function markCheckedIn(id){
   try { await updateDoc(doc(db,'bookings',id), { checkedIn:true, checkedInAt: serverTimestamp() }); toast('Marked checked-in'); }
   catch (ex) { fail(ex, 'mark that check-in'); }
 }
+/* payment method + reference, as submitted by the guest */
+function payCell(b){
+  const m = b.paymentMethod || (b.utr ? 'UPI_DIRECT' : '');
+  const ref = b.paymentRef || b.utr || '';
+  if (!m) return '<span class="text-muted text-xs">—</span>';
+  const label = { UPI_DIRECT:'UPI direct', RAZORPAY:'Razorpay', BANK_TRANSFER:'Bank transfer' }[m] || m;
+  const cls = m === 'RAZORPAY' ? 'bdg-blue' : m === 'BANK_TRANSFER' ? 'bdg-gray' : 'bdg-green';
+  const paidLabel = b.paymentOption === 'FULL' ? '100% paid' : '30% advance';
+  return `<span class="bdg ${cls}">${esc(label)}</span>
+    <div class="text-[11px] text-muted mt-1">${esc(paidLabel)}</div>
+    ${ref ? `<div class="text-[11px] font-mono text-ink break-all">${esc(ref)}</div>` : ''}`;
+}
+
+/* one click: confirm the booking and open the WhatsApp confirmation */
+async function verifyAndConfirm(id){
+  const b = BOOKINGS.find(x => x.id === id); if (!b) return;
+  const ref = b.paymentRef || b.utr;
+  const claimed = Number(b.advanceClaimed ?? b.advanceDue) || 0;
+  const method = b.paymentMethod === 'RAZORPAY' ? 'Razorpay payment' : 'UPI transfer';
+  let msg = 'Confirm ' + b.guestName + '’s booking?\n\n' + method +
+            (ref ? ' · ' + ref : '') + '\nAmount expected: ' + INR(claimed) +
+            '\n\nOnly press OK once you have seen the money in your account';
+  if (b.paymentMethod === 'RAZORPAY') msg += ' / the Razorpay dashboard';
+  msg += '.';
+  if (!confirm(msg)) return;
+  const patch = {
+    status: 'CONFIRMED', utrVerified: true, paymentVerified: true,
+    utrVerifiedAt: serverTimestamp(), utrVerifiedBy: ME.email
+  };
+  if (claimed > 0 && !(Number(b.advancePaid) > 0)) patch.advancePaid = claimed;
+  try {
+    await updateDoc(doc(db,'bookings',id), patch);
+    toast('Confirmed — opening WhatsApp');
+    dispatch('booking', 'confirm', id);          // prefilled confirmation message
+  } catch (ex) { fail(ex, 'confirm that booking'); }
+}
+
 async function verifyUtr(id){
   const b = BOOKINGS.find(x => x.id === id); if (!b) return;
   let utr = b.utr;

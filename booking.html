@@ -62,7 +62,7 @@
         <a href="blog.html" class="nav-link">Journal</a>
       </nav>
       <div class="flex items-center gap-3">
-        <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-primary text-sm"><i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp</a>
+        <a data-wa href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-primary text-sm"><i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp</a>
         <button id="burger" class="lg:hidden nav-ico text-2xl leading-none">&#9776;</button>
       </div>
     </div>
@@ -116,8 +116,8 @@
             <input type="text" id="dates" class="hidden" />
             <div id="dateErr" class="err mt-3" hidden></div>
             <div class="grid grid-cols-2 gap-3 mt-4">
-              <div class="bg-cream rounded-lg p-3"><div class="text-[11px] text-muted font-semibold">CHECK-IN</div><div class="font-semibold" id="dIn">—</div><div class="text-[11px] text-muted">from 2 PM</div></div>
-              <div class="bg-cream rounded-lg p-3"><div class="text-[11px] text-muted font-semibold">CHECK-OUT</div><div class="font-semibold" id="dOut">—</div><div class="text-[11px] text-muted">by 11 AM</div></div>
+              <div class="bg-cream rounded-lg p-3"><div class="text-[11px] text-muted font-semibold">CHECK-IN</div><div class="font-semibold" id="dIn">—</div><div class="text-[11px] text-muted" id="ciTime">from 2:00 PM</div></div>
+              <div class="bg-cream rounded-lg p-3"><div class="text-[11px] text-muted font-semibold">CHECK-OUT</div><div class="font-semibold" id="dOut">—</div><div class="text-[11px] text-muted" id="coTime">by 11:00 AM</div></div>
             </div>
           </div>
 
@@ -130,7 +130,7 @@
                 <div class="text-[11px] text-muted">guests</div>
               </div>
               <button class="btn btn-outline" id="gPlus" type="button" aria-label="More guests">+</button>
-              <p class="text-xs text-muted ml-2">Sleeps 2 comfortably; a third guest can be added on an extra mattress.</p>
+              <p class="text-xs text-muted ml-2" id="guestNote">Sleeps 2 comfortably.</p>
             </div>
           </div>
 
@@ -157,45 +157,74 @@
         <div id="pane2" hidden>
           <div class="bg-white rounded-2xl p-6 border border-[#efe6da]">
             <div class="flex items-start justify-between gap-3 mb-1">
-              <h2 class="font-serif text-xl">Pay the 30% advance</h2>
+              <h2 class="font-serif text-xl">Choose how to pay</h2>
               <button class="btn btn-ghost text-sm" style="background:#eee7dd;color:#6E645A;border:0" id="back1" type="button">← Edit stay</button>
             </div>
-            <p class="text-xs text-muted mb-5">Paid <b>directly to your hosts</b> by UPI — no booking platform, no commission. The balance is settled at check-in.</p>
+            <p class="text-xs text-muted mb-5">The balance, if any, is settled at check-in.</p>
+
+            <!-- method picker (only enabled methods appear) -->
+            <div id="methodBox" class="space-y-3 mb-5"></div>
+
+            <!-- amount choice (UPI / bank) -->
+            <div id="amountBox" class="mb-5" hidden>
+              <div class="lbl">How much would you like to pay now?</div>
+              <div class="grid sm:grid-cols-2 gap-3" id="amountOpts"></div>
+            </div>
 
             <div class="bg-cream rounded-xl p-5 text-center mb-5">
               <div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Pay now</div>
               <div class="font-serif text-4xl text-terra my-1" id="payAmount">₹0</div>
-              <div class="text-xs text-muted">30% of <span id="payTotal">₹0</span> · balance <span id="payBalance">₹0</span> at check-in</div>
+              <div class="text-xs text-muted" id="payNote"></div>
             </div>
 
-            <div id="upiMissing" class="err mb-5" hidden>
-              UPI details are not configured yet. Please message us on
-              <a class="underline font-semibold" href="https://wa.me/919461884005" target="_blank" rel="noopener">WhatsApp</a>
-              and we will send payment details and confirm your dates personally.
+            <div id="noMethods" class="err mb-5" hidden>
+              Online payment is not switched on yet. Please
+              <a class="underline font-semibold" id="noMethodsWa" href="#" target="_blank" rel="noopener">message us on WhatsApp</a>
+              and we will confirm your dates and send payment details personally.
             </div>
 
-            <div id="upiBox" class="grid sm:grid-cols-[200px_1fr] gap-6 items-start">
-              <div class="text-center">
-                <div class="bg-white border border-[#efe6da] rounded-xl p-3 inline-block">
-                  <img id="qr" alt="UPI QR code for Padharo House" width="190" height="190" class="block" />
+            <!-- UPI panel -->
+            <div id="upiPanel" hidden>
+              <div class="grid sm:grid-cols-[200px_1fr] gap-6 items-start">
+                <div class="text-center">
+                  <div class="bg-white border border-[#efe6da] rounded-xl p-3 inline-block">
+                    <img id="qr" alt="UPI QR code for Padharo House" width="190" height="190" class="block" />
+                  </div>
+                  <p class="text-[11px] text-muted mt-2">Scan with any UPI app</p>
                 </div>
-                <p class="text-[11px] text-muted mt-2">Scan with any UPI app</p>
+                <div>
+                  <p class="text-sm font-semibold mb-2">Or pay from this device</p>
+                  <a id="upiLink" class="btn btn-primary w-full justify-center mb-3" href="#"><i data-lucide="smartphone" class="w-4 h-4"></i> Open UPI app</a>
+                  <div class="text-xs text-muted space-y-1.5">
+                    <div class="flex justify-between gap-3 bg-cream rounded px-3 py-2"><span>UPI ID</span><b class="text-ink" id="vpaShow">—</b></div>
+                    <div class="flex justify-between gap-3 bg-cream rounded px-3 py-2"><span>Payee</span><b class="text-ink" id="payeeShow">Padharo House</b></div>
+                    <div class="flex justify-between gap-3 bg-cream rounded px-3 py-2"><span>Reference</span><b class="text-ink" id="refShow">—</b></div>
+                  </div>
+                  <p class="text-[11px] text-muted mt-3">GPay · PhonePe · Paytm · any bank UPI app. Afterwards note the <b>12-digit UTR / transaction reference</b>.</p>
+                </div>
               </div>
-              <div>
-                <p class="text-sm font-semibold mb-2">Or pay from this device</p>
-                <a id="upiLink" class="btn btn-primary w-full justify-center mb-3" href="#"><i data-lucide="smartphone" class="w-4 h-4"></i> Open UPI app</a>
-                <div class="text-xs text-muted space-y-1.5">
-                  <div class="flex justify-between gap-3 bg-cream rounded px-3 py-2">
-                    <span>UPI ID</span><b class="text-ink" id="vpaShow">—</b>
-                  </div>
-                  <div class="flex justify-between gap-3 bg-cream rounded px-3 py-2">
-                    <span>Payee name</span><b class="text-ink">Padharo House</b>
-                  </div>
-                  <div class="flex justify-between gap-3 bg-cream rounded px-3 py-2">
-                    <span>Reference</span><b class="text-ink" id="refShow">—</b>
-                  </div>
-                </div>
-                <p class="text-[11px] text-muted mt-3">GPay · PhonePe · Paytm · BHIM · any bank UPI app. After paying, note the <b>12-digit UTR / transaction reference</b> from your app.</p>
+            </div>
+
+            <!-- Bank transfer panel -->
+            <div id="bankPanel" hidden>
+              <div class="bg-cream rounded-xl p-5 text-sm space-y-2">
+                <div class="flex justify-between gap-3"><span class="text-muted">Account name</span><b id="bkName">—</b></div>
+                <div class="flex justify-between gap-3"><span class="text-muted">Bank</span><b id="bkBank">—</b></div>
+                <div class="flex justify-between gap-3"><span class="text-muted">Account number</span><b class="font-mono" id="bkAcc">—</b></div>
+                <div class="flex justify-between gap-3"><span class="text-muted">IFSC</span><b class="font-mono" id="bkIfsc">—</b></div>
+                <div class="flex justify-between gap-3" id="bkSwiftRow"><span class="text-muted">SWIFT / notes</span><b id="bkSwift">—</b></div>
+                <div class="flex justify-between gap-3 pt-2 border-t border-[#e6d8c6]"><span class="text-muted">Reference to quote</span><b id="bkRef">—</b></div>
+              </div>
+              <p class="text-[11px] text-muted mt-3">International transfers can take 1–3 working days. Send us the transfer receipt on WhatsApp and we will hold your dates meanwhile.</p>
+            </div>
+
+            <!-- Razorpay panel -->
+            <div id="rzpPanel" hidden>
+              <div class="bg-cream rounded-xl p-5">
+                <p class="text-sm mb-3">Pay securely by card, netbanking, wallet or UPI through Razorpay. Your booking is confirmed the moment payment succeeds.</p>
+                <p class="text-[11px] text-muted mb-4" id="rzpFeeNote" hidden></p>
+                <button class="btn btn-primary w-full justify-center" id="rzpPay" type="button"><i data-lucide="credit-card" class="w-4 h-4"></i> Pay <span id="rzpAmt">₹0</span> securely</button>
+                <div id="rzpErr" class="err mt-3" hidden></div>
               </div>
             </div>
 
@@ -210,10 +239,20 @@
               <h2 class="font-serif text-xl">Confirm your payment reference</h2>
               <button class="btn btn-ghost text-sm" style="background:#eee7dd;color:#6E645A;border:0" id="back2" type="button">← Back</button>
             </div>
-            <p class="text-xs text-muted mb-5">Enter the 12-digit UTR / transaction ID from your UPI app. We verify it personally and confirm on WhatsApp.</p>
-            <label class="lbl" for="utr">UPI transaction / UTR number *</label>
-            <input class="inp tracking-widest" id="utr" inputmode="numeric" maxlength="12" placeholder="123456789012" />
-            <p class="text-[11px] text-muted mt-1.5">Exactly 12 digits. In GPay it is the “UPI transaction ID”; in PhonePe the “UTR”.</p>
+            <div id="utrWrap">
+              <p class="text-xs text-muted mb-5">Enter the 12-digit UTR / transaction ID from your payment app. We verify it personally and confirm on WhatsApp.</p>
+              <label class="lbl" for="utr">Transaction / UTR number *</label>
+              <input class="inp tracking-widest" id="utr" inputmode="numeric" maxlength="12" placeholder="123456789012" />
+              <p class="text-[11px] text-muted mt-1.5">Exactly 12 digits. In GPay it is the “UPI transaction ID”; in PhonePe the “UTR”. For a bank transfer, use the NEFT/SWIFT reference.</p>
+            </div>
+            <div id="rzpDone" hidden>
+              <div class="bg-[#e6f4ea] border border-[#cce8d5] rounded-xl p-5 text-center">
+                <i data-lucide="check-circle-2" class="w-7 h-7 text-[#1f7a43] mx-auto mb-2"></i>
+                <p class="text-sm font-semibold text-[#1f7a43]">Payment received</p>
+                <p class="text-xs text-muted mt-1 font-mono" id="rzpState">—</p>
+              </div>
+              <p class="text-xs text-muted mt-3">Press submit to finish and hold your dates.</p>
+            </div>
             <div id="utrErr" class="err mt-4" hidden></div>
             <button class="btn btn-primary w-full justify-center mt-5" id="submitBooking">
               <i data-lucide="check-circle-2" class="w-4 h-4"></i> Submit booking
@@ -239,7 +278,7 @@
             <div id="mailNote" class="text-xs text-muted mb-5" hidden></div>
             <div class="flex flex-wrap gap-3 justify-center">
               <a class="btn btn-primary" id="doneWa" href="#" target="_blank" rel="noopener"><i data-lucide="message-circle" class="w-4 h-4"></i> Message us on WhatsApp</a>
-              <a class="btn btn-outline" href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener"><i data-lucide="map-pin" class="w-4 h-4"></i> Map pin</a>
+              <a class="btn btn-outline" data-map href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener"><i data-lucide="map-pin" class="w-4 h-4"></i> Map pin</a>
             </div>
           </div>
         </div>
@@ -281,8 +320,8 @@
         <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Contact</h4>
         <ul class="space-y-2 text-sm">
           <li>Opposite Amer Fort, Amer, Jaipur</li>
-          <li><a href="mailto:padharohouse@gmail.com" class="hover:text-gold">padharohouse@gmail.com</a></li>
-          <li><a href="tel:+919461884005" class="hover:text-gold">+91 94618 84005</a></li>
+          <li><a data-email-link data-email-text href="mailto:padharohouse@gmail.com" class="hover:text-gold">padharohouse@gmail.com</a></li>
+          <li><a data-tel data-phone-text href="tel:+919461884005" class="hover:text-gold">+91 94618 84005</a></li>
         </ul>
       </div>
     </div>
@@ -294,9 +333,9 @@
 
   <nav class="mobile-cta" aria-label="Quick actions">
     <a href="index.html"><i data-lucide="home" class="w-5 h-5"></i> Home</a>
-    <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="primary"><i data-lucide="message-circle" class="w-5 h-5"></i> WhatsApp</a>
-    <a href="tel:+919461884005"><i data-lucide="phone" class="w-5 h-5"></i> Call</a>
-    <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener"><i data-lucide="map-pin" class="w-5 h-5"></i> Map</a>
+    <a data-wa href="https://wa.me/919461884005" target="_blank" rel="noopener" class="primary"><i data-lucide="message-circle" class="w-5 h-5"></i> WhatsApp</a>
+    <a data-tel href="tel:+919461884005"><i data-lucide="phone" class="w-5 h-5"></i> Call</a>
+    <a data-map href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener"><i data-lucide="map-pin" class="w-5 h-5"></i> Map</a>
   </nav>
 
   <script src="assets/app.js"></script>
@@ -307,11 +346,10 @@ import { getFirestore, doc, collection, onSnapshot, addDoc, writeBatch, serverTi
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* ============================================================
-   CONFIG — two values to fill in
+   Everything below is driven by Firestore — nothing is hardcoded.
+   config/site_settings   -> contact, times, guest limits, email webhook
+   config/payment_settings-> which gateways are on, UPI id, Razorpay key
    ============================================================ */
-const UPI_VPA  = "PASTE_UPI_ID@bank";                 // e.g. padharohouse@okaxis
-const SCRIPT_URL = "PASTE_APPS_SCRIPT_WEB_APP_URL";   // Apps Script deployment URL
-
 const firebaseConfig = {
   apiKey: "AIzaSyB-WSDavLU99Tw-P95wFFO7KX_f50Z0fOo",
   authDomain: "padharo-house.firebaseapp.com",
@@ -320,14 +358,20 @@ const firebaseConfig = {
   messagingSenderId: "357110206597",
   appId: "1:357110206597:web:4826cfc4903f69677d99ec"
 };
-const ADVANCE_PCT = 0.30;
-const WA = "919461884005";
-const MAP_LINK = "https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521";
-const UPI_READY = !/PASTE_/.test(UPI_VPA);
-const MAIL_READY = !/PASTE_/.test(SCRIPT_URL);
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+const FALLBACK = {
+  whatsappNumber:'919461884005', displayPhone:'+91 94618 84005',
+  email:'padharohouse@gmail.com', instagramUrl:'https://www.instagram.com/padharo_house',
+  mapLat:'26.987683983961603', mapLng:'75.8550010443521',
+  checkInTime:'2:00 PM', checkOutTime:'11:00 AM', baseGuests:2, maxGuests:4,
+  googleAppsScriptWebhookUrl:''
+};
+let SITE = { ...FALLBACK }, PAY = {};
+const S = k => (SITE[k] ?? FALLBACK[k] ?? '');
+const mapLink = () => 'https://www.google.com/maps/search/?api=1&query=' + S('mapLat') + ',' + S('mapLng');
+const waLink = txt => 'https://wa.me/' + S('whatsappNumber') + (txt ? '?text=' + encodeURIComponent(txt) : '');
 
 /* ---------------- helpers ---------------- */
 const $ = id => document.getElementById(id);
@@ -347,6 +391,35 @@ let PRICING = null, PACKAGES = [], BLOCKED = new Set();
 let fp = null, checkIn = null, checkOut = null, guests = 2;
 const chosen = new Set();
 let QUOTE = null, BOOKING_REF = null;
+let method = null;            // UPI_DIRECT | RAZORPAY | BANK_TRANSFER
+let payOption = 'ADVANCE';    // ADVANCE | FULL
+let rzpResult = null;         // { paymentId }
+
+/* ---------------- live settings ---------------- */
+onSnapshot(doc(db,'config','site_settings'), s => {
+  SITE = { ...FALLBACK, ...(s.exists() ? s.data() : {}) };
+  applySite();
+  if (!$('pane2').hidden) renderMethods();
+}, e => console.warn('site_settings', e));
+
+onSnapshot(doc(db,'config','payment_settings'), s => {
+  PAY = s.exists() ? s.data() : {};
+  if (!$('pane2').hidden) renderMethods();
+}, e => console.warn('payment_settings', e));
+
+function applySite(){
+  document.querySelectorAll('[data-wa]').forEach(a => { a.href = waLink(); });
+  document.querySelectorAll('[data-map]').forEach(a => { a.href = mapLink(); });
+  document.querySelectorAll('[data-tel]').forEach(a => { a.href = 'tel:' + S('displayPhone').replace(/\s/g,''); });
+  document.querySelectorAll('[data-insta]').forEach(a => { a.href = S('instagramUrl'); });
+  document.querySelectorAll('[data-phone-text]').forEach(el => { el.textContent = S('displayPhone'); });
+  document.querySelectorAll('[data-email-text]').forEach(el => { el.textContent = S('email'); });
+  document.querySelectorAll('[data-email-link]').forEach(a => { a.href = 'mailto:' + S('email'); });
+  $('ciTime').textContent = 'from ' + S('checkInTime');
+  $('coTime').textContent = 'by ' + S('checkOutTime');
+  $('guestNote').textContent = 'Sleeps ' + S('baseGuests') + ' comfortably; up to ' + S('maxGuests') + ' with extra bedding.';
+  setGuests(Math.min(guests, Number(S('maxGuests')) || 4));
+}
 
 /* ============================================================
    1. LIVE AVAILABILITY
@@ -470,7 +543,7 @@ function quote(){
     if (inPeak(k)) peak += Number(PRICING.peakSurcharge) || 0;
   });
 
-  const extraGuests = Math.max(0, guests - 2);
+  const extraGuests = Math.max(0, guests - (Number(S('baseGuests')) || 2));
   const extra = extraGuests * (Number(PRICING.extraGuestCharge) || 0) * nights.length;
 
   const picked = PACKAGES.filter(p => chosen.has(p.id)).map(p => {
@@ -484,7 +557,7 @@ function quote(){
   const taxPct = PRICING.taxEnabled ? (Number(PRICING.taxPercent) || 0) : 0;
   const tax = Math.round(sub * taxPct / 100);
   const total = sub + tax;
-  const advance = Math.round(total * ADVANCE_PCT);
+  const advance = Math.round(total * 0.30);
   const balance = total - advance;
 
   QUOTE = { nights:nights.length, nightList:nights, room, peak, extra, extraGuests,
@@ -517,17 +590,18 @@ function quote(){
 
 /* guests */
 function setGuests(n){
-  guests = Math.min(3, Math.max(1, n));
+  const max = Math.max(1, Number(S('maxGuests')) || 4);
+  guests = Math.min(max, Math.max(1, n));
   $('gCount').textContent = guests;
   $('gMinus').disabled = guests <= 1;
-  $('gPlus').disabled = guests >= 3;
+  $('gPlus').disabled = guests >= max;
   quote();
 }
 $('gMinus').addEventListener('click', () => setGuests(guests-1));
 $('gPlus').addEventListener('click', () => setGuests(guests+1));
 
 /* ============================================================
-   3. STEPS + UPI
+   3. STEPS, GATEWAYS & PAYMENT
    ============================================================ */
 function step(n){
   [1,2,3].forEach(i => { $('pane'+i).hidden = i !== n; });
@@ -542,6 +616,8 @@ function step(n){
 }
 const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
 const phoneDigits = v => String(v||'').replace(/\D/g,'');
+const amountNow = () => !QUOTE ? 0 : (payOption === 'FULL' ? QUOTE.total : QUOTE.advance);
+const balanceAfter = () => !QUOTE ? 0 : QUOTE.total - amountNow();
 
 $('toStep2').addEventListener('click', () => {
   const err = $('formErr');
@@ -552,54 +628,210 @@ $('toStep2').addEventListener('click', () => {
   if (phoneDigits(phone).length < 10) problems.push('enter a valid phone number');
   if (!emailOk(email)) problems.push('enter a valid email address');
   if (!QUOTE || !QUOTE.total) problems.push('we could not price those dates — please message us');
-  if (problems.length) {
-    err.innerHTML = 'Please ' + problems.join(', ') + '.';
-    err.hidden = false; return;
-  }
+  if (problems.length) { err.innerHTML = 'Please ' + problems.join(', ') + '.'; err.hidden = false; return; }
   err.hidden = true;
-  BOOKING_REF = 'PH-' + new Date().getFullYear() + '-' +
-    Math.random().toString(36).slice(2,6).toUpperCase();
-  paintPayment();
+  BOOKING_REF = 'PH-' + new Date().getFullYear() + '-' + Math.random().toString(36).slice(2,6).toUpperCase();
+  rzpResult = null;
+  renderMethods();
   step(2);
 });
 $('back1').addEventListener('click', () => step(1));
 $('back2').addEventListener('click', () => step(2));
 $('toStep3').addEventListener('click', () => step(3));
 
-function paintPayment(){
-  $('payAmount').textContent  = INR(QUOTE.advance);
-  $('payTotal').textContent   = INR(QUOTE.total);
-  $('payBalance').textContent = INR(QUOTE.balance);
-  $('refShow').textContent    = BOOKING_REF;
-  $('upiMissing').hidden = UPI_READY;
-  $('upiBox').hidden = !UPI_READY;
-  if (!UPI_READY) return;
-  const note = 'Padharo House ' + BOOKING_REF;
-  const uri = 'upi://pay?pa=' + encodeURIComponent(UPI_VPA) +
-              '&pn=' + encodeURIComponent('Padharo House') +
-              '&am=' + QUOTE.advance + '&cu=INR' +
-              '&tn=' + encodeURIComponent(note) +
-              '&tr=' + encodeURIComponent(BOOKING_REF.replace(/-/g,''));
-  $('upiLink').href = uri;
-  $('vpaShow').textContent = UPI_VPA;
-  $('qr').src = 'https://api.qrserver.com/v1/create-qr-code/?size=380x380&margin=0&data=' + encodeURIComponent(uri);
+/* ---- only the gateways switched on in admin are offered ---- */
+function enabledMethods(){
+  const out = [];
+  if (PAY.enableUpi && PAY.upiId) out.push({
+    id:'UPI_DIRECT', title:'Direct UPI', badge:'0% fee',
+    desc:'Scan a QR or tap to open your UPI app. Paid straight to your hosts — no platform commission.' });
+  if (PAY.enableRazorpay && PAY.razorpayKeyId) out.push({
+    id:'RAZORPAY', title:'Card, netbanking or wallet', badge:'instant',
+    desc:'Secure online checkout by Razorpay. Confirmed as soon as payment succeeds.' });
+  if (PAY.enableBankTransfer && PAY.bankAccountNumber) out.push({
+    id:'BANK_TRANSFER', title:'Bank transfer', badge:'international',
+    desc:'NEFT or SWIFT from an Indian or overseas bank account.' });
+  return out;
+}
+function renderMethods(){
+  const list = enabledMethods();
+  $('noMethodsWa').href = waLink('Khamma Ghani! I would like to book Padharo House for ' +
+    fmtD(checkIn) + ' to ' + fmtD(checkOut) + ' (' + (QUOTE ? QUOTE.nights : '') + ' nights, ' + guests + ' guests).');
+  $('noMethods').hidden = list.length > 0;
+  $('toStep3').hidden = list.length === 0;
+  if (!list.length) { ['methodBox','amountBox','upiPanel','bankPanel','rzpPanel'].forEach(k => $(k).hidden = true); return; }
+  $('methodBox').hidden = false;
+
+  if (!list.some(m => m.id === method)) method = list[0].id;
+  $('methodBox').innerHTML = list.map(m => `
+    <label class="pkg${method===m.id?' on':''}" data-m="${m.id}">
+      <input type="radio" name="paymethod" class="mt-1 w-4 h-4 accent-[#A0472A]" ${method===m.id?'checked':''} />
+      <span class="flex-1">
+        <span class="flex items-center gap-2 flex-wrap">
+          <b class="font-serif text-base">${esc(m.title)}</b>
+          <span class="pill">${esc(m.badge)}</span>
+        </span>
+        <span class="block text-xs text-muted mt-1">${esc(m.desc)}</span>
+      </span>
+    </label>`).join('');
+  $('methodBox').querySelectorAll('[data-m]').forEach(el => el.addEventListener('click', e => {
+    e.preventDefault(); method = el.dataset.m; rzpResult = null; renderMethods();
+  }));
+  renderAmountChoice();
+  paintPanels();
+}
+function renderAmountChoice(){
+  const allowAdv  = PAY.allow30PercentAdvance !== false;
+  const allowFull = !!PAY.allow100PercentFull;
+  const opts = [];
+  if (allowAdv)  opts.push({ id:'ADVANCE', label:'30% advance now', sub:'balance at check-in' });
+  if (allowFull) opts.push({ id:'FULL', label:'100% full payment', sub:'nothing left to pay' });
+  if (!opts.length) opts.push({ id:'ADVANCE', label:'30% advance now', sub:'balance at check-in' });
+  if (!opts.some(o => o.id === payOption)) payOption = opts[0].id;
+  $('amountBox').hidden = opts.length < 2;
+  $('amountOpts').innerHTML = opts.map(o => `
+    <label class="pkg${payOption===o.id?' on':''}" data-a="${o.id}">
+      <input type="radio" name="payamount" class="mt-1 w-4 h-4 accent-[#A0472A]" ${payOption===o.id?'checked':''} />
+      <span class="flex-1">
+        <b class="block">${esc(o.label)}</b>
+        <span class="block text-xs text-muted">${esc(o.sub)}</span>
+      </span>
+    </label>`).join('');
+  $('amountOpts').querySelectorAll('[data-a]').forEach(el => el.addEventListener('click', e => {
+    e.preventDefault(); payOption = el.dataset.a; rzpResult = null; renderMethods();
+  }));
+}
+function paintPanels(){
+  const amt = amountNow();
+  $('payAmount').textContent = INR(amt);
+  $('payNote').innerHTML = payOption === 'FULL'
+    ? 'Full payment of ' + INR(QUOTE.total) + ' — nothing due at check-in'
+    : '30% of ' + INR(QUOTE.total) + ' · ' + INR(balanceAfter()) + ' due at check-in';
+
+  $('upiPanel').hidden  = method !== 'UPI_DIRECT';
+  $('bankPanel').hidden = method !== 'BANK_TRANSFER';
+  $('rzpPanel').hidden  = method !== 'RAZORPAY';
+  $('toStep3').innerHTML = method === 'RAZORPAY'
+    ? 'Continue <i data-lucide="arrow-right" class="w-4 h-4"></i>'
+    : 'I have paid — enter reference <i data-lucide="arrow-right" class="w-4 h-4"></i>';
+
+  if (method === 'UPI_DIRECT'){
+    const payee = PAY.payeeName || 'Padharo House';
+    const uri = 'upi://pay?pa=' + encodeURIComponent(PAY.upiId) +
+                '&pn=' + encodeURIComponent(payee) +
+                '&am=' + amt + '&cu=INR' +
+                '&tn=' + encodeURIComponent('Padharo House ' + BOOKING_REF) +
+                '&tr=' + encodeURIComponent(BOOKING_REF.replace(/-/g,''));
+    $('upiLink').href = uri;
+    $('vpaShow').textContent = PAY.upiId;
+    $('payeeShow').textContent = payee;
+    $('refShow').textContent = BOOKING_REF;
+    $('qr').src = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&data=' + encodeURIComponent(uri);
+  }
+  if (method === 'BANK_TRANSFER'){
+    $('bkName').textContent  = PAY.bankAccountName || '—';
+    $('bkBank').textContent  = PAY.bankName || '—';
+    $('bkAcc').textContent   = PAY.bankAccountNumber || '—';
+    $('bkIfsc').textContent  = PAY.bankIfsc || '—';
+    $('bkSwift').textContent = PAY.bankSwift || '—';
+    $('bkSwiftRow').hidden   = !PAY.bankSwift;
+    $('bkRef').textContent   = BOOKING_REF;
+  }
+  if (method === 'RAZORPAY'){
+    $('rzpAmt').textContent = INR(amt);
+    const fee = Number(PAY.gatewayFeePercent) || 0;
+    $('rzpFeeNote').hidden = !fee;
+    if (fee) $('rzpFeeNote').textContent = 'A ' + fee + '% gateway fee applies to online card payments. Pay by UPI to avoid it.';
+  }
+  const manual = method !== 'RAZORPAY';
+  $('utrWrap').hidden = !manual;
+  $('rzpDone').hidden = manual;
+  icons();
 }
 
+/* ---- Razorpay checkout ---- */
+function loadRzp(){
+  return new Promise((res, rej) => {
+    if (window.Razorpay) return res();
+    const s = document.createElement('script');
+    s.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    s.onload = res; s.onerror = () => rej(new Error('script blocked'));
+    document.head.appendChild(s);
+  });
+}
+$('rzpPay').addEventListener('click', async () => {
+  const err = $('rzpErr'); err.hidden = true;
+  const btn = $('rzpPay'); btn.disabled = true;
+  try { await loadRzp(); } catch (ex) {
+    err.textContent = 'The payment window could not load. Please check your connection, or pay by UPI instead.';
+    err.hidden = false; btn.disabled = false; return;
+  }
+  try {
+    const rz = new window.Razorpay({
+      key: PAY.razorpayKeyId,
+      amount: amountNow() * 100,
+      currency: 'INR',
+      name: PAY.payeeName || 'Padharo House',
+      description: (payOption === 'FULL' ? 'Full payment' : '30% advance') + ' · ' + BOOKING_REF,
+      prefill: { name: $('gName').value.trim(), email: $('gEmail').value.trim(), contact: $('gPhone').value.trim() },
+      notes: { bookingRef: BOOKING_REF, checkIn: checkIn, checkOut: checkOut, guests: String(guests) },
+      theme: { color: '#A0472A' },
+      handler: resp => {
+        rzpResult = { paymentId: resp.razorpay_payment_id };
+        $('rzpState').textContent = 'Payment received · ' + resp.razorpay_payment_id;
+        step(3);
+      },
+      modal: { ondismiss: () => { btn.disabled = false; } }
+    });
+    rz.on('payment.failed', r => {
+      err.textContent = 'Payment failed' + (r && r.error && r.error.description ? ': ' + r.error.description : '') +
+        '. You can try again or pay by UPI.';
+      err.hidden = false; btn.disabled = false;
+    });
+    rz.open();
+  } catch (ex) {
+    console.error('razorpay', ex);
+    err.textContent = 'Could not start the payment. Please pay by UPI, or message us on WhatsApp.';
+    err.hidden = false; btn.disabled = false;
+  }
+});
+
 /* ============================================================
-   4. SUBMIT → FIRESTORE → EMAIL
+   4. SUBMIT -> FIRESTORE -> EMAIL WEBHOOK
    ============================================================ */
 $('utr').addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g,'').slice(0,12); });
 
+async function sendWebhook(payload){
+  const url = S('googleAppsScriptWebhookUrl');
+  if (!url) return false;
+  try {
+    await fetch(url, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },   /* no CORS preflight */
+      body: JSON.stringify(payload)
+    });
+    return true;
+  } catch (ex) { console.warn('webhook failed', ex); return false; }
+}
+
 $('submitBooking').addEventListener('click', async () => {
   const btn = $('submitBooking'), err = $('utrErr');
+  const manual = method !== 'RAZORPAY';
   const utr = $('utr').value.trim();
-  if (!/^\d{12}$/.test(utr)) {
+
+  if (manual && !/^\d{12}$/.test(utr)) {
     err.textContent = 'Please enter the full 12-digit UPI transaction / UTR number.';
     err.hidden = false; return;
   }
-  if (!QUOTE || !checkIn || !checkOut) { err.textContent = 'Your selection expired — please pick your dates again.'; err.hidden = false; step(1); return; }
+  if (!manual && !rzpResult) {
+    err.textContent = 'We have not received a payment confirmation yet. Please complete the payment, or switch to UPI.';
+    err.hidden = false; return;
+  }
+  if (!QUOTE || !checkIn || !checkOut) {
+    err.textContent = 'Your selection expired — please pick your dates again.'; err.hidden = false; step(1); return;
+  }
   if (rangeHasBlocked(checkIn, checkOut)) {
-    err.textContent = 'Sorry — one of those nights was just booked. Please choose new dates; do not worry, we will refund or re-apply your payment.';
+    err.textContent = 'Sorry — one of those nights was just booked. Please choose new dates; we will refund or re-apply your payment.';
     err.hidden = false; return;
   }
   err.hidden = true;
@@ -607,23 +839,30 @@ $('submitBooking').addEventListener('click', async () => {
 
   const name = $('gName').value.trim(), phone = $('gPhone').value.trim(), email = $('gEmail').value.trim();
   const pkgTitles = QUOTE.packages.map(p => p.title).join(', ');
+  const paidNow = amountNow();
+  const ref = manual ? utr : rzpResult.paymentId;
   const record = {
     bookingId: BOOKING_REF,
     status: 'PENDING_VERIFICATION',
     source: 'website',
+    paymentMethod: method,
+    paymentOption: payOption,
+    paymentRef: ref,
+    paymentVerified: false,
     guestName: name, phone, email,
-    checkIn, checkOut,
-    nights: QUOTE.nights, guests,
+    checkIn: checkIn, checkOut: checkOut,
+    nights: QUOTE.nights, guests: guests,
     packages: QUOTE.packages.map(p => ({ id:p.id, title:p.title, amount:p.amount })),
     packageTitle: pkgTitles,
     roomTotal: QUOTE.room, peakTotal: QUOTE.peak, extraGuestTotal: QUOTE.extra,
     packagesTotal: QUOTE.pkgTotal, taxPercent: QUOTE.taxPct, taxAmount: QUOTE.tax,
     totalAmount: QUOTE.total,
-    advanceDue: QUOTE.advance,
-    advanceClaimed: QUOTE.advance,
-    advancePaid: 0,                 // host sets this when the UTR is verified
-    balanceDue: QUOTE.balance,
-    utr, utrVerified: false, checkedIn: false, cancelled: false,
+    advanceDue: paidNow,
+    advanceClaimed: paidNow,
+    advancePaid: 0,
+    balanceDue: QUOTE.total - paidNow,
+    utr: manual ? utr : '',
+    utrVerified: false, checkedIn: false, cancelled: false,
     notes: $('gNotes').value.trim(),
     blockedDates: QUOTE.nightList,
     createdAt: serverTimestamp(),
@@ -632,7 +871,6 @@ $('submitBooking').addEventListener('click', async () => {
 
   try {
     await addDoc(collection(db,'bookings'), record);
-    // hold the nights so nobody else can take them
     const batch = writeBatch(db);
     QUOTE.nightList.forEach(k => batch.set(doc(db,'blocked_dates',k), {
       date: k, reason: 'booking', source: 'guest_booking',
@@ -642,31 +880,26 @@ $('submitBooking').addEventListener('click', async () => {
   } catch (ex) {
     console.error('booking save failed', ex);
     err.innerHTML = 'We could not save your booking just now. Your payment is safe — please ' +
-      '<a class="underline font-semibold" href="https://wa.me/' + WA + '?text=' +
-      encodeURIComponent('Hi Padharo House, I paid the advance (UTR ' + utr + ') but the website could not save my booking ' + BOOKING_REF + '.') +
+      '<a class="underline font-semibold" href="' + waLink(
+        'Hi Padharo House, I paid ' + INR(paidNow) + ' (ref ' + ref + ') but the website could not save my booking ' + BOOKING_REF + '.') +
       '" target="_blank" rel="noopener">send us this on WhatsApp</a> and we will confirm manually.';
     err.hidden = false;
     btn.disabled = false; btn.innerHTML = '<i data-lucide="check-circle-2" class="w-4 h-4"></i> Submit booking'; icons();
     return;
   }
 
-  // confirmation emails (best effort — never blocks the booking)
-  if (MAIL_READY) {
-    try {
-      await fetch(SCRIPT_URL, {
-        method: 'POST', mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({
-          bookingId: BOOKING_REF, guestName: name, phone, email,
-          checkIn: fmtD(checkIn), checkOut: fmtD(checkOut),
-          nights: QUOTE.nights, guests,
-          packageTitle: pkgTitles || 'Stay only',
-          totalAmount: QUOTE.total, advanceClaimed: QUOTE.advance,
-          balanceDue: QUOTE.balance, utr
-        })
-      });
-    } catch (ex) { console.warn('email trigger failed', ex); }
-  } else {
+  const sent = await sendWebhook({
+    type: 'BOOKING',
+    bookingId: BOOKING_REF, guestName: name, phone: phone, email: email,
+    checkIn: fmtD(checkIn), checkOut: fmtD(checkOut),
+    checkInTime: S('checkInTime'), checkOutTime: S('checkOutTime'),
+    nights: QUOTE.nights, guests: guests,
+    packageTitle: pkgTitles || 'Stay only',
+    paymentMethod: method, paymentOption: payOption, paymentRef: ref, utr: manual ? utr : '',
+    totalAmount: QUOTE.total, advanceClaimed: paidNow, balanceDue: QUOTE.total - paidNow,
+    mapLink: mapLink(), hostEmail: S('email'), hostPhone: S('displayPhone')
+  });
+  if (!sent) {
     $('mailNote').textContent = 'Email confirmations are not switched on yet — we will message you on WhatsApp instead.';
     $('mailNote').hidden = false;
   }
@@ -675,11 +908,10 @@ $('submitBooking').addEventListener('click', async () => {
   $('doneSummary').innerHTML =
     fmtD(checkIn) + ' → ' + fmtD(checkOut) + ' · ' + QUOTE.nights + ' night' + (QUOTE.nights>1?'s':'') +
     ' · ' + guests + ' guest' + (guests>1?'s':'') +
-    '<br>Paid ' + INR(QUOTE.advance) + ' · ' + INR(QUOTE.balance) + ' due at check-in';
-  $('doneWa').href = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(
-    'Khamma Ghani! I have just booked Padharo House.\n\nRef: ' + BOOKING_REF +
-    '\nName: ' + name + '\nDates: ' + fmtD(checkIn) + ' to ' + fmtD(checkOut) +
-    '\nUTR: ' + utr);
+    '<br>Paid ' + INR(paidNow) +
+    (QUOTE.total - paidNow > 0 ? ' · ' + INR(QUOTE.total - paidNow) + ' due at check-in' : ' · fully paid');
+  $('doneWa').href = waLink('Khamma Ghani! I have just booked Padharo House.\n\nRef: ' + BOOKING_REF +
+    '\nName: ' + name + '\nDates: ' + fmtD(checkIn) + ' to ' + fmtD(checkOut) + '\nPayment ref: ' + ref);
   [1,2,3].forEach(i => $('pane'+i).hidden = true);
   $('paneDone').hidden = false;
   $('st3').className = 'step done'; $('ln2').className = 'step-line done';
@@ -687,7 +919,7 @@ $('submitBooking').addEventListener('click', async () => {
   icons();
 });
 
-setGuests(2); quote(); icons();
+applySite(); setGuests(2); quote(); icons();
 </script>
 </body>
 </html>

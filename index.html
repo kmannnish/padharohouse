@@ -243,7 +243,7 @@
   <div id="igBanner" class="ig-grad text-white text-sm" style="display:none">
     <div class="max-w-7xl mx-auto px-10 py-2.5 relative text-center">
       <span>✨ Khamma Ghani Instagram Family (<b>@padharo_house</b>)! Your exclusive heritage stay awaits.</span>
-      <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="underline font-semibold ml-2 hover:text-cream">WhatsApp us →</a>
+      <a data-wa href="https://wa.me/919461884005" target="_blank" rel="noopener" class="underline font-semibold ml-2 hover:text-cream">WhatsApp us →</a>
       <button id="igClose" class="absolute right-3 top-1/2 -translate-y-1/2 opacity-80 hover:opacity-100" aria-label="Dismiss">✕</button>
     </div>
   </div>
@@ -279,11 +279,11 @@
       </div>
 
       <div class="flex flex-wrap gap-3 justify-center mt-9 os-el" style="--d:1.85s">
-        <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="btn btn-primary"><i data-lucide="instagram" class="w-4 h-4"></i> Follow @padharo_house</a>
+        <a data-insta href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="btn btn-primary"><i data-lucide="instagram" class="w-4 h-4"></i> Follow @padharo_house</a>
       </div>
       <div class="flex flex-wrap gap-3 justify-center mt-3 os-el" style="--d:1.97s">
-        <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp</a>
-        <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="map-pin" class="w-4 h-4"></i> Google Maps</a>
+        <a data-wa href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp</a>
+        <a data-map href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="map-pin" class="w-4 h-4"></i> Google Maps</a>
       </div>
 
       <div class="mt-11 text-xs text-muted os-el" style="--d:2.1s">Amer, Jaipur, Rajasthan &middot; Opposite the Amer Fort &middot; &copy; 2026 Padharo House</div>
@@ -324,7 +324,7 @@
 
   <!-- hero -->
   <section class="hero hero-launch">
-    <div class="hero-slides">
+    <div class="hero-slides" id="heroSlides">
       <img class="slide active" src="assets/img/p2.jpg" alt="View of the Amer Fort through a jharokha window at Padharo House" />
       <img class="slide" src="assets/img/p8.jpg" alt="The Amber Suite" />
       <img class="slide" src="assets/img/p3.jpg" alt="Heritage lounge" />
@@ -334,12 +334,12 @@
     <div class="scrim"></div>
     <div class="relative z-20 max-w-7xl mx-auto px-5 w-full text-white">
       <div class="max-w-2xl reveal">
-        <div class="eyebrow text-gold mb-4">Exclusive Single-Suite Heritage Homestay · Amer, Jaipur</div>
-        <h1 class="font-serif font-semibold leading-[1.06] text-4xl sm:text-5xl md:text-6xl mb-4">
+        <div class="eyebrow text-gold mb-4" id="heroBadge">Exclusive Single-Suite Heritage Homestay · Amer, Jaipur</div>
+        <h1 class="font-serif font-semibold leading-[1.06] text-4xl sm:text-5xl md:text-6xl mb-4" id="heroHeadline">
           A New Beginning,<br /><span class="text-gold">A Dream Come True.</span>
         </h1>
-        <p class="font-serif italic text-white/95 text-xl md:text-2xl mb-5">Introducing Padharo House — Where Heritage Meets Hospitality</p>
-        <p class="text-white/90 text-base md:text-lg max-w-xl mb-8">
+        <p class="font-serif italic text-white/95 text-xl md:text-2xl mb-5" id="heroTagline">Introducing Padharo House — Where Heritage Meets Hospitality</p>
+        <p class="text-white/90 text-base md:text-lg max-w-xl mb-8" id="heroIntro">
           My very first Airbnb venture, nestled in the heritage charm of Jaipur, right opposite the magnificent
           Amer Fort — an exclusive, private heritage stay with panoramic Jaigarh Fort ramparts.
         </p>
@@ -348,9 +348,9 @@
           <a href="#suite" class="btn btn-ghost">Explore the Suite</a>
         </div>
         <div class="flex items-center gap-5 mt-10 text-sm">
-          <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="flex items-center gap-2 text-white/90 hover:text-gold"><i data-lucide="instagram" class="w-4 h-4"></i> @padharo_house</a>
+          <a data-insta href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="flex items-center gap-2 text-white/90 hover:text-gold"><i data-lucide="instagram" class="w-4 h-4"></i> @padharo_house</a>
           <span class="w-px h-5 bg-white/30"></span>
-          <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="flex items-center gap-2 text-white/90 hover:text-gold"><i data-lucide="map-pin" class="w-4 h-4"></i> Amer Fort · 50 m</a>
+          <a data-map href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="flex items-center gap-2 text-white/90 hover:text-gold"><i data-lucide="map-pin" class="w-4 h-4"></i> Amer Fort · 50 m</a>
         </div>
       </div>
     </div>
@@ -422,7 +422,7 @@
           </div>
           <div class="flex flex-wrap items-center gap-4 border-t border-[#eee5d9] pt-5">
             <a href="booking.html" class="btn btn-primary">Check Availability</a>
-            <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-outline text-sm">Ask on WhatsApp</a>
+            <a data-wa href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-outline text-sm">Ask on WhatsApp</a>
           </div>
         </div>
       </div>
@@ -447,8 +447,8 @@
         <p class="text-muted leading-relaxed mb-6">Where heritage meets hospitality — I cannot wait to welcome you. 🙏</p>
         <div class="font-serif text-xl text-terra">— Pankaj Gupta, your host</div>
         <div class="flex flex-wrap gap-3 mt-6">
-          <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="instagram" class="w-4 h-4"></i> Follow our journey</a>
-          <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="message-circle" class="w-4 h-4"></i> Say hello</a>
+          <a data-insta href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="instagram" class="w-4 h-4"></i> Follow our journey</a>
+          <a data-wa href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="message-circle" class="w-4 h-4"></i> Say hello</a>
         </div>
       </div>
       <div class="reveal-r order-1 md:order-2">
@@ -525,7 +525,7 @@
         <div class="heritage-card bg-terra text-white rounded-2xl p-7 reveal-z flex flex-col justify-center">
           <h3 class="font-serif text-xl mb-2">Your royal base in Amer</h3>
           <p class="text-sm text-white/85 mb-4">Stay in the heart of it all — then come home to your private suite.</p>
-          <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold text-gold"><i data-lucide="map-pin" class="w-4 h-4"></i> Open in Google Maps</a>
+          <a data-map href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold text-gold"><i data-lucide="map-pin" class="w-4 h-4"></i> Open in Google Maps</a>
         </div>
       </div>
     </div>
@@ -566,8 +566,8 @@
           <li class="flex items-center gap-3"><span class="w-9 h-9 rounded-full bg-white grid place-items-center text-terra"><i data-lucide="plane" class="w-4 h-4"></i></span><span>Jaipur Airport <b>· 24 km</b></span></li>
         </ul>
         <div class="flex flex-wrap gap-3">
-          <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="btn btn-primary text-sm"><i data-lucide="map-pin" class="w-4 h-4"></i> Google Maps Pin</a>
-          <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="instagram" class="w-4 h-4"></i> Instagram</a>
+          <a data-map href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="btn btn-primary text-sm"><i data-lucide="map-pin" class="w-4 h-4"></i> Google Maps Pin</a>
+          <a data-insta href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="instagram" class="w-4 h-4"></i> Instagram</a>
         </div>
       </div>
       <div class="reveal rounded-2xl overflow-hidden shadow-lg border border-[#e6d8c6]">
@@ -591,7 +591,7 @@
         </details>
         <details class="reveal bg-cream rounded-xl border border-[#efe6da] p-5 group">
           <summary class="font-serif text-lg cursor-pointer flex items-center justify-between gap-4">Where is Padharo House located in Jaipur?<i data-lucide="chevron-down" class="w-5 h-5 text-terra shrink-0 transition group-open:rotate-180"></i></summary>
-          <p class="text-muted mt-3 leading-relaxed">We are in Amer (Amber), about 11 km north of central Jaipur, Rajasthan — right opposite the Amer Fort and roughly 24 km from Jaipur International Airport. <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="text-terra font-semibold hover:underline">Open our Google Maps pin</a>.</p>
+          <p class="text-muted mt-3 leading-relaxed">We are in Amer (Amber), about 11 km north of central Jaipur, Rajasthan — right opposite the Amer Fort and roughly 24 km from Jaipur International Airport. <a data-map href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="text-terra font-semibold hover:underline">Open our Google Maps pin</a>.</p>
         </details>
         <details class="reveal bg-cream rounded-xl border border-[#efe6da] p-5 group">
           <summary class="font-serif text-lg cursor-pointer flex items-center justify-between gap-4">How far is Padharo House from Amer Fort?<i data-lucide="chevron-down" class="w-5 h-5 text-terra shrink-0 transition group-open:rotate-180"></i></summary>
@@ -611,8 +611,56 @@
         </details>
         <details class="reveal bg-cream rounded-xl border border-[#efe6da] p-5 group">
           <summary class="font-serif text-lg cursor-pointer flex items-center justify-between gap-4">How do I book Padharo House?<i data-lucide="chevron-down" class="w-5 h-5 text-terra shrink-0 transition group-open:rotate-180"></i></summary>
-          <p class="text-muted mt-3 leading-relaxed">Send your dates through our <a href="booking.html" class="text-terra font-semibold hover:underline">availability page</a> or message us on <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="text-terra font-semibold hover:underline">WhatsApp</a> at +91 94618 84005. We confirm your dates and the final price personally.</p>
+          <p class="text-muted mt-3 leading-relaxed">Send your dates through our <a href="booking.html" class="text-terra font-semibold hover:underline">availability page</a> or message us on <a data-wa href="https://wa.me/919461884005" target="_blank" rel="noopener" class="text-terra font-semibold hover:underline">WhatsApp</a> at +91 94618 84005. We confirm your dates and the final price personally.</p>
         </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- enquiry / waitlist -->
+  <section id="enquire" class="py-20 md:py-28 bg-cream">
+    <div class="max-w-2xl mx-auto px-5">
+      <div class="text-center mb-10 reveal">
+        <div class="eyebrow mb-3">Enquire</div>
+        <h2 class="font-serif text-3xl md:text-4xl"><span class="h-line">Ask us about your dates</span></h2>
+        <p class="text-muted mt-7">Tell us when you would like to come and we will reply personally — usually within a few hours.</p>
+      </div>
+      <form id="enqForm" class="bg-white rounded-2xl p-6 md:p-8 border border-[#efe6da] reveal-z space-y-4">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-muted mb-1.5" for="eName">Name *</label>
+            <input class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" id="eName" autocomplete="name" required />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-muted mb-1.5" for="ePhone">Phone / WhatsApp *</label>
+            <input class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" id="ePhone" inputmode="tel" autocomplete="tel" required />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-muted mb-1.5" for="eEmail">Email</label>
+            <input class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" id="eEmail" type="email" autocomplete="email" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-muted mb-1.5" for="eDates">Preferred dates</label>
+            <input class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" id="eDates" placeholder="e.g. 12–14 Nov" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-muted mb-1.5" for="eMsg">Message</label>
+          <textarea class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" rows="3" id="eMsg" placeholder="How many guests, what you would love to do in Amer…"></textarea>
+        </div>
+        <div id="enqErr" class="text-sm text-[#a12626] bg-[#fdeaea] rounded-lg px-3 py-2" hidden></div>
+        <div class="flex flex-wrap gap-3">
+          <button type="submit" class="btn btn-primary" id="enqBtn">Send enquiry</button>
+          <a data-wa href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-outline text-sm"><i data-lucide="message-circle" class="w-4 h-4"></i> Or WhatsApp us</a>
+        </div>
+        <p class="text-[11px] text-muted">We only use your details to answer this enquiry.</p>
+      </form>
+      <div id="enqDone" class="bg-white rounded-2xl p-8 border border-[#efe6da] text-center" hidden>
+        <div class="w-14 h-14 rounded-full bg-[#e6f4ea] grid place-items-center mx-auto mb-4">
+          <i data-lucide="check" class="w-7 h-7 text-[#1f7a43]"></i>
+        </div>
+        <h3 class="font-serif text-2xl mb-2">Khamma Ghani 🙏</h3>
+        <p class="text-muted">Your enquiry has reached us. We will be in touch very soon.</p>
       </div>
     </div>
   </section>
@@ -626,8 +674,8 @@
       <h2 class="font-serif text-3xl md:text-5xl mb-4">See Padharo House on Instagram</h2>
       <p class="text-white/85 mb-8">Reels, stories and first looks from your heritage home, right opposite the Amer Fort.</p>
       <div class="flex flex-wrap gap-3 justify-center">
-        <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="btn btn-primary text-base"><i data-lucide="instagram" class="w-5 h-5"></i> Follow @padharo_house</a>
-        <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-ghost text-base"><i data-lucide="message-circle" class="w-5 h-5"></i> Enquire on WhatsApp</a>
+        <a data-insta href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="btn btn-primary text-base"><i data-lucide="instagram" class="w-5 h-5"></i> Follow @padharo_house</a>
+        <a data-wa href="https://wa.me/919461884005" target="_blank" rel="noopener" class="btn btn-ghost text-base"><i data-lucide="message-circle" class="w-5 h-5"></i> Enquire on WhatsApp</a>
       </div>
     </div>
   </section>
@@ -642,9 +690,9 @@
         </div>
         <p class="text-sm max-w-md">An exclusive single-suite boutique heritage homestay in Amer, Jaipur — opposite the Amer Fort, with panoramic Jaigarh Fort views. Where heritage meets hospitality.</p>
         <div class="flex gap-3 mt-5">
-          <a href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="flex items-center gap-2 bg-white/10 hover:bg-terra transition rounded-full pl-2.5 pr-4 py-2 text-sm"><i data-lucide="instagram" class="w-4 h-4"></i> @padharo_house</a>
-          <a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
-          <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition"><i data-lucide="map-pin" class="w-4 h-4"></i></a>
+          <a data-insta href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener" class="flex items-center gap-2 bg-white/10 hover:bg-terra transition rounded-full pl-2.5 pr-4 py-2 text-sm"><i data-lucide="instagram" class="w-4 h-4"></i> @padharo_house</a>
+          <a data-wa href="https://wa.me/919461884005" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
+          <a data-map href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-terra transition"><i data-lucide="map-pin" class="w-4 h-4"></i></a>
         </div>
       </div>
       <div>
@@ -666,9 +714,9 @@
         <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Contact</h4>
         <ul class="space-y-2 text-sm">
           <li>Opposite Amer Fort, Amer, Jaipur</li>
-          <li><a href="mailto:padharohouse@gmail.com" class="hover:text-gold">padharohouse@gmail.com</a></li>
-          <li><a href="tel:+919461884005" class="hover:text-gold">+91 94618 84005</a></li>
-          <li><a href="https://wa.me/919461884005" target="_blank" rel="noopener" class="hover:text-gold">WhatsApp us →</a></li>
+          <li><a data-email-link data-email-text href="mailto:padharohouse@gmail.com" class="hover:text-gold">padharohouse@gmail.com</a></li>
+          <li><a data-tel data-phone-text href="tel:+919461884005" class="hover:text-gold">+91 94618 84005</a></li>
+          <li><a data-wa href="https://wa.me/919461884005" target="_blank" rel="noopener" class="hover:text-gold">WhatsApp us →</a></li>
         </ul>
       </div>
     </div>
@@ -697,9 +745,9 @@
   <!-- sticky mobile action bar -->
   <nav class="mobile-cta" aria-label="Quick actions">
     <a href="booking.html" class="primary"><i data-lucide="calendar-check" class="w-5 h-5"></i> Book</a>
-    <a href="https://wa.me/919461884005" target="_blank" rel="noopener"><i data-lucide="message-circle" class="w-5 h-5"></i> WhatsApp</a>
-    <a href="tel:+919461884005"><i data-lucide="phone" class="w-5 h-5"></i> Call</a>
-    <a href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener"><i data-lucide="map-pin" class="w-5 h-5"></i> Map</a>
+    <a data-wa href="https://wa.me/919461884005" target="_blank" rel="noopener"><i data-lucide="message-circle" class="w-5 h-5"></i> WhatsApp</a>
+    <a data-tel href="tel:+919461884005"><i data-lucide="phone" class="w-5 h-5"></i> Call</a>
+    <a data-map href="https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521" target="_blank" rel="noopener"><i data-lucide="map-pin" class="w-5 h-5"></i> Map</a>
   </nav>
   </div><!-- /#live -->
 
@@ -709,7 +757,6 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, doc, onSnapshot, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
     /* ====== Firebase web config (project: padharo-house) ======
        Everything here is filled in except apiKey — paste the value that starts
        with "AIza..." from: Firebase console -> Project settings -> General ->
@@ -810,6 +857,112 @@
         }).catch(()=>{});
       }catch(e){}
     }
+
+    /* ============================================================
+       SITE SETTINGS — every text, link and photo below is editable
+       from the admin console (config/site_settings). Nothing hardcoded.
+       ============================================================ */
+    const SITE_FALLBACK = {
+      whatsappNumber:'919461884005', displayPhone:'+91 94618 84005',
+      email:'padharohouse@gmail.com', instagramUrl:'https://www.instagram.com/padharo_house',
+      mapLat:'26.987683983961603', mapLng:'75.8550010443521',
+      googleAppsScriptWebhookUrl:''
+    };
+    let SITE = { ...SITE_FALLBACK };
+    const S = k => (SITE[k] ?? SITE_FALLBACK[k] ?? '');
+    const mapLink = () => 'https://www.google.com/maps/search/?api=1&query=' + S('mapLat') + ',' + S('mapLng');
+    const waLink = t => 'https://wa.me/' + S('whatsappNumber') + (t ? '?text=' + encodeURIComponent(t) : '');
+
+    function applySite(){
+      const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.textContent = val; };
+      set('heroBadge', SITE.badge);
+      set('heroTagline', SITE.tagline);
+      set('heroIntro', SITE.intro);
+      if (SITE.headline) {
+        // keep the gold second line if the headline has a comma
+        const h = document.getElementById('heroHeadline');
+        const parts = String(SITE.headline).split(/,\s*/);
+        h.innerHTML = parts.length > 1
+          ? parts[0] + ',<br /><span class="text-gold">' + parts.slice(1).join(', ') + '</span>'
+          : SITE.headline;
+      }
+      if (Array.isArray(SITE.sliderImages) && SITE.sliderImages.length) {
+        const box = document.getElementById('heroSlides');
+        if (box) {
+          box.innerHTML = SITE.sliderImages.map((src, i) =>
+            '<img class="slide' + (i === 0 ? ' active' : '') + '" src="' + String(src).replace(/"/g,'&quot;') +
+            '" alt="Padharo House, Amer" />').join('');
+          document.dispatchEvent(new CustomEvent('ph:slides'));
+        }
+      }
+      document.querySelectorAll('[data-wa]').forEach(a => a.href = waLink());
+      document.querySelectorAll('[data-map]').forEach(a => a.href = mapLink());
+      document.querySelectorAll('[data-insta]').forEach(a => a.href = S('instagramUrl'));
+      document.querySelectorAll('[data-tel]').forEach(a => a.href = 'tel:' + S('displayPhone').replace(/\s/g,''));
+      document.querySelectorAll('[data-email-link]').forEach(a => a.href = 'mailto:' + S('email'));
+      document.querySelectorAll('[data-phone-text]').forEach(el => el.textContent = S('displayPhone'));
+      document.querySelectorAll('[data-email-text]').forEach(el => el.textContent = S('email'));
+      refreshIcons();
+    }
+
+    /* live settings — registered here, after the declarations above */
+    if (db) {
+      onSnapshot(doc(db, 'config', 'site_settings'), snap => {
+        SITE = { ...SITE_FALLBACK, ...(snap.exists() ? snap.data() : {}) };
+        applySite();
+      }, e => console.warn('site settings listen failed', e));
+    } else {
+      applySite();
+    }
+
+    /* ---- CORS-safe email webhook (text/plain avoids the preflight) ---- */
+    async function sendWebhook(payload){
+      const url = S('googleAppsScriptWebhookUrl');
+      if (!url) return false;
+      try {
+        await fetch(url, { method:'POST', mode:'no-cors',
+          headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload) });
+        return true;
+      } catch (e) { console.warn('webhook failed', e); return false; }
+    }
+
+    /* ---- enquiry form -> Firestore leads + email ---- */
+    const enqForm = document.getElementById('enqForm');
+    if (enqForm) enqForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const err = document.getElementById('enqErr'), btn = document.getElementById('enqBtn');
+      const name = document.getElementById('eName').value.trim();
+      const phone = document.getElementById('ePhone').value.trim();
+      const email = document.getElementById('eEmail').value.trim();
+      const dates = document.getElementById('eDates').value.trim();
+      const message = document.getElementById('eMsg').value.trim();
+      if (name.length < 2 || phone.replace(/\D/g,'').length < 10) {
+        err.textContent = 'Please enter your name and a valid phone number.';
+        err.hidden = false; return;
+      }
+      err.hidden = true; btn.disabled = true; btn.textContent = 'Sending…';
+      try {
+        await addDoc(collection(db, 'leads'), {
+          name, phone, email, dates, message,
+          source: utm || ref || 'website',
+          createdAt: serverTimestamp(), dispatch: {}
+        });
+      } catch (ex) {
+        console.error('lead save failed', ex);
+        err.innerHTML = 'We could not send that just now — please <a class="underline font-semibold" href="' +
+          waLink('Khamma Ghani! I would like to enquire about Padharo House.' +
+                 (dates ? ' Dates: ' + dates : '')) +
+          '" target="_blank" rel="noopener">message us on WhatsApp</a> instead.';
+        err.hidden = false; btn.disabled = false; btn.textContent = 'Send enquiry';
+        return;
+      }
+      sendWebhook({ type:'ENQUIRY', guestName:name, phone, email, dates, message,
+                    mapLink: mapLink(), hostEmail: S('email'), hostPhone: S('displayPhone') });
+      enqForm.hidden = true;
+      document.getElementById('enqDone').hidden = false;
+      refreshIcons();
+    });
 
     /* initial icon render */
     refreshIcons();
