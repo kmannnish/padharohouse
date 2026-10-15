@@ -20,16 +20,57 @@ service cloud.firestore {
         : '';
     }
     function isSuper() { return signedIn() && roleOf() == 'super_admin'; }
-    function isStaff() { return signedIn() && (roleOf() == 'super_admin' || roleOf() == 'manager'); }
+    // a suspended account keeps its role but loses access everywhere
+    function isActive() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('active', true) == true;
+    }
+    function isStaff() {
+      return isActive() && roleOf() in ['super_admin', 'manager', 'caretaker', 'accountant'];
+    }
+    // a granular tick-box from the Team screen; super_admin implicitly has all
+    function hasPerm(p) {
+      return isActive() && (roleOf() == 'super_admin'
+        || get(/databases/$(database)/documents/users/$(request.auth.uid))
+             .data.get('permissions', {}).get(p, false) == true);
+    }
 
     // ---- who may use the console -------------------------------------------
-    // Readable by the owner (so the console can learn its own role) and by a
-    // super admin (for the Team page). NEVER client-writable: if the browser
-    // could write here, any signed-in user could promote themselves to
-    // super_admin. Create these documents in the Firebase console only.
+    // A super admin manages the team from the browser (Team & Roles screen).
+    // Guard rails that cannot be bypassed from the page:
+    //   * only a super_admin may create, change or remove a member
+    //   * the role must be one of the four known roles
+    //   * nobody can change their OWN role or suspend themselves, so a
+    //     super admin can never accidentally lock themselves out, and a
+    //     compromised lower role can never promote itself
+    // Deleting this document revokes console access. It does NOT delete the
+    // Firebase Authentication account — remove that in the Auth console too if
+    // you want the sign-in gone entirely.
+    function validRole(r) { return r in ['super_admin', 'manager', 'caretaker', 'accountant']; }
+    function selfDoc(uid) { return request.auth.uid == uid; }
     match /users/{uid} {
-      allow read: if signedIn() && (request.auth.uid == uid || isSuper());
-      allow write: if false;
+      allow read: if signedIn() && (selfDoc(uid) || hasPerm('manageTeam'));
+      allow create: if isSuper() && validRole(request.resource.data.role);
+      allow update: if isSuper()
+                    && validRole(request.resource.data.role)
+                    && (!selfDoc(uid) || (
+                         request.resource.data.role == resource.data.role
+                         && request.resource.data.get('active', true) == true
+                       ));
+      allow delete: if isSuper() && !selfDoc(uid);
+    }
+
+    // ---- audit trail -------------------------------------------------------
+    // Append-only: staff may record what they did, nobody may edit or erase
+    // history, and only a super admin can read it back.
+    match /audit_log/{docId} {
+      allow create: if isStaff()
+                    && request.resource.data.byUid == request.auth.uid
+                    && request.resource.data.action is string
+                    && request.resource.data.action.size() < 60;
+      allow read: if hasPerm('manageTeam');
+      allow update, delete: if false;
     }
 
     // ---- public website reads ----------------------------------------------

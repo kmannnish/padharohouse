@@ -112,15 +112,15 @@
     </div>
     <nav class="space-y-1 flex-1 overflow-y-auto">
       <a data-tab="dashboard" class="active"><i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard</a>
-      <a data-tab="bookings"><i data-lucide="calendar-check" class="w-4 h-4"></i> Bookings</a>
-      <a data-tab="calendar"><i data-lucide="calendar-days" class="w-4 h-4"></i> Calendar</a>
-      <a data-tab="whatsapp"><i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Queue</a>
-      <a data-tab="pricing" data-role="super_admin"><i data-lucide="indian-rupee" class="w-4 h-4"></i> Tariff</a>
-      <a data-tab="packages" data-role="super_admin"><i data-lucide="sparkles" class="w-4 h-4"></i> Packages</a>
-      <a data-tab="site" data-role="super_admin"><i data-lucide="settings" class="w-4 h-4"></i> Site &amp; Brand</a>
-      <a data-tab="payments" data-role="super_admin"><i data-lucide="wallet" class="w-4 h-4"></i> Payments</a>
-      <a data-tab="analytics" data-role="super_admin"><i data-lucide="trending-up" class="w-4 h-4"></i> Analytics</a>
-      <a data-tab="team" data-role="super_admin"><i data-lucide="users" class="w-4 h-4"></i> Team &amp; Roles</a>
+      <a data-tab="bookings" data-perm="viewBookings"><i data-lucide="calendar-check" class="w-4 h-4"></i> Bookings</a>
+      <a data-tab="calendar" data-perm="manageCalendar"><i data-lucide="calendar-days" class="w-4 h-4"></i> Calendar</a>
+      <a data-tab="whatsapp" data-perm="whatsappQueue"><i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Queue</a>
+      <a data-tab="pricing" data-perm="managePricing"><i data-lucide="indian-rupee" class="w-4 h-4"></i> Tariff</a>
+      <a data-tab="packages" data-perm="managePackages"><i data-lucide="sparkles" class="w-4 h-4"></i> Packages</a>
+      <a data-tab="site" data-perm="manageSettings"><i data-lucide="settings" class="w-4 h-4"></i> Site &amp; Brand</a>
+      <a data-tab="payments" data-perm="manageSettings"><i data-lucide="wallet" class="w-4 h-4"></i> Payments</a>
+      <a data-tab="analytics" data-perm="viewAnalytics"><i data-lucide="trending-up" class="w-4 h-4"></i> Analytics</a>
+      <a data-tab="team" data-perm="manageTeam"><i data-lucide="users" class="w-4 h-4"></i> Team &amp; Roles</a>
     </nav>
     <div class="pt-3 mt-2 border-t border-white/10">
       <div class="flex items-center gap-2 px-1">
@@ -192,7 +192,7 @@
             <button data-sub="active">Active Stays</button>
             <button data-sub="past">Past Track Record</button>
           </div>
-          <button class="btn btn-p ml-auto" id="addBooking"><i data-lucide="plus" class="w-4 h-4"></i> Add booking</button>
+          <button class="btn btn-p ml-auto" id="addBooking" data-perm="editBookings"><i data-lucide="plus" class="w-4 h-4"></i> Add booking</button>
         </div>
 
         <!-- past-only summary -->
@@ -201,7 +201,7 @@
           <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Revenue collected</div><div class="font-serif text-2xl text-terra mt-1" id="pRevenue">–</div></div>
           <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Avg. length of stay</div><div class="font-serif text-2xl text-terra mt-1" id="pAvg">–</div></div>
           <div class="card p-4 flex flex-col justify-center">
-            <button class="btn btn-o" id="exportCsv"><i data-lucide="download" class="w-4 h-4"></i> Export to CSV</button>
+            <button class="btn btn-o" id="exportCsv" data-perm="viewRevenue"><i data-lucide="download" class="w-4 h-4"></i> Export to CSV</button>
             <p class="text-[10px] text-muted mt-1.5">For tax &amp; accounting</p>
           </div>
         </div>
@@ -520,36 +520,49 @@
 
       <!-- ============ TEAM & ROLES ============ -->
       <section data-panel="team" hidden>
-        <div class="card p-6 max-w-3xl">
-          <h3 class="font-serif text-xl mb-1">Team &amp; roles</h3>
-          <p class="text-xs text-muted mb-5">Who can access this console, and what they can do.</p>
+        <div class="card overflow-hidden mb-5">
+          <div class="p-4 border-b border-[#f1e9dd] flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h3 class="font-serif text-lg">Team &amp; roles</h3>
+              <p class="text-xs text-muted">Create staff accounts, set what each person may see, and revoke access instantly.</p>
+            </div>
+            <div class="flex gap-2">
+              <button class="btn btn-g" id="myAccount"><i data-lucide="user-cog" class="w-4 h-4"></i> My account</button>
+              <button class="btn btn-p" id="addUser" data-role="super_admin"><i data-lucide="user-plus" class="w-4 h-4"></i> Add team member</button>
+            </div>
+          </div>
           <div class="overflow-x-auto">
             <table>
-              <thead><tr><th>Email</th><th>Name</th><th>Role</th><th>Access</th></tr></thead>
+              <thead><tr><th>Member</th><th>Role</th><th>Can see</th><th>Status</th><th></th></tr></thead>
               <tbody id="teamBody"></tbody>
             </table>
           </div>
-          <div class="mt-6 bg-cream rounded-lg p-4 text-sm leading-relaxed">
-            <b class="font-serif">Adding a team member</b>
-            <ol class="list-decimal ml-5 mt-2 space-y-1 text-muted">
-              <li>Firebase console → <b>Authentication → Users → Add user</b> (email + password).</li>
-              <li>Copy the new user's <b>UID</b>.</li>
-              <li>Firestore → collection <code class="bg-white px-1 rounded">users</code> → document ID = that UID → fields
-                  <code class="bg-white px-1 rounded">role</code> (<code>super_admin</code> or <code>manager</code>),
-                  <code class="bg-white px-1 rounded">name</code>, <code class="bg-white px-1 rounded">email</code>.</li>
-            </ol>
-            <p class="text-xs text-muted mt-3">Roles are deliberately <b>not</b> editable from this page — if the browser could change roles, anyone signed in could promote themselves. The security rules reject any client write to <code class="bg-white px-1 rounded">users</code>.</p>
-          </div>
-          <div class="mt-4 grid sm:grid-cols-2 gap-4 text-sm">
-            <div class="border border-[#eee5d9] rounded-lg p-4">
-              <div class="font-semibold text-terra mb-1">super_admin</div>
-              <p class="text-xs text-muted">Everything: site mode, tariff, packages, financials, team, bookings, calendar, WhatsApp.</p>
+          <div id="teamEmpty" class="p-10 text-center text-sm text-muted" hidden>No team members yet.</div>
+        </div>
+
+        <div class="grid lg:grid-cols-4 gap-4 mb-5">
+          <div class="card p-4"><div class="font-semibold text-terra text-sm mb-1">super_admin</div><p class="text-[11px] text-muted">Everything, including team, settings and money.</p></div>
+          <div class="card p-4"><div class="font-semibold text-terra text-sm mb-1">manager</div><p class="text-[11px] text-muted">Bookings, calendar, WhatsApp, revenue, analytics.</p></div>
+          <div class="card p-4"><div class="font-semibold text-terra text-sm mb-1">caretaker</div><p class="text-[11px] text-muted">Arrivals and calendar only — <b>no money shown</b>.</p></div>
+          <div class="card p-4"><div class="font-semibold text-terra text-sm mb-1">accountant</div><p class="text-[11px] text-muted">Revenue, ledger and exports; no calendar control.</p></div>
+        </div>
+
+        <!-- audit log -->
+        <div class="card overflow-hidden">
+          <div class="p-4 border-b border-[#f1e9dd] flex items-center justify-between">
+            <div>
+              <h3 class="font-serif text-lg">Team activity audit log</h3>
+              <p class="text-xs text-muted">Live record of sign-ins and every change made in this console.</p>
             </div>
-            <div class="border border-[#eee5d9] rounded-lg p-4">
-              <div class="font-semibold text-terra mb-1">manager</div>
-              <p class="text-xs text-muted">Operations only: bookings, calendar availability and the WhatsApp queue.</p>
-            </div>
+            <i data-lucide="history" class="w-5 h-5 text-terra"></i>
           </div>
+          <div class="overflow-x-auto">
+            <table>
+              <thead><tr><th>When</th><th>Who</th><th>Action</th><th>Detail</th></tr></thead>
+              <tbody id="auditBody"></tbody>
+            </table>
+          </div>
+          <div id="auditEmpty" class="p-10 text-center text-sm text-muted" hidden>No activity recorded yet.</div>
         </div>
       </section>
 
@@ -598,11 +611,85 @@
   </div>
 </div>
 
+<!-- ================= TEAM MEMBER MODAL ================= -->
+<div class="modal" id="userModal">
+  <div class="bg-white rounded-xl w-full max-w-lg max-h-[92vh] overflow-y-auto">
+    <div class="px-5 py-4 border-b border-[#f1e9dd] flex items-center justify-between sticky top-0 bg-white">
+      <h3 class="font-serif text-lg" id="userModalTitle">Add team member</h3>
+      <button id="userModalClose" class="text-muted hover:text-ink"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <div class="p-5 space-y-3">
+      <input type="hidden" id="uUid" />
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div><label class="lbl">Full name *</label><input class="inp" id="uName" /></div>
+        <div><label class="lbl">Phone / WhatsApp</label><input class="inp" id="uPhone" inputmode="tel" placeholder="9461884005" /></div>
+      </div>
+      <div><label class="lbl">Email *</label><input class="inp" id="uEmail" type="email" autocomplete="off" /></div>
+      <div id="uPwWrap">
+        <label class="lbl">Temporary password *</label>
+        <div class="flex gap-2">
+          <input class="inp" id="uPw" autocomplete="new-password" />
+          <button class="btn btn-g" id="uPwGen" type="button" title="Generate">Generate</button>
+        </div>
+        <p class="text-[11px] text-muted mt-1">At least 6 characters. Share it once, then ask them to change it.</p>
+      </div>
+      <div>
+        <label class="lbl">Role</label>
+        <select class="inp" id="uRole">
+          <option value="manager">manager — bookings, calendar, WhatsApp, revenue</option>
+          <option value="caretaker">caretaker — arrivals &amp; calendar, no money</option>
+          <option value="accountant">accountant — revenue, ledger &amp; exports</option>
+          <option value="super_admin">super_admin — full access</option>
+        </select>
+        <p class="text-[11px] text-muted mt-1">Choosing a role sets the tick-boxes below; adjust them for this person if you want.</p>
+      </div>
+      <div class="bg-cream rounded-lg p-4">
+        <div class="text-sm font-semibold mb-2">What this person may do</div>
+        <div id="uPerms" class="space-y-2"></div>
+      </div>
+      <label class="flex items-center gap-2.5 cursor-pointer"><input type="checkbox" id="uActive" class="w-4 h-4 accent-[#A0472A]" checked /><span class="text-sm font-semibold">Account active</span></label>
+      <div id="userErr" class="err" hidden></div>
+    </div>
+    <div class="px-5 py-4 border-t border-[#f1e9dd] flex gap-2 sticky bottom-0 bg-white">
+      <button class="btn btn-p flex-1" id="uSave"><i data-lucide="save" class="w-4 h-4"></i> Save</button>
+      <button class="btn btn-d" id="uDelete" hidden><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MY ACCOUNT MODAL ================= -->
+<div class="modal" id="meModal">
+  <div class="bg-white rounded-xl w-full max-w-md max-h-[92vh] overflow-y-auto">
+    <div class="px-5 py-4 border-b border-[#f1e9dd] flex items-center justify-between">
+      <h3 class="font-serif text-lg">My account</h3>
+      <button id="meClose" class="text-muted hover:text-ink"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <div class="p-5 space-y-4">
+      <p class="text-xs text-muted">For security, confirm your current password before changing anything.</p>
+      <div><label class="lbl">Current password *</label><input class="inp" id="meCur" type="password" autocomplete="current-password" /></div>
+      <div class="border-t border-[#f1e9dd] pt-4">
+        <label class="lbl">New password</label>
+        <input class="inp" id="meNewPw" type="password" autocomplete="new-password" placeholder="leave blank to keep" />
+      </div>
+      <div>
+        <label class="lbl">New email</label>
+        <input class="inp" id="meNewEmail" type="email" placeholder="leave blank to keep" />
+        <p class="text-[11px] text-muted mt-1">We send a confirmation link to the new address; the change applies once you click it.</p>
+      </div>
+      <div id="meErr" class="err" hidden></div>
+      <div id="meOk" class="text-xs text-[#1f7a43] bg-[#e6f4ea] rounded-lg px-3 py-2" hidden></div>
+      <button class="btn btn-p w-full justify-center" id="meSave"><i data-lucide="shield-check" class="w-4 h-4"></i> Update my account</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged,
+         createUserWithEmailAndPassword, sendPasswordResetEmail, updatePassword,
+         verifyBeforeUpdateEmail, reauthenticateWithCredential, EmailAuthProvider }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, addDoc, collection,
          onSnapshot, query, orderBy, limit, serverTimestamp, writeBatch }
@@ -646,7 +733,44 @@ function fail(e, what){ console.error(what, e);
   toast((e && e.code === 'permission-denied') ? 'Permission denied — check your role' : ('Could not ' + what)); }
 
 /* ---------------- state ---------------- */
-let ME = { uid:null, email:null, role:null };
+/* =========================================================
+   ROLES & GRANULAR PERMISSIONS
+   The tick-boxes decide what each person SEES in this console.
+   Note: hiding money in the UI is a usability control, not a hard
+   security boundary — Firestore cannot hide individual fields, so a
+   determined signed-in user could still read raw booking documents.
+   Only give console access to people you trust with guest data.
+   ========================================================= */
+const PERMS = [
+  ['viewBookings',  'See bookings and guest details'],
+  ['editBookings',  'Add, edit and check in bookings'],
+  ['viewRevenue',   'See money — totals, revenue and exports'],
+  ['manageCalendar','Block and unblock calendar dates'],
+  ['whatsappQueue', 'Use the WhatsApp dispatch queue'],
+  ['managePricing', 'Edit the tariff'],
+  ['managePackages','Edit curated packages'],
+  ['viewAnalytics', 'See traffic analytics'],
+  ['manageSettings','Change site, brand and payment settings'],
+  ['manageTeam',    'Manage the team and roles']
+];
+const ALL_PERMS = PERMS.map(p => p[0]);
+const ROLE_DEFAULTS = {
+  super_admin: ALL_PERMS.slice(),
+  manager:     ['viewBookings','editBookings','viewRevenue','manageCalendar','whatsappQueue','viewAnalytics'],
+  caretaker:   ['viewBookings','manageCalendar','whatsappQueue'],          // deliberately no viewRevenue
+  accountant:  ['viewBookings','viewRevenue','viewAnalytics']
+};
+const permsFor = (role, overrides) => {
+  const base = {};
+  (ROLE_DEFAULTS[role] || []).forEach(k => base[k] = true);
+  if (overrides && typeof overrides === 'object') Object.keys(overrides).forEach(k => base[k] = !!overrides[k]);
+  return base;
+};
+const can = p => ME.role === 'super_admin' || !!(ME.perms && ME.perms[p]);
+/* money mask for anyone without viewRevenue */
+const MONEY = n => can('viewRevenue') ? INR(n) : '•••';
+
+let ME = { uid:null, email:null, role:null, perms:{} };
 let BOOKINGS = [], LEADS = [], PACKAGES = [], VISITS = [];
 let BLOCKED = new Map();           // iso -> {reason}
 let PRICING = {}, TEMPLATES = {}, SITE = {}, PAY = {};
@@ -692,20 +816,31 @@ $('signOut').addEventListener('click', () => signOut(auth));
 onAuthStateChanged(auth, async user => {
   if (!user) { teardown(); $('gate').hidden = false; $('app').hidden = true; return; }
   // the signed-in user must have a role document; the rules enforce this too
-  let role = null, name = '';
+  let role = null, name = '', overrides = null, active = true;
   try {
     const snap = await getDoc(doc(db, 'users', user.uid));
-    if (snap.exists()) { role = snap.data().role || null; name = snap.data().name || ''; }
+    if (snap.exists()) {
+      const d = snap.data();
+      role = d.role || null; name = d.name || '';
+      overrides = d.permissions || null;
+      active = d.active !== false;
+    }
   } catch (e) { console.warn('role lookup failed', e); }
 
-  if (role !== 'super_admin' && role !== 'manager') {
+  if (role !== 'super_admin' && !ROLE_DEFAULTS[role]) {
     $('loginErr').innerHTML = 'Signed in, but no role is assigned to this account.<br>' +
-      'A super admin must create <b>users/' + esc(user.uid) + '</b> with a <b>role</b> field.';
+      'A super admin must add you from the Team &amp; Roles screen.';
     $('loginErr').hidden = false;
     await signOut(auth);
     return;
   }
-  ME = { uid: user.uid, email: user.email, role, name };
+  if (active === false) {
+    $('loginErr').textContent = 'This account has been suspended. Please contact the owner.';
+    $('loginErr').hidden = false;
+    await signOut(auth);
+    return;
+  }
+  ME = { uid: user.uid, email: user.email, role, name, perms: permsFor(role, overrides) };
   $('userEmail').textContent = user.email;
   $('userRole').textContent = role.replace('_',' ');
   $('avatar').textContent = (name || user.email || '?').trim().charAt(0).toUpperCase();
@@ -713,16 +848,22 @@ onAuthStateChanged(auth, async user => {
   $('gate').hidden = true; $('app').hidden = false;
   icons();
   boot();
+  logAudit('LOGIN', 'Signed in as ' + role);
 });
 
 function applyRole(){
   const isSuper = ME.role === 'super_admin';
   document.querySelectorAll('[data-role="super_admin"]').forEach(el => { el.hidden = !isSuper; });
-  // site-mode toggle is super-admin only
-  $('modeSeg').querySelectorAll('button').forEach(b => b.disabled = !isSuper);
-  $('modeSeg').style.opacity = isSuper ? '1' : '.55';
-  $('modeNote').hidden = isSuper;
-  if (!isSuper && ['pricing','packages','analytics','team','site','payments'].includes(currentTab)) show('dashboard');
+  // permission-driven navigation and controls
+  document.querySelectorAll('[data-perm]').forEach(el => { el.hidden = !can(el.dataset.perm); });
+  $('modeSeg').querySelectorAll('button').forEach(b => b.disabled = !can('manageSettings'));
+  $('modeSeg').style.opacity = can('manageSettings') ? '1' : '.55';
+  $('modeNote').hidden = can('manageSettings');
+  const allowed = { dashboard:true, bookings:'viewBookings', calendar:'manageCalendar',
+    whatsapp:'whatsappQueue', pricing:'managePricing', packages:'managePackages',
+    site:'manageSettings', payments:'manageSettings', analytics:'viewAnalytics', team:'manageTeam' };
+  const need = allowed[currentTab];
+  if (need !== true && !can(need)) show('dashboard');
 }
 function teardown(){ while (unsubs.length) { try { unsubs.pop()(); } catch(e){} } }
 
@@ -750,7 +891,7 @@ function show(tab){
   if (tab === 'bookings') renderBookings();
   if (tab === 'whatsapp') renderQueue();
   if (tab === 'analytics') renderAnalytics();
-  if (tab === 'team') renderTeam();
+  if (tab === 'team') { renderTeam(); renderAudit(); }
   icons();
 }
 document.querySelectorAll('.side a').forEach(a => a.addEventListener('click', () => {
@@ -777,7 +918,7 @@ $('modeSeg').addEventListener('click', async e => {
   try {
     await setDoc(doc(db,'config','site_settings'),
       { siteMode: b.dataset.mode, updatedAt: serverTimestamp(), updatedBy: ME.email }, { merge:true });
-    toast(b.dataset.mode === 'live' ? 'Website is now LIVE' : 'Website shows Opening Soon');
+    logAudit('MODE_CHANGED', b.dataset.mode); toast(b.dataset.mode === 'live' ? 'Website is now LIVE' : 'Website shows Opening Soon');
   } catch (ex) { fail(ex, 'change the website mode'); }
 });
 
@@ -843,10 +984,16 @@ function boot(){
     $('tplReview').value  = TEMPLATES.review  ?? DEFAULT_TPL.review;
   }, e => console.warn('templates', e)));
 
-  if (ME.role === 'super_admin') {
+  if (can('manageTeam')) {
     unsubs.push(onSnapshot(collection(db,'users'), s => {
-      TEAM = s.docs.map(d => ({ id:d.id, ...d.data() })); renderTeam();
+      TEAM = s.docs.map(d => ({ id:d.id, ...d.data() }))
+        .sort((a,b) => String(a.name||a.email||'').localeCompare(String(b.name||b.email||'')));
+      renderTeam();
     }, e => console.warn('users', e)));
+    unsubs.push(onSnapshot(query(collection(db,'audit_log'), orderBy('at','desc'), limit(120)), s => {
+      AUDIT = s.docs.map(d => ({ id:d.id, ...d.data() }));
+      renderAudit();
+    }, e => console.warn('audit_log', e)));
   }
   show(currentTab);
 }
@@ -920,7 +1067,7 @@ $('saveSite').addEventListener('click', async () => {
       googleAppsScriptWebhookUrl: hook,
       updatedAt: serverTimestamp(), updatedBy: ME.email
     }, { merge:true });                    // merge keeps siteMode untouched
-    toast('Site settings saved — live on the website');
+    logAudit('SITE_SAVED',''); toast('Site settings saved — live on the website');
   } catch (ex) { fail(ex, 'save the site settings'); }
 });
 
@@ -975,7 +1122,7 @@ $('savePay').addEventListener('click', async () => {
       bankSwift: $('gBankSwift').value.trim(),
       updatedAt: serverTimestamp(), updatedBy: ME.email
     }, { merge:true });
-    toast('Payment settings saved');
+    logAudit('PAYMENTS_SAVED',''); toast('Payment settings saved');
   } catch (ex) { fail(ex, 'save the payment settings'); }
 });
 
@@ -997,7 +1144,7 @@ $('savePricing').addEventListener('click', async () => {
       taxEnabled: $('pTaxOn').checked,
       updatedAt: serverTimestamp(), updatedBy: ME.email
     }, { merge:true });
-    toast('Tariff saved');
+    logAudit('PRICING_SAVED',''); toast('Tariff saved');
   } catch (ex) { fail(ex, 'save the tariff'); }
 });
 
@@ -1059,15 +1206,15 @@ $('pkgSave').addEventListener('click', async () => {
   };
   try {
     const id = $('pkgId').value;
-    if (id) { delete data.order; await updateDoc(doc(db,'packages',id), data); toast('Experience updated'); }
-    else { await addDoc(collection(db,'packages'), { ...data, createdAt: serverTimestamp() }); toast('Experience added'); }
+    if (id) { delete data.order; await updateDoc(doc(db,'packages',id), data); logAudit('PACKAGE_SAVED', title); toast('Experience updated'); }
+    else { await addDoc(collection(db,'packages'), { ...data, createdAt: serverTimestamp() }); logAudit('PACKAGE_SAVED', title); toast('Experience added'); }
     clearPkgForm();
   } catch (ex) { fail(ex, 'save the experience'); }
 });
 async function delPkg(id){
   const p = PACKAGES.find(x => x.id === id);
   if (!confirm('Delete "' + (p ? p.title : 'this experience') + '"? This removes it from the booking page.')) return;
-  try { await deleteDoc(doc(db,'packages',id)); toast('Experience deleted'); }
+  try { await deleteDoc(doc(db,'packages',id)); logAudit('PACKAGE_DELETED', p ? p.title : id); toast('Experience deleted'); }
   catch (ex) { fail(ex, 'delete the experience'); }
 }
 
@@ -1151,7 +1298,7 @@ $('blockBtn').addEventListener('click', async () => {
     days.forEach(k => batch.set(doc(db,'blocked_dates',k),
       { date:k, reason, blockedBy: ME.email, createdAt: serverTimestamp() }));
     await batch.commit();
-    toast(days.length + ' date(s) blocked');
+    logAudit('DATES_BLOCKED', days[0] + ' to ' + days[days.length-1]); toast(days.length + ' date(s) blocked');
     selA = selB = null; renderCalendar();
   } catch (ex) { fail(ex, 'block those dates'); }
 });
@@ -1161,7 +1308,7 @@ $('unblockBtn').addEventListener('click', async () => {
     const batch = writeBatch(db);
     days.forEach(k => batch.delete(doc(db,'blocked_dates',k)));
     await batch.commit();
-    toast(days.length + ' date(s) unblocked');
+    logAudit('DATES_UNBLOCKED', days[0] + ' to ' + days[days.length-1]); toast(days.length + ' date(s) unblocked');
     selA = selB = null; renderCalendar();
   } catch (ex) { fail(ex, 'unblock those dates'); }
 });
@@ -1208,8 +1355,8 @@ function renderBookings(){
       <td><b>${esc(b.guestName)}</b>${b.cancelled ? ' <span class="bdg bdg-red">Cancelled</span>' : ''}<div class="text-[11px] text-muted">${esc(b.bookingId||b.id.slice(0,6))}</div></td>
       <td>${fmtShort(b.checkIn)} → ${fmtShort(b.checkOut)}</td>
       <td>${n}</td>
-      <td>${INR(b.totalAmount)}</td>
-      <td><b>${INR(b.advancePaid)}</b>${(bal>0 && !b.cancelled)?`<div class="text-[11px] text-[#a12626]">${INR(bal)} unpaid</div>`:''}</td>
+      <td>${MONEY(b.totalAmount)}</td>
+      <td><b>${MONEY(b.advancePaid)}</b>${(bal>0 && !b.cancelled)?`<div class="text-[11px] text-[#a12626]">${MONEY(bal)} unpaid</div>`:''}</td>
       <td><span class="bdg bdg-gray">${esc(b.source||'direct')}</span></td>
       <td><button class="btn btn-g" data-edit="${b.id}"><i data-lucide="pencil" class="w-4 h-4"></i></button></td>
     </tr>`;
@@ -1219,9 +1366,9 @@ function renderBookings(){
       <td>${fmtShort(b.checkIn)}</td>
       <td>${fmtShort(b.checkOut)}</td>
       <td>${payCell(b)}</td>
-      <td>${INR(b.totalAmount)}</td>
-      <td>${INR(b.advancePaid)}</td>
-      <td>${bal > 0 ? `<b class="text-[#a12626]">${INR(bal)}</b>` : '<span class="bdg bdg-green">Paid</span>'}</td>
+      <td>${MONEY(b.totalAmount)}</td>
+      <td>${MONEY(b.advancePaid)}</td>
+      <td>${bal > 0 ? `<b class="text-[#a12626]">${MONEY(bal)}</b>` : '<span class="bdg bdg-green">Paid</span>'}</td>
       <td>
         ${b.status === 'PENDING_VERIFICATION' ? '<span class="bdg bdg-amber">Verify</span>' : ''}
         ${b.status === 'CONFIRMED' ? '<span class="bdg bdg-green">Confirmed</span>' : ''}
@@ -1246,13 +1393,13 @@ function renderBookings(){
   // past ledger stats
   const past = BOOKINGS.filter(b => phaseOf(b) === 'past');
   $('pStays').textContent = past.length;
-  $('pRevenue').textContent = INR(past.reduce((s,b) => s + (Number(b.advancePaid)||0), 0));
+  $('pRevenue').textContent = MONEY(past.reduce((s,b) => s + (Number(b.advancePaid)||0), 0));
   const totN = past.reduce((s,b) => s + nightsBetween(b.checkIn,b.checkOut), 0);
   $('pAvg').textContent = past.length ? (totN/past.length).toFixed(1) + ' nights' : '—';
   icons();
 }
 async function markCheckedIn(id){
-  try { await updateDoc(doc(db,'bookings',id), { checkedIn:true, checkedInAt: serverTimestamp() }); toast('Marked checked-in'); }
+  try { await updateDoc(doc(db,'bookings',id), { checkedIn:true, checkedInAt: serverTimestamp() }); logAudit('BOOKING_CHECKEDIN', id); toast('Marked checked-in'); }
   catch (ex) { fail(ex, 'mark that check-in'); }
 }
 /* payment method + reference, as submitted by the guest */
@@ -1287,7 +1434,7 @@ async function verifyAndConfirm(id){
   if (claimed > 0 && !(Number(b.advancePaid) > 0)) patch.advancePaid = claimed;
   try {
     await updateDoc(doc(db,'bookings',id), patch);
-    toast('Confirmed — opening WhatsApp');
+    logAudit('BOOKING_CONFIRMED', b.guestName + ' · ' + (ref||'')); toast('Confirmed — opening WhatsApp');
     dispatch('booking', 'confirm', id);          // prefilled confirmation message
   } catch (ex) { fail(ex, 'confirm that booking'); }
 }
@@ -1419,7 +1566,7 @@ $('bkDelete').addEventListener('click', async () => {
   try {
     await deleteDoc(doc(db,'bookings',id));
     try { await syncBlocks('', prev ? prev.blockedDates : [], [], true); } catch(e){ console.warn('unblock failed', e); }
-    $('bkModal').classList.remove('open'); toast('Booking deleted');
+    $('bkModal').classList.remove('open'); logAudit('BOOKING_DELETED', prev ? prev.guestName : id); toast('Booking deleted');
   }
   catch (ex) { fail(ex, 'delete the booking'); }
 });
@@ -1528,7 +1675,7 @@ $('saveTpl').addEventListener('click', async () => {
       arrival: $('tplArrival').value, review: $('tplReview').value,
       updatedAt: serverTimestamp(), updatedBy: ME.email
     }, { merge:true });
-    toast('Templates saved');
+    logAudit('TEMPLATES_SAVED',''); toast('Templates saved');
   } catch (ex) { fail(ex, 'save the templates'); }
 });
 $('resetTpl').addEventListener('click', () => {
@@ -1549,7 +1696,7 @@ function renderAnalytics(){
   $('aVisits').textContent = VISITS.length;
   $('aIg').textContent = igClicks;
   $('aLeads').textContent = LEADS.length;
-  $('aRevenue').textContent = INR(BOOKINGS.filter(b => !b.cancelled)
+  $('aRevenue').textContent = MONEY(BOOKINGS.filter(b => !b.cancelled)
     .reduce((s,b) => s + (Number(b.advancePaid)||0), 0));
   $('aEmpty').hidden = VISITS.length > 0;
   $('aBody').innerHTML = VISITS.slice(0,60).map(v => {
@@ -1572,9 +1719,9 @@ function renderDash(){
   const act = BOOKINGS.filter(b => phaseOf(b) === 'active');
   $('kUpcoming').textContent = up.length;
   $('kActive').textContent = act.length;
-  $('kBalance').textContent = INR(BOOKINGS.filter(b => !b.cancelled && phaseOf(b) !== 'past')
+  $('kBalance').textContent = MONEY(BOOKINGS.filter(b => !b.cancelled && phaseOf(b) !== 'past')
     .reduce((s,b) => s + balanceOf(b), 0));
-  $('kCollected').textContent = INR(BOOKINGS.filter(b => !b.cancelled)
+  $('kCollected').textContent = MONEY(BOOKINGS.filter(b => !b.cancelled)
     .reduce((s,b) => s + (Number(b.advancePaid)||0), 0));
 
   const next = up.sort((a,b) => String(a.checkIn||'').localeCompare(String(b.checkIn||''))).slice(0,5);
@@ -1587,7 +1734,7 @@ function renderDash(){
   const needs = [];
   BOOKINGS.filter(b => !b.cancelled && phaseOf(b) !== 'past').forEach(b => {
     if (!b.utrVerified) needs.push(`Verify payment for <b class="text-ink">${esc(b.guestName)}</b>`);
-    if (balanceOf(b) > 0 && phaseOf(b) === 'active') needs.push(`Collect ${INR(balanceOf(b))} from <b class="text-ink">${esc(b.guestName)}</b>`);
+    if (balanceOf(b) > 0 && phaseOf(b) === 'active') needs.push(`Collect ${MONEY(balanceOf(b))} from <b class="text-ink">${esc(b.guestName)}</b>`);
     if (phaseOf(b) === 'active' && !b.checkedIn) needs.push(`Mark <b class="text-ink">${esc(b.guestName)}</b> as checked in`);
   });
   LEADS.filter(l => !(l.dispatch||{}).welcome).forEach(l => needs.push(`Reply to lead <b class="text-ink">${esc(l.name||'Unnamed')}</b>`));
@@ -1597,18 +1744,303 @@ function renderDash(){
   icons();
 }
 
-/* ---------------- team ---------------- */
-let TEAM = [];
+/* =========================================================
+   TEAM & ROLES  —  fully managed from this screen
+   ========================================================= */
+let TEAM = [], AUDIT = [];
+
+/* A SECOND Firebase app instance. createUserWithEmailAndPassword signs the new
+   user in on whatever auth instance you use, so doing it on the primary app
+   would log the super admin out. The 'StaffCreator' instance absorbs that
+   sign-in and we immediately sign it out again. */
+let staffAuth = null;
+function getStaffAuth(){
+  if (!staffAuth) staffAuth = getAuth(initializeApp(firebaseConfig, 'StaffCreator'));
+  return staffAuth;
+}
+
+const ROLE_BADGE = { super_admin:'bdg-green', manager:'bdg-blue', caretaker:'bdg-amber', accountant:'bdg-gray' };
+
 function renderTeam(){
   if (!$('teamBody')) return;
-  $('teamBody').innerHTML = TEAM.length ? TEAM.map(u => `<tr>
-      <td><b>${esc(u.email || u.id)}</b></td>
-      <td>${esc(u.name || '—')}</td>
-      <td><span class="bdg ${u.role === 'super_admin' ? 'bdg-green' : 'bdg-blue'}">${esc(u.role || 'none')}</span></td>
-      <td class="text-muted text-xs">${u.role === 'super_admin' ? 'Full access' : 'Bookings, calendar, WhatsApp'}</td>
-    </tr>`).join('')
-    : '<tr><td colspan="4" class="text-center text-muted py-8">No user documents found in <code>users</code>.</td></tr>';
+  $('teamEmpty').hidden = TEAM.length > 0;
+  $('teamBody').innerHTML = TEAM.map(u => {
+    const perms = permsFor(u.role, u.permissions);
+    const on = ALL_PERMS.filter(k => perms[k]);
+    const isMe = u.id === ME.uid;
+    const suspended = u.active === false;
+    return `<tr class="${suspended ? 'opacity-55' : ''}">
+      <td>
+        <b>${esc(u.name || '—')}</b>${isMe ? ' <span class="bdg bdg-gray">you</span>' : ''}
+        <div class="text-[11px] text-muted">${esc(u.email || u.id)}</div>
+        ${u.phone ? `<div class="text-[11px] text-muted">${esc(u.phone)}</div>` : ''}
+      </td>
+      <td><span class="bdg ${ROLE_BADGE[u.role] || 'bdg-gray'}">${esc(u.role || 'none')}</span></td>
+      <td class="text-[11px] text-muted" style="max-width:260px">
+        ${perms.viewRevenue ? '' : '<span class="bdg bdg-amber">money hidden</span><br>'}
+        ${on.length} of ${ALL_PERMS.length} permissions
+      </td>
+      <td>${suspended ? '<span class="bdg bdg-red">Suspended</span>' : '<span class="bdg bdg-green">Active</span>'}</td>
+      <td>
+        <div class="flex gap-1.5 flex-wrap justify-end" ${ME.role === 'super_admin' ? '' : 'hidden'}>
+          <button class="btn btn-g" data-u-edit="${u.id}" title="Change role & permissions"><i data-lucide="sliders-horizontal" class="w-4 h-4"></i></button>
+          <button class="btn ${suspended ? 'btn-o' : 'btn-d'}" data-u-toggle="${u.id}" title="${suspended ? 'Restore access' : 'Suspend access'}">
+            <i data-lucide="${suspended ? 'unlock' : 'ban'}" class="w-4 h-4"></i></button>
+          <button class="btn btn-g" data-u-reset="${u.id}" title="Send password reset email"><i data-lucide="mail" class="w-4 h-4"></i></button>
+          <button class="btn btn-g" data-u-send="${u.id}" title="Send login details"><i data-lucide="send" class="w-4 h-4"></i></button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+  $('teamBody').querySelectorAll('[data-u-edit]').forEach(b => b.addEventListener('click', () => openUser(b.dataset.uEdit)));
+  $('teamBody').querySelectorAll('[data-u-toggle]').forEach(b => b.addEventListener('click', () => toggleUser(b.dataset.uToggle)));
+  $('teamBody').querySelectorAll('[data-u-reset]').forEach(b => b.addEventListener('click', () => resetPw(b.dataset.uReset)));
+  $('teamBody').querySelectorAll('[data-u-send]').forEach(b => b.addEventListener('click', () => sendCreds(b.dataset.uSend)));
   icons();
+}
+
+/* ---- permission checkbox list ---- */
+function paintPermBoxes(role, overrides){
+  const p = permsFor(role, overrides);
+  $('uPerms').innerHTML = PERMS.map(([k, label]) => `
+    <label class="flex items-start gap-2.5 cursor-pointer">
+      <input type="checkbox" class="w-4 h-4 mt-0.5 accent-[#A0472A]" data-perm-box="${k}" ${p[k] ? 'checked' : ''} />
+      <span class="text-xs leading-snug">${esc(label)}${k === 'viewRevenue' ? ' <b class="text-terra">(untick to hide ₹ figures)</b>' : ''}</span>
+    </label>`).join('');
+}
+function readPermBoxes(){
+  const out = {};
+  $('uPerms').querySelectorAll('[data-perm-box]').forEach(cb => out[cb.dataset.permBox] = cb.checked);
+  return out;
+}
+$('uRole').addEventListener('change', e => paintPermBoxes(e.target.value, null));
+$('uPwGen').addEventListener('click', () => {
+  const cs = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
+  $('uPw').value = Array.from({length:12}, () => cs[Math.floor(Math.random()*cs.length)]).join('');
+});
+
+function openUser(uid){
+  const u = uid ? TEAM.find(x => x.id === uid) : null;
+  $('userErr').hidden = true;
+  $('userModalTitle').textContent = u ? 'Edit team member' : 'Add team member';
+  $('uUid').value = u ? u.id : '';
+  $('uName').value = u?.name || '';
+  $('uPhone').value = u?.phone || '';
+  $('uEmail').value = u?.email || '';
+  $('uEmail').disabled = !!u;                     // email belongs to the auth account
+  $('uPw').value = '';
+  $('uPwWrap').hidden = !!u;                      // only on creation
+  $('uRole').value = u?.role || 'manager';
+  $('uActive').checked = u ? u.active !== false : true;
+  paintPermBoxes($('uRole').value, u?.permissions);
+  $('uDelete').hidden = !(u && u.id !== ME.uid);
+  $('userModal').classList.add('open'); icons();
+}
+$('addUser').addEventListener('click', () => openUser(null));
+$('userModalClose').addEventListener('click', () => $('userModal').classList.remove('open'));
+$('userModal').addEventListener('click', e => { if (e.target === $('userModal')) $('userModal').classList.remove('open'); });
+
+$('uSave').addEventListener('click', async () => {
+  const err = $('userErr'), btn = $('uSave');
+  const uid = $('uUid').value;
+  const name = $('uName').value.trim(), email = $('uEmail').value.trim().toLowerCase();
+  const phone = $('uPhone').value.replace(/\D/g,'');
+  const role = $('uRole').value, pw = $('uPw').value;
+  const permissions = readPermBoxes();
+  const active = $('uActive').checked;
+
+  if (name.length < 2) { err.textContent = 'Please enter the person’s full name.'; err.hidden = false; return; }
+  if (!uid && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { err.textContent = 'Please enter a valid email address.'; err.hidden = false; return; }
+  if (!uid && pw.length < 6) { err.textContent = 'The temporary password must be at least 6 characters.'; err.hidden = false; return; }
+  if (uid === ME.uid && role !== ME.role) { err.textContent = 'You cannot change your own role — ask another super admin to do it.'; err.hidden = false; return; }
+  if (uid === ME.uid && !active) { err.textContent = 'You cannot suspend your own account.'; err.hidden = false; return; }
+  if (uid && TEAM.find(x => x.id === uid)?.role === 'super_admin' && role !== 'super_admin'
+      && TEAM.filter(x => x.role === 'super_admin' && x.active !== false).length < 2) {
+    err.textContent = 'This is the only active super admin — promote someone else first.'; err.hidden = false; return;
+  }
+  err.hidden = true; btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Saving…';
+
+  try {
+    if (uid) {
+      await updateDoc(doc(db,'users',uid), { name, phone, role, permissions, active, updatedAt: serverTimestamp(), updatedBy: ME.email });
+      logAudit('USER_UPDATED', name + ' → ' + role + (active ? '' : ' (suspended)'));
+      toast('Team member updated');
+    } else {
+      // create the auth account on the secondary instance so our session survives
+      const sAuth = getStaffAuth();
+      const cred = await createUserWithEmailAndPassword(sAuth, email, pw);
+      const newUid = cred.user.uid;
+      try { await signOut(sAuth); } catch(e){}
+      await setDoc(doc(db,'users',newUid), {
+        name, email, phone, role, permissions, active: true,
+        createdAt: serverTimestamp(), createdBy: ME.email
+      });
+      logAudit('USER_CREATED', name + ' (' + email + ') as ' + role);
+      toast('Account created for ' + name);
+      $('uUid').value = newUid;                 // so "send credentials" can use it
+      lastTempPw = pw;
+    }
+    $('userModal').classList.remove('open');
+  } catch (ex) {
+    console.error('user save failed', ex);
+    const map = {
+      'auth/email-already-in-use':'That email already has an account. Ask them to sign in, or use password reset.',
+      'auth/invalid-email':'That email address is not valid.',
+      'auth/weak-password':'Please choose a longer password (6+ characters).',
+      'auth/operation-not-allowed':'Email/password sign-in is not enabled in Firebase Authentication.',
+      'permission-denied':'Your role is not allowed to manage team members.'
+    };
+    err.textContent = map[ex.code] || ('Could not save: ' + (ex.code || ex.message));
+    err.hidden = false;
+  } finally {
+    btn.disabled = false; btn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Save'; icons();
+  }
+});
+
+let lastTempPw = '';
+
+$('uDelete').addEventListener('click', async () => {
+  const uid = $('uUid').value; if (!uid || uid === ME.uid) return;
+  const u = TEAM.find(x => x.id === uid);
+  if (!confirm('Remove ' + (u?.name || 'this member') + '’s access?\n\nThis revokes the console immediately. Their sign-in account still exists in Firebase Authentication — delete it there too if you want it gone for good.')) return;
+  try {
+    await deleteDoc(doc(db,'users',uid));
+    logAudit('USER_REMOVED', (u?.name || uid) + ' access revoked');
+    $('userModal').classList.remove('open'); toast('Access revoked');
+  } catch (ex) { fail(ex, 'remove that member'); }
+});
+
+/* kill switch */
+async function toggleUser(uid){
+  const u = TEAM.find(x => x.id === uid); if (!u) return;
+  if (uid === ME.uid) { toast('You cannot suspend your own account'); return; }
+  const suspend = u.active !== false;
+  if (suspend && u.role === 'super_admin'
+      && TEAM.filter(x => x.role === 'super_admin' && x.active !== false).length < 2) {
+    toast('That is the only active super admin'); return;
+  }
+  if (!confirm((suspend ? 'Suspend ' : 'Restore ') + (u.name || u.email) + '?' +
+      (suspend ? '\n\nThey will be signed out of the console on their next action.' : ''))) return;
+  try {
+    await updateDoc(doc(db,'users',uid), { active: !suspend, updatedAt: serverTimestamp(), updatedBy: ME.email });
+    logAudit(suspend ? 'USER_SUSPENDED' : 'USER_RESTORED', u.name || u.email);
+    toast(suspend ? 'Access suspended' : 'Access restored');
+  } catch (ex) { fail(ex, 'change that account'); }
+}
+
+/* password reset email */
+async function resetPw(uid){
+  const u = TEAM.find(x => x.id === uid); if (!u || !u.email) { toast('No email on file'); return; }
+  if (!confirm('Send a password reset email to ' + u.email + '?')) return;
+  try {
+    await sendPasswordResetEmail(auth, u.email);
+    logAudit('PASSWORD_RESET_SENT', u.email);
+    toast('Reset email sent to ' + u.email);
+  } catch (ex) { fail(ex, 'send the reset email'); }
+}
+
+/* 1-click send login details */
+function sendCreds(uid){
+  const u = TEAM.find(x => x.id === uid); if (!u) return;
+  const url = location.origin + '/admin.html';
+  const pwLine = (uid === $('uUid').value && lastTempPw)
+    ? '\nTemporary password: ' + lastTempPw + '\n(Please change it after your first sign-in.)'
+    : '\nUse “Forgot password” on the sign-in screen, or ask me to send a reset email.';
+  const msg = 'Khamma Ghani ' + (u.name || '') + '!\n\n' +
+    'Here are your Padharo House host console details.\n\n' +
+    'Link: ' + url + '\nEmail: ' + u.email + pwLine +
+    '\n\nRole: ' + u.role + '\n— Padharo House';
+  if (u.phone) {
+    window.open('https://wa.me/' + waNumber(u.phone) + '?text=' + encodeURIComponent(msg), '_blank');
+  } else {
+    window.open('mailto:' + encodeURIComponent(u.email) +
+      '?subject=' + encodeURIComponent('Your Padharo House console access') +
+      '&body=' + encodeURIComponent(msg), '_blank');
+  }
+  logAudit('CREDENTIALS_SENT', u.name || u.email);
+}
+
+/* ---- my own account ---- */
+$('myAccount').addEventListener('click', () => {
+  ['meCur','meNewPw','meNewEmail'].forEach(k => $(k).value = '');
+  $('meErr').hidden = true; $('meOk').hidden = true;
+  $('meModal').classList.add('open'); icons();
+});
+$('meClose').addEventListener('click', () => $('meModal').classList.remove('open'));
+$('meModal').addEventListener('click', e => { if (e.target === $('meModal')) $('meModal').classList.remove('open'); });
+$('meSave').addEventListener('click', async () => {
+  const err = $('meErr'), ok = $('meOk'), btn = $('meSave');
+  const cur = $('meCur').value, newPw = $('meNewPw').value.trim(), newEmail = $('meNewEmail').value.trim();
+  err.hidden = true; ok.hidden = true;
+  if (!cur) { err.textContent = 'Please enter your current password.'; err.hidden = false; return; }
+  if (!newPw && !newEmail) { err.textContent = 'Enter a new password or a new email.'; err.hidden = false; return; }
+  if (newPw && newPw.length < 6) { err.textContent = 'The new password must be at least 6 characters.'; err.hidden = false; return; }
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Updating…';
+  try {
+    const user = auth.currentUser;
+    await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, cur));
+    const done = [];
+    if (newPw) { await updatePassword(user, newPw); done.push('password changed'); logAudit('OWN_PASSWORD_CHANGED', ''); }
+    if (newEmail) {
+      await verifyBeforeUpdateEmail(user, newEmail);
+      done.push('confirmation link sent to ' + newEmail);
+      logAudit('OWN_EMAIL_CHANGE_REQUESTED', newEmail);
+    }
+    ok.textContent = done.join(' · ');
+    ok.hidden = false;
+    ['meCur','meNewPw','meNewEmail'].forEach(k => $(k).value = '');
+  } catch (ex) {
+    const map = {
+      'auth/invalid-credential':'That current password is incorrect.',
+      'auth/wrong-password':'That current password is incorrect.',
+      'auth/too-many-requests':'Too many attempts — please wait a moment.',
+      'auth/email-already-in-use':'Another account already uses that email.',
+      'auth/operation-not-allowed':'Email changes are restricted on this project.'
+    };
+    err.textContent = map[ex.code] || ('Could not update: ' + (ex.code || ex.message));
+    err.hidden = false;
+  } finally {
+    btn.disabled = false; btn.innerHTML = '<i data-lucide="shield-check" class="w-4 h-4"></i> Update my account'; icons();
+  }
+});
+
+/* =========================================================
+   AUDIT LOG
+   ========================================================= */
+function logAudit(action, detail){
+  try {
+    addDoc(collection(db,'audit_log'), {
+      action, detail: String(detail || ''),
+      byEmail: ME.email || '(unknown)', byName: ME.name || '', byUid: ME.uid || '',
+      role: ME.role || '', at: serverTimestamp()
+    }).catch(e => console.warn('audit write failed', e));
+  } catch (e) { console.warn('audit', e); }
+}
+const AUDIT_LABEL = {
+  LOGIN:'Signed in', PRICING_SAVED:'Changed the tariff', SITE_SAVED:'Changed site settings',
+  PAYMENTS_SAVED:'Changed payment settings', MODE_CHANGED:'Changed website mode',
+  DATES_BLOCKED:'Blocked calendar dates', DATES_UNBLOCKED:'Unblocked calendar dates',
+  BOOKING_SAVED:'Saved a booking', BOOKING_CONFIRMED:'Verified & confirmed a booking',
+  BOOKING_CHECKEDIN:'Marked a guest checked in', BOOKING_DELETED:'Deleted a booking',
+  PACKAGE_SAVED:'Saved an experience', PACKAGE_DELETED:'Deleted an experience',
+  USER_CREATED:'Created a team member', USER_UPDATED:'Updated a team member',
+  USER_SUSPENDED:'Suspended a team member', USER_RESTORED:'Restored a team member',
+  USER_REMOVED:'Revoked access', PASSWORD_RESET_SENT:'Sent a password reset',
+  CREDENTIALS_SENT:'Sent login details', OWN_PASSWORD_CHANGED:'Changed their own password',
+  OWN_EMAIL_CHANGE_REQUESTED:'Requested an email change', TEMPLATES_SAVED:'Saved WhatsApp templates'
+};
+function renderAudit(){
+  if (!$('auditBody')) return;
+  $('auditEmpty').hidden = AUDIT.length > 0;
+  $('auditBody').innerHTML = AUDIT.map(a => {
+    const d = a.at?.toDate ? a.at.toDate() : null;
+    return `<tr>
+      <td class="whitespace-nowrap text-[11px] text-muted">${d ? d.toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '—'}</td>
+      <td><b class="text-xs">${esc(a.byName || a.byEmail)}</b><div class="text-[11px] text-muted">${esc(a.role || '')}</div></td>
+      <td class="text-xs">${esc(AUDIT_LABEL[a.action] || a.action)}</td>
+      <td class="text-[11px] text-muted">${esc(a.detail || '')}</td>
+    </tr>`;
+  }).join('');
 }
 
 icons();
