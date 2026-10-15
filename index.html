@@ -288,6 +288,45 @@
 
       <div class="mt-11 text-xs text-muted os-el" style="--d:2.1s">Amer, Jaipur, Rajasthan &middot; Opposite the Amer Fort &middot; &copy; 2026 Padharo House</div>
     </div>
+
+    <!-- reels showcase (opening soon view) -->
+    <div class="relative z-10 w-full max-w-6xl mx-auto px-5 pb-16 os-el" style="--d:2.25s">
+      <div class="text-center mb-8">
+        <div class="eyebrow mb-3">Watch Our Heritage Journey</div>
+        <h2 class="font-serif text-2xl md:text-3xl text-terradark">Inside Padharo House</h2>
+        <a data-insta href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener"
+           class="inline-flex items-center gap-1.5 text-sm text-terra font-semibold mt-2 hover:underline">
+          <i data-lucide="instagram" class="w-4 h-4"></i> @padharo_house
+        </a>
+      </div>
+      <div class="reels-rail" id="reelsRailOS"></div>
+    </div>
+
+    <!-- launch waitlist -->
+    <div class="relative z-10 w-full max-w-lg mx-auto px-5 pb-20 os-el" style="--d:2.4s" id="waitlist">
+      <div class="bg-white/80 border border-[#e8dcc9] rounded-2xl p-6 md:p-7 text-left backdrop-blur">
+        <div class="text-center mb-5">
+          <div class="eyebrow mb-2">Launch Waitlist</div>
+          <h3 class="font-serif text-xl text-terradark">Be among our first guests</h3>
+          <p class="text-xs text-muted mt-1.5">Leave your details and we will contact you the moment bookings open.</p>
+        </div>
+        <form id="waitForm" class="space-y-3">
+          <div class="grid sm:grid-cols-2 gap-3">
+            <input class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5 text-sm" id="wName" placeholder="Your name *" autocomplete="name" required />
+            <input class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5 text-sm" id="wPhone" placeholder="WhatsApp number *" inputmode="tel" autocomplete="tel" required />
+          </div>
+          <input class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5 text-sm" id="wEmail" type="email" placeholder="Email (optional)" autocomplete="email" />
+          <input class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5 text-sm" id="wDates" placeholder="Rough dates you have in mind" />
+          <div id="waitErr" class="text-xs text-[#a12626] bg-[#fdeaea] rounded-lg px-3 py-2" hidden></div>
+          <button type="submit" class="btn btn-primary w-full justify-center" id="waitBtn">Join the waitlist</button>
+        </form>
+        <div id="waitDone" class="text-center py-4" hidden>
+          <div class="text-3xl mb-2">🙏</div>
+          <h4 class="font-serif text-lg text-terradark">Khamma Ghani!</h4>
+          <p class="text-xs text-muted mt-1">You are on the list — we will be in touch very soon.</p>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ============ LIVE HOMEPAGE (shown when siteMode='live' / default) ============ -->
@@ -617,6 +656,22 @@
     </div>
   </section>
 
+  <!-- reels showcase -->
+  <section id="reels" class="py-20 md:py-28 bg-ink text-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-5">
+      <div class="flex items-end justify-between gap-4 mb-10 reveal flex-wrap">
+        <div>
+          <div class="eyebrow mb-3">Watch Our Heritage Journey</div>
+          <h2 class="font-serif text-3xl md:text-4xl"><span class="h-line">See Padharo House in motion</span></h2>
+        </div>
+        <a data-insta href="https://www.instagram.com/padharo_house" target="_blank" rel="noopener"
+           class="btn btn-ghost text-sm"><i data-lucide="instagram" class="w-4 h-4"></i> @padharo_house</a>
+      </div>
+      <div class="reels-rail reveal" id="reelsRail"></div>
+      <p class="text-center text-xs text-white/50 mt-6 sm:hidden">Swipe to see more →</p>
+    </div>
+  </section>
+
   <!-- enquiry / waitlist -->
   <section id="enquire" class="py-20 md:py-28 bg-cream">
     <div class="max-w-2xl mx-auto px-5">
@@ -925,10 +980,10 @@
     if (db) {
       onSnapshot(doc(db, 'config', 'site_settings'), snap => {
         SITE = { ...SITE_FALLBACK, ...(snap.exists() ? snap.data() : {}) };
-        applySite();
+        applySite(); renderReels();
       }, e => console.warn('site settings listen failed', e));
     } else {
-      applySite();
+      applySite(); renderReels();
     }
 
     /* ---- influencer referral: remember the code and count the click ---- */
@@ -996,7 +1051,117 @@
       refreshIcons();
     });
 
-    /* initial icon render */
+    /* ============================================================
+       REELS SHOWCASE — 9:16 vertical cards, driven by site_settings.reels
+       ============================================================ */
+    function reelShortcode(u){
+      const m = String(u || '').match(
+        /instagram\.com\/(?:[A-Za-z0-9_.]+\/)?(?:reel|reels|p|tv)\/([A-Za-z0-9_-]{5,})/i);
+      return m ? m[1] : '';
+    }
+    const FALLBACK_REELS = [
+      { type:'poster', url:'assets/img/p2.jpg', caption:'Sunrise over the Amer Fort, from our window', cta:'Follow the journey' },
+      { type:'poster', url:'assets/img/p8.jpg', caption:'Inside the Amber Suite — stained glass & jharokhas', cta:'Follow the journey' },
+      { type:'poster', url:'assets/img/p3.jpg', caption:'Evenings on the terrace, Jaigarh on the horizon', cta:'Follow the journey' }
+    ];
+    function renderReels(){
+      const live = (Array.isArray(SITE.reels) ? SITE.reels : []).filter(r => r && r.url && r.active !== false);
+      const list = live.length ? live : FALLBACK_REELS;
+      const insta = S('instagramUrl') || 'https://www.instagram.com/padharo_house';
+      ['reelsRail', 'reelsRailOS'].forEach(id => {
+        const rail = document.getElementById(id);
+        if (!rail) return;
+        const openingSoon = id === 'reelsRailOS';
+        rail.innerHTML = list.slice(0, 8).map((r, i) => {
+          const cap = esc(r.caption || '');
+          const ctaText = esc(r.cta || (openingSoon ? 'Claim launch offer' : 'Book this view'));
+          // CTA: the waitlist while we are pre-launch, the booking page once live
+          const cta = openingSoon
+            ? `<a class="rcard-cta" href="#waitlist" data-scroll>${ctaText} <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>`
+            : `<a class="rcard-cta" href="booking.html">${ctaText} <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>`;
+          let media, tag = '';
+          if (r.type === 'video') {
+            media = `<video src="${esc(r.url)}" muted loop playsinline preload="metadata" controls
+                       poster="${esc(r.poster || '')}"></video>`;
+            tag = '<span class="rcard-tag"><i data-lucide="play" class="w-3 h-3"></i> Reel</span>';
+          } else if (r.type === 'instagram' || reelShortcode(r.url)) {
+            const code = r.shortcode || reelShortcode(r.url);
+            // poster first; the embed loads only when tapped (keeps the page fast)
+            media = `<img src="assets/img/${['p2','p8','p3','p9','p6','p1','p7','p5'][i % 8]}.jpg" alt="" loading="lazy" />
+                     <button class="rcard-play" data-ig="${esc(code)}" aria-label="Play this reel"><span>▶</span></button>`;
+            tag = '<span class="rcard-tag"><i data-lucide="instagram" class="w-3 h-3"></i> Instagram</span>';
+          } else {
+            media = `<a href="${esc(insta)}" target="_blank" rel="noopener"><img src="${esc(r.url)}" alt="" loading="lazy" />
+                     <span class="rcard-play"><span>▶</span></span></a>`;
+            tag = '<span class="rcard-tag"><i data-lucide="instagram" class="w-3 h-3"></i> @padharo_house</span>';
+          }
+          return `<article class="rcard">${media}${tag}<div class="rcard-veil"></div>
+            <div class="rcard-body">${cap ? `<div class="rcard-cap">${cap}</div>` : ''}${cta}</div></article>`;
+        }).join('');
+
+        // tap an Instagram card -> swap in the cropped embed in place
+        rail.querySelectorAll('[data-ig]').forEach(btn => btn.addEventListener('click', () => {
+          const code = btn.dataset.ig, card = btn.closest('.rcard');
+          card.querySelector('.rcard-veil')?.remove();
+          card.querySelector('.rcard-body')?.remove();
+          btn.remove();
+          card.querySelector('img')?.remove();
+          const box = document.createElement('div');
+          box.className = 'ig-embed';
+          box.innerHTML = '<iframe src="https://www.instagram.com/reel/' + code +
+            '/embed/" loading="lazy" allowtransparency="true" allowfullscreen ' +
+            'scrolling="no" title="Instagram reel"></iframe>';
+          card.appendChild(box);
+        }));
+        // hover-to-play for uploaded clips (desktop); tap uses the native controls
+        rail.querySelectorAll('video').forEach(v => {
+          v.addEventListener('mouseenter', () => { v.play().catch(()=>{}); });
+          v.addEventListener('mouseleave', () => { v.pause(); });
+        });
+        rail.querySelectorAll('[data-scroll]').forEach(a => a.addEventListener('click', e => {
+          e.preventDefault();
+          document.getElementById('waitlist')?.scrollIntoView({ behavior:'smooth', block:'center' });
+        }));
+      });
+      refreshIcons();
+    }
+
+    /* ---- launch waitlist (opening soon view) ---- */
+    const waitForm = document.getElementById('waitForm');
+    if (waitForm) waitForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const err = document.getElementById('waitErr'), btn = document.getElementById('waitBtn');
+      const name = document.getElementById('wName').value.trim();
+      const phone = document.getElementById('wPhone').value.trim();
+      const email = document.getElementById('wEmail').value.trim();
+      const dates = document.getElementById('wDates').value.trim();
+      if (name.length < 2 || phone.replace(/\D/g,'').length < 10) {
+        err.textContent = 'Please enter your name and a valid phone number.'; err.hidden = false; return;
+      }
+      err.hidden = true; btn.disabled = true; btn.textContent = 'Sending…';
+      try {
+        await addDoc(collection(db, 'leads'), {
+          name, phone, email, dates, message: 'Launch waitlist',
+          source: utm || ref || 'waitlist',
+          createdAt: serverTimestamp(), dispatch: {}
+        });
+      } catch (ex) {
+        console.error('waitlist save failed', ex);
+        err.innerHTML = 'Could not send that — please <a class="underline font-semibold" href="' +
+          waLink('Khamma Ghani! Please add me to the Padharo House launch waitlist.' + (dates ? ' Dates: ' + dates : '')) +
+          '" target="_blank" rel="noopener">message us on WhatsApp</a> instead.';
+        err.hidden = false; btn.disabled = false; btn.textContent = 'Join the waitlist';
+        return;
+      }
+      sendWebhook({ type:'ENQUIRY', guestName:name, phone, email, dates, message:'Launch waitlist',
+                    mapLink: mapLink(), hostEmail: S('email'), hostPhone: S('displayPhone') });
+      waitForm.hidden = true;
+      document.getElementById('waitDone').hidden = false;
+      refreshIcons();
+    });
+
+    /* initial paint — fallback cards show even before Firestore answers */
+    renderReels();
     refreshIcons();
   </script>
 </body>

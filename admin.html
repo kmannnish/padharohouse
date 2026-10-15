@@ -498,9 +498,11 @@
                 <div>
                   <label class="lbl">Instagram reel URL</label>
                   <div class="flex gap-2">
-                    <input class="inp" id="reelUrl" placeholder="https://www.instagram.com/reel/…" />
+                    <input class="inp" id="reelUrl" placeholder="https://www.instagram.com/padharo_house/reel/…" />
                     <button class="btn btn-g" id="reelAddUrl" type="button">Add</button>
                   </div>
+                  <div id="reelUrlErr" class="err mt-2" hidden></div>
+                  <p class="text-[11px] text-muted mt-1">Any Instagram format works — with or without <code>/padharo_house/</code>, and <code>/reel/</code>, <code>/reels/</code> or <code>/p/</code>.</p>
                 </div>
                 <div>
                   <label class="lbl">…or upload a vertical video</label>
@@ -1311,14 +1313,27 @@ $('heroModeSeg').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   HERO_MODE = b.dataset.hm; paintHeroMedia();
 });
+/* Accepts every Instagram link shape, with or without the username segment:
+   /reel/CODE/ · /reels/CODE/ · /p/CODE/ · /tv/CODE/ · /padharo_house/reel/CODE/
+   and tolerates ?igsh=… tracking suffixes. */
+function reelShortcode(u){
+  const m = String(u || '').match(
+    /instagram\.com\/(?:[A-Za-z0-9_.]+\/)?(?:reel|reels|p|tv)\/([A-Za-z0-9_-]{5,})/i);
+  return m ? m[1] : '';
+}
 $('reelAddUrl').addEventListener('click', () => {
-  const u = $('reelUrl').value.trim();
-  if (!/^https?:\/\/(www\.)?instagram\.com\/(reel|p|tv)\//i.test(u)) {
-    toast('Paste a full instagram.com/reel/… link'); return;
+  const raw = $('reelUrl').value.trim();
+  const code = reelShortcode(raw);
+  const err = $('reelUrlErr');
+  if (!code) {
+    err.textContent = 'That does not look like an Instagram reel link. Paste something like instagram.com/reel/ABC123/ or instagram.com/padharo_house/reel/ABC123/';
+    err.hidden = false; return;
   }
-  REELS.push({ type:'instagram', url:u, ...newReelMeta() });
+  err.hidden = true;
+  REELS.push({ type:'instagram', url:'https://www.instagram.com/reel/' + code + '/', shortcode: code, ...newReelMeta() });
   $('reelUrl').value = ''; paintHeroMedia(); toast('Reel added — press Save site settings');
 });
+$('reelUrl').addEventListener('input', () => { $('reelUrlErr').hidden = true; });
 $('heroVideoDel').addEventListener('click', () => { HERO_VIDEO = ''; paintHeroMedia(); });
 
 /* mount the three upload zones once the DOM exists */
@@ -1329,7 +1344,7 @@ PHUpload.mount($('heroVideoDrop'), { spec:'heroVideo', onDone: url => {
   HERO_VIDEO = url; if (HERO_MODE === 'photos') HERO_MODE = 'hybrid';
   paintHeroMedia(); toast('Video added — press Save site settings');
 }});
-PHUpload.mount($('reelDrop'), { spec:'reel', onDone: url => {
+PHUpload.mount($('reelDrop'), { spec:'reel', allowUrl:false, onDone: url => {
   REELS.push({ type:'video', url, ...newReelMeta() }); paintHeroMedia(); toast('Clip added — press Save site settings');
 }});
 

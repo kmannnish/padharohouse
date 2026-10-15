@@ -245,3 +245,40 @@ h1,h2,h3,h4,.font-serif{font-family:'Playfair Display',Georgia,serif;}
 .mm-row.vert img,.mm-row.vert video{width:46px;height:82px;}
 .mm-grow{flex:1;min-width:0;}
 .mm-btns{display:flex;gap:.3rem;flex:0 0 auto;}
+
+/* ===========================================================
+   REELS SHOWCASE (9:16 phone-frame cards)
+   =========================================================== */
+.reels-rail{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem;}
+@media (max-width:1100px){ .reels-rail{grid-template-columns:repeat(3,1fr);} }
+@media (max-width:860px){
+  /* horizontal swipe carousel on phones */
+  .reels-rail{display:flex;gap:.9rem;overflow-x:auto;scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;padding-bottom:.5rem;grid-template-columns:none;}
+  .reels-rail > *{flex:0 0 68%;scroll-snap-align:center;}
+}
+@media (max-width:480px){ .reels-rail > *{flex:0 0 78%;} }
+
+.rcard{position:relative;aspect-ratio:9/16;border-radius:1.4rem;overflow:hidden;background:#1b1512;
+  box-shadow:0 20px 42px -22px rgba(20,12,8,.75), inset 0 0 0 1px rgba(255,255,255,.08);
+  transition:transform .4s cubic-bezier(.16,.84,.26,1), box-shadow .4s ease;}
+.rcard:hover{transform:translateY(-7px);box-shadow:0 34px 58px -24px rgba(20,12,8,.85), inset 0 0 0 1px rgba(192,146,59,.5);}
+.rcard video,.rcard img,.rcard iframe{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border:0;display:block;}
+/* crop Instagram's white chrome out of the embed */
+.rcard .ig-embed{position:absolute;inset:0;overflow:hidden;background:#1b1512;}
+.rcard .ig-embed iframe{width:120%;height:132%;left:-10%;top:-16%;}
+.rcard-veil{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(20,12,8,.05) 0%,rgba(20,12,8,.1) 45%,rgba(20,12,8,.88) 100%);}
+.rcard-body{position:absolute;inset:auto 0 0 0;padding:1rem 1.05rem 1.1rem;color:#fff;z-index:3;}
+.rcard-cap{font-size:.86rem;line-height:1.4;font-weight:500;text-shadow:0 1px 10px rgba(0,0,0,.6);}
+.rcard-cta{display:inline-flex;align-items:center;gap:.35rem;margin-top:.6rem;background:linear-gradient(135deg,var(--gold),#a97a2a);
+  color:#2B2620;font-weight:700;font-size:.76rem;border-radius:999px;padding:.5rem .95rem;border:0;cursor:pointer;
+  text-decoration:none;transition:.2s;}
+.rcard-cta:hover{filter:brightness(1.08);transform:translateY(-1px);}
+.rcard-play{position:absolute;inset:0;display:grid;place-items:center;z-index:2;cursor:pointer;border:0;background:transparent;}
+.rcard-play span{width:58px;height:58px;border-radius:999px;background:rgba(255,255,255,.92);display:grid;place-items:center;
+  color:var(--terra);font-size:1.1rem;box-shadow:0 8px 24px rgba(0,0,0,.4);transition:.25s;}
+.rcard-play:hover span{transform:scale(1.08);background:#fff;}
+.rcard-tag{position:absolute;top:.8rem;left:.8rem;z-index:3;display:inline-flex;align-items:center;gap:.3rem;
+  background:rgba(20,12,8,.62);backdrop-filter:blur(5px);color:#efd9a8;font-size:.64rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;padding:.3rem .6rem;border-radius:999px;}
