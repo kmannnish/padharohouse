@@ -1,17 +1,69 @@
 rules_version = '2';
+
+// Padharo House — Firestore security rules
+// Paste into: Firebase console -> Firestore Database -> Rules -> Publish
+//
+// The admin console hides things per role, but THESE rules are the real
+// boundary: they are evaluated on Google's servers and cannot be bypassed by
+// editing the page, calling the API directly, or guessing document IDs.
+
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Site mode toggle — world-readable (the site needs it), only the owner
-    // edits it from the Firebase console. Never writable from the web.
-    match /config/{docId} {
-      allow read: if true;
+    function signedIn() {
+      return request.auth != null;
+    }
+    // role is read from users/{uid}.role — missing doc means no access
+    function roleOf() {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        ? get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role
+        : '';
+    }
+    function isSuper() { return signedIn() && roleOf() == 'super_admin'; }
+    function isStaff() { return signedIn() && (roleOf() == 'super_admin' || roleOf() == 'manager'); }
+
+    // ---- who may use the console -------------------------------------------
+    // Readable by the owner (so the console can learn its own role) and by a
+    // super admin (for the Team page). NEVER client-writable: if the browser
+    // could write here, any signed-in user could promote themselves to
+    // super_admin. Create these documents in the Firebase console only.
+    match /users/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isSuper());
       allow write: if false;
     }
 
-    // Leads — visitors may SUBMIT (create) with name + phone, but nobody can
-    // read, list, edit or delete them from the client. You read them in the
-    // Firebase console / admin app. This keeps guest personal data private.
+    // ---- public website reads ----------------------------------------------
+    // The live site needs the mode switch, the tariff, the packages and the
+    // blocked dates in order to render. None of these contain personal data.
+    match /config/{docId} {
+      allow read: if true;
+      allow write: if isSuper();
+    }
+    match /property/{docId} {
+      allow read: if true;
+      allow write: if isSuper();
+    }
+    match /packages/{docId} {
+      allow read: if true;
+      allow write: if isSuper();
+    }
+    match /blocked_dates/{docId} {
+      allow read: if true;                 // public availability calendar
+      allow write: if isStaff();           // managers handle day-to-day blocking
+    }
+
+    // ---- guest data: staff only --------------------------------------------
+    // Bookings hold names, phone numbers and payment references, so they are
+    // never publicly readable. Deletion is restricted to a super admin so a
+    // manager cannot erase the financial record (they can mark it cancelled).
+    match /bookings/{docId} {
+      allow read: if isStaff();
+      allow create, update: if isStaff();
+      allow delete: if isSuper();
+    }
+
+    // Enquiries: anyone may SUBMIT one from the website, but only staff can
+    // read them back. A visitor cannot list or read other people's enquiries.
     match /leads/{docId} {
       allow create: if request.resource.data.keys().hasAll(['name', 'phone'])
                     && request.resource.data.name is string
@@ -19,16 +71,24 @@ service cloud.firestore {
                     && request.resource.data.name.size() < 120
                     && request.resource.data.phone is string
                     && request.resource.data.phone.size() < 40;
-      allow read, update, delete: if false;
+      allow read, update: if isStaff();
+      allow delete: if isSuper();
     }
 
-    // Traffic analytics — create-only pings from the site; not publicly readable.
+    // Visit pings are write-only from the site and readable only by staff, so
+    // visitor referrers/devices are not exposed publicly.
     match /traffic_analytics/{docId} {
       allow create: if true;
-      allow read, update, delete: if false;
+      allow read: if isStaff();
+      allow update, delete: if false;
     }
 
-    // Lock everything else.
+    // WhatsApp message templates — staff only.
+    match /templates/{docId} {
+      allow read, write: if isStaff();
+    }
+
+    // Anything not matched above is denied.
     match /{document=**} {
       allow read, write: if false;
     }

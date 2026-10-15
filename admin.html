@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel Preview — Padharo House</title>
-  <meta name="description" content="A preview of the admin dashboard that powers Padharo House — bookings, leads, content, pricing and media, all controlled by you." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Padharo House — Host Console</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -15,268 +16,1238 @@
       fontFamily: { serif:['"Playfair Display"','serif'], sans:['Inter','sans-serif'] }
     }}};
   </script>
-  <link rel="stylesheet" href="assets/styles.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body{font-family:'Inter',system-ui,sans-serif;background:#f4efe8;color:#2B2620;}
+    h1,h2,h3,.font-serif{font-family:'Playfair Display',Georgia,serif;}
+    .side a{display:flex;align-items:center;gap:.7rem;padding:.62rem .85rem;border-radius:.6rem;font-size:.9rem;color:#d7cfc4;cursor:pointer;transition:.18s;}
+    .side a:hover{background:rgba(255,255,255,.07);color:#fff;}
+    .side a.active{background:#A0472A;color:#fff;}
+    .card{background:#fff;border:1px solid #eee5d9;border-radius:.9rem;}
+    .inp{width:100%;border:1px solid #e6d8c6;border-radius:.5rem;padding:.6rem .7rem;background:#fff;font-size:.9rem;}
+    .inp:focus{outline:2px solid #C0923B;outline-offset:-1px;}
+    .lbl{display:block;font-size:.78rem;font-weight:600;color:#6E645A;margin-bottom:.3rem;}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;border-radius:.55rem;font-weight:600;font-size:.85rem;padding:.58rem 1rem;cursor:pointer;transition:.18s;border:0;}
+    .btn-p{background:#A0472A;color:#fff;} .btn-p:hover{background:#853a22;}
+    .btn-o{background:#fff;color:#A0472A;border:1.5px solid #A0472A;} .btn-o:hover{background:#FBF6EE;}
+    .btn-g{background:#eee7dd;color:#5b5247;} .btn-g:hover{background:#e4dbcd;}
+    .btn-d{background:#fdeaea;color:#a12626;} .btn-d:hover{background:#f9d9d9;}
+    .btn:disabled{opacity:.45;cursor:not-allowed;}
+    .bdg{font-size:.68rem;font-weight:700;padding:.16rem .5rem;border-radius:999px;white-space:nowrap;}
+    .bdg-green{background:#e6f4ea;color:#1f7a43;} .bdg-amber{background:#fdf0d9;color:#8a5d0c;}
+    .bdg-red{background:#fdeaea;color:#a12626;} .bdg-blue{background:#e6eefb;color:#28569e;}
+    .bdg-gray{background:#eceae6;color:#5b5247;}
+    table{width:100%;border-collapse:collapse;}
+    th{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:#8b8075;text-align:left;padding:.6rem .75rem;background:#faf6f0;}
+    td{padding:.7rem .75rem;border-top:1px solid #f1e9dd;font-size:.86rem;vertical-align:middle;}
+    tr:hover td{background:#fffdfa;}
+    /* calendar */
+    .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:.35rem;}
+    .cal .dow{text-align:center;font-size:.68rem;font-weight:700;color:#8b8075;padding:.3rem 0;}
+    .cd{aspect-ratio:1;border-radius:.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      font-size:.85rem;font-weight:600;border:1px solid transparent;cursor:pointer;user-select:none;transition:.12s;position:relative;}
+    .cd small{font-size:.56rem;font-weight:600;opacity:.9;line-height:1;margin-top:2px;}
+    .cd.pad{visibility:hidden;cursor:default;}
+    .cd.past{background:#f3f0ec;color:#b9b1a6;cursor:not-allowed;}
+    .cd.avail{background:#e9f6ec;color:#1f7a43;border-color:#cce8d5;}
+    .cd.avail:hover{background:#d6eedd;}
+    .cd.booked{background:#fdeaea;color:#a12626;border-color:#f3cfcf;cursor:not-allowed;}
+    .cd.blocked{background:#e9e7e3;color:#5b5247;border-color:#dcd7cf;}
+    .cd.sel{outline:2.5px solid #C0923B;outline-offset:-2px;}
+    .cd.today{box-shadow:inset 0 0 0 2px #C0923B;}
+    .modal{position:fixed;inset:0;z-index:120;background:rgba(24,16,10,.6);display:none;align-items:center;justify-content:center;padding:14px;}
+    .modal.open{display:flex;}
+    .seg{display:inline-flex;background:#eee7dd;border-radius:999px;padding:3px;}
+    .seg button{border:0;background:transparent;border-radius:999px;padding:.42rem .9rem;font-size:.8rem;font-weight:700;color:#6E645A;cursor:pointer;}
+    .seg button.on{background:#fff;color:#A0472A;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+    .seg button.on.liveon{background:#A0472A;color:#fff;}
+    .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(20px);z-index:200;
+      background:#2B2620;color:#fff;padding:.7rem 1.1rem;border-radius:999px;font-size:.85rem;font-weight:600;
+      opacity:0;pointer-events:none;transition:.3s;}
+    .toast.show{opacity:1;transform:translateX(-50%);}
+    .spin{width:18px;height:18px;border:2px solid rgba(160,71,42,.25);border-top-color:#A0472A;border-radius:50%;animation:sp .7s linear infinite;}
+    @keyframes sp{to{transform:rotate(360deg)}}
+    [hidden]{display:none !important;}
+  </style>
 </head>
-<body class="bg-[#f4efe8]">
+<body>
 
-  <div id="protoRibbon" class="proto-ribbon fixed top-0 inset-x-0 z-[60] text-center py-1.5 px-4">
-    <span>Admin panel preview — this is what <strong>you</strong> control &nbsp;·&nbsp; designed by <strong>Manish Kumawat</strong> &nbsp;·&nbsp; <a href="index.html">← Back to the website</a></span>
-    <button id="ribbonClose" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white">✕</button>
+<!-- ================= LOGIN GATE ================= -->
+<div id="gate" class="fixed inset-0 z-[150] flex items-center justify-center p-5"
+     style="background:radial-gradient(900px 520px at 50% 30%,#fffdf8,#FBF6EE 55%,#F0E4D2 100%)">
+  <div class="w-full max-w-sm text-center">
+    <img src="assets/brandmark.png" alt="Padharo House" class="w-28 mx-auto mb-5" />
+    <h1 class="font-serif text-2xl text-terradark">Host Console</h1>
+    <p class="text-sm text-muted mt-1 mb-6">Sign in to manage Padharo House</p>
+    <form id="loginForm" class="card p-6 text-left space-y-4 shadow-sm">
+      <div>
+        <label class="lbl" for="email">Email</label>
+        <input class="inp" id="email" type="email" autocomplete="username" required placeholder="you@padharohouse.in" />
+      </div>
+      <div>
+        <label class="lbl" for="pass">Password</label>
+        <input class="inp" id="pass" type="password" autocomplete="current-password" required placeholder="••••••••" />
+      </div>
+      <div id="loginErr" class="text-xs text-[#a12626] bg-[#fdeaea] rounded-lg px-3 py-2" hidden></div>
+      <button class="btn btn-p w-full" id="loginBtn" type="submit">
+        <i data-lucide="log-in" class="w-4 h-4"></i> Sign in
+      </button>
+      <p class="text-[11px] text-muted text-center leading-relaxed">
+        Access is granted per user by the super admin. Your role determines what you can see.
+      </p>
+    </form>
   </div>
+</div>
 
-  <div class="flex min-h-screen" style="padding-top:30px">
-
-    <!-- sidebar -->
-    <aside class="admin-side hidden md:flex w-60 shrink-0 flex-col bg-ink text-white/80 p-4 fixed h-full" style="top:30px">
-      <div class="flex items-center gap-2 px-2 py-3 mb-3">
-        <img src="assets/logo.png" class="h-9 bg-white rounded-lg p-1" alt="" />
-        <div><div class="font-serif text-white text-sm leading-tight">Padharo House</div><div class="text-[11px] text-white/50">Admin Console</div></div>
+<!-- ================= APP ================= -->
+<div id="app" hidden>
+  <!-- sidebar -->
+  <aside class="side fixed inset-y-0 left-0 w-60 bg-ink text-white/80 p-4 flex-col hidden md:flex z-40">
+    <div class="flex items-center gap-2.5 px-1 pb-4 mb-2 border-b border-white/10">
+      <img src="assets/favicon.png" alt="" class="w-9 h-9" />
+      <div>
+        <div class="font-serif text-white leading-tight">Padharo House</div>
+        <div class="text-[10px] uppercase tracking-wider text-gold">Host Console</div>
       </div>
-      <nav class="space-y-1 flex-1">
-        <a class="active" data-tab="dashboard">📊 Dashboard</a>
-        <a data-tab="bookings">📅 Bookings</a>
-        <a data-tab="leads">👥 Leads / CRM</a>
-        <a data-tab="content">📝 Content &amp; Pages</a>
-        <a data-tab="media">🖼️ Photos &amp; Reels</a>
-        <a data-tab="pricing">💰 Pricing &amp; Packages</a>
-        <a data-tab="reviews">⭐ Reviews</a>
-        <a data-tab="settings">⚙️ Settings</a>
-      </nav>
-      <div class="border-t border-white/10 pt-3 mt-3 flex items-center gap-2 px-2">
-        <span class="w-8 h-8 rounded-full bg-terra grid place-items-center text-white text-sm font-semibold">P</span>
-        <div class="text-xs"><div class="text-white">Owner</div><div class="text-white/50">Super Admin</div></div>
+    </div>
+    <nav class="space-y-1 flex-1 overflow-y-auto">
+      <a data-tab="dashboard" class="active"><i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard</a>
+      <a data-tab="bookings"><i data-lucide="calendar-check" class="w-4 h-4"></i> Bookings</a>
+      <a data-tab="calendar"><i data-lucide="calendar-days" class="w-4 h-4"></i> Calendar</a>
+      <a data-tab="whatsapp"><i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Queue</a>
+      <a data-tab="pricing" data-role="super_admin"><i data-lucide="indian-rupee" class="w-4 h-4"></i> Tariff</a>
+      <a data-tab="packages" data-role="super_admin"><i data-lucide="sparkles" class="w-4 h-4"></i> Packages</a>
+      <a data-tab="analytics" data-role="super_admin"><i data-lucide="trending-up" class="w-4 h-4"></i> Analytics</a>
+      <a data-tab="team" data-role="super_admin"><i data-lucide="users" class="w-4 h-4"></i> Team &amp; Roles</a>
+    </nav>
+    <div class="pt-3 mt-2 border-t border-white/10">
+      <div class="flex items-center gap-2 px-1">
+        <div class="w-8 h-8 rounded-full bg-terra grid place-items-center text-xs font-bold" id="avatar">–</div>
+        <div class="min-w-0 flex-1">
+          <div class="text-xs text-white truncate" id="userEmail">–</div>
+          <div class="text-[10px] uppercase tracking-wider text-gold" id="userRole">–</div>
+        </div>
+        <button id="signOut" title="Sign out" class="text-white/50 hover:text-white"><i data-lucide="log-out" class="w-4 h-4"></i></button>
       </div>
-    </aside>
+    </div>
+  </aside>
 
-    <!-- main -->
-    <main class="flex-1 md:ml-60">
-      <!-- topbar -->
-      <div class="bg-white border-b border-[#e7ddd0] px-6 py-3.5 flex items-center justify-between sticky top-[30px] z-30">
-        <div>
-          <h1 id="pageTitle" class="font-serif text-xl">Dashboard</h1>
-          <p class="text-xs text-muted">Welcome back — here's your property at a glance.</p>
+  <main class="md:ml-60">
+    <!-- topbar + SITE MODE TOGGLE -->
+    <div class="bg-white border-b border-[#eee5d9] sticky top-0 z-30">
+      <div class="px-4 md:px-7 py-3 flex flex-wrap items-center gap-3 justify-between">
+        <div class="flex items-center gap-3">
+          <button id="mobMenu" class="md:hidden"><i data-lucide="menu" class="w-6 h-6"></i></button>
+          <div>
+            <h2 class="font-serif text-lg leading-tight" id="pageTitle">Dashboard</h2>
+            <p class="text-[11px] text-muted" id="pageSub">Single-unit exclusive homestay · Amer, Jaipur</p>
+          </div>
         </div>
         <div class="flex items-center gap-3">
-          <a href="index.html" target="_blank" class="text-sm text-terra hover:underline hidden sm:inline">View site ↗</a>
-          <span class="badge badge-green">● Live</span>
+          <div class="text-right hidden sm:block">
+            <div class="text-[10px] uppercase tracking-wider text-muted font-semibold">Website mode</div>
+            <div class="text-[11px] font-semibold" id="modeLabel">–</div>
+          </div>
+          <div class="seg" id="modeSeg">
+            <button data-mode="opening_soon">Opening Soon</button>
+            <button data-mode="live">Full Live Site</button>
+          </div>
+          <a href="index.html" target="_blank" class="btn btn-g" title="View site"><i data-lucide="external-link" class="w-4 h-4"></i></a>
         </div>
       </div>
+      <div id="modeNote" class="px-4 md:px-7 pb-2 text-[11px] text-muted" hidden>
+        Only a super admin can change the website mode.
+      </div>
+    </div>
 
-      <div class="p-6 max-w-6xl">
+    <div class="p-4 md:p-7">
 
-        <!-- DASHBOARD -->
-        <section data-panel="dashboard">
-          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div class="stat-card"><div class="text-xs text-muted mb-1">This month's revenue</div><div class="font-serif text-2xl text-terra">₹2,84,500</div><div class="text-xs text-green-600 mt-1">▲ 18% vs last month</div></div>
-            <div class="stat-card"><div class="text-xs text-muted mb-1">Bookings</div><div class="font-serif text-2xl">32</div><div class="text-xs text-green-600 mt-1">▲ 6 new this week</div></div>
-            <div class="stat-card"><div class="text-xs text-muted mb-1">Occupancy</div><div class="font-serif text-2xl">78%</div><div class="text-xs text-muted mt-1">Next 30 days</div></div>
-            <div class="stat-card"><div class="text-xs text-muted mb-1">New leads</div><div class="font-serif text-2xl">14</div><div class="text-xs text-amber-600 mt-1">5 awaiting reply</div></div>
+      <!-- ============ DASHBOARD ============ -->
+      <section data-panel="dashboard">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Upcoming stays</div><div class="font-serif text-3xl text-terra mt-1" id="kUpcoming">–</div></div>
+          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Staying now</div><div class="font-serif text-3xl text-terra mt-1" id="kActive">–</div></div>
+          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Balance due</div><div class="font-serif text-3xl text-terra mt-1" id="kBalance">–</div></div>
+          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Collected (all time)</div><div class="font-serif text-3xl text-terra mt-1" id="kCollected">–</div></div>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-5">
+          <div class="card p-5">
+            <h3 class="font-serif text-lg mb-3">Next arrivals</h3>
+            <div id="dashNext" class="space-y-2 text-sm text-muted">Loading…</div>
           </div>
-
-          <div class="grid lg:grid-cols-3 gap-5">
-            <!-- occupancy bar chart -->
-            <div class="bg-white rounded-xl border border-[#eee5d9] p-5 lg:col-span-2">
-              <div class="flex items-center justify-between mb-4"><h3 class="font-semibold">Bookings — last 6 months</h3><span class="text-xs text-muted">demo data</span></div>
-              <div class="flex items-end gap-3 h-40">
-                <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-cream rounded-t" style="height:45%"></div><span class="text-[11px] text-muted">Apr</span></div>
-                <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-cream rounded-t" style="height:58%"></div><span class="text-[11px] text-muted">May</span></div>
-                <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-gold/60 rounded-t" style="height:40%"></div><span class="text-[11px] text-muted">Jun</span></div>
-                <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-gold/60 rounded-t" style="height:52%"></div><span class="text-[11px] text-muted">Jul</span></div>
-                <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-terra/80 rounded-t" style="height:72%"></div><span class="text-[11px] text-muted">Aug</span></div>
-                <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-terra rounded-t" style="height:88%"></div><span class="text-[11px] text-muted">Sep</span></div>
-              </div>
-            </div>
-            <!-- recent bookings -->
-            <div class="bg-white rounded-xl border border-[#eee5d9] p-5">
-              <h3 class="font-semibold mb-4">Latest bookings</h3>
-              <ul class="space-y-3 text-sm">
-                <li class="flex items-center justify-between"><div><div class="font-medium">Ananya K.</div><div class="text-xs text-muted">3–6 Oct · Romantic</div></div><span class="badge badge-green">Confirmed</span></li>
-                <li class="flex items-center justify-between"><div><div class="font-medium">Rahul S.</div><div class="text-xs text-muted">10–12 Oct · Guide</div></div><span class="badge badge-amber">Deposit</span></li>
-                <li class="flex items-center justify-between"><div><div class="font-medium">James M.</div><div class="text-xs text-muted">18–21 Oct · Cultural</div></div><span class="badge badge-blue">Request</span></li>
-                <li class="flex items-center justify-between"><div><div class="font-medium">Priya T.</div><div class="text-xs text-muted">24–26 Oct · The Suite</div></div><span class="badge badge-green">Confirmed</span></li>
-              </ul>
-            </div>
+          <div class="card p-5">
+            <h3 class="font-serif text-lg mb-3">Needs action</h3>
+            <div id="dashAction" class="space-y-2 text-sm text-muted">Loading…</div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <!-- BOOKINGS -->
-        <section data-panel="bookings" class="hidden">
-          <div class="bg-white rounded-xl border border-[#eee5d9] overflow-hidden">
-            <div class="px-5 py-4 border-b border-[#eee5d9] flex items-center justify-between">
-              <h3 class="font-semibold">All bookings</h3>
-              <div class="flex gap-2 text-xs">
-                <span class="badge badge-green">Confirmed 24</span><span class="badge badge-amber">Deposit 5</span><span class="badge badge-blue">Requests 3</span>
-              </div>
-            </div>
-            <table class="w-full text-sm">
-              <thead class="bg-cream text-muted text-xs uppercase"><tr>
-                <th class="text-left px-5 py-3">Guest</th><th class="text-left px-5 py-3">Dates</th><th class="text-left px-5 py-3 hidden sm:table-cell">Package</th><th class="text-left px-5 py-3">Total</th><th class="text-left px-5 py-3">Status</th></tr></thead>
-              <tbody class="divide-y divide-[#f0e8dd]">
-                <tr><td class="px-5 py-3 font-medium">Ananya K.</td><td class="px-5 py-3">3–6 Oct</td><td class="px-5 py-3 hidden sm:table-cell">Romantic Escape</td><td class="px-5 py-3">₹28,853</td><td class="px-5 py-3"><span class="badge badge-green">Confirmed</span></td></tr>
-                <tr><td class="px-5 py-3 font-medium">Rahul S.</td><td class="px-5 py-3">10–12 Oct</td><td class="px-5 py-3 hidden sm:table-cell">Stay + Guide</td><td class="px-5 py-3">₹17,920</td><td class="px-5 py-3"><span class="badge badge-amber">Deposit paid</span></td></tr>
-                <tr class="bg-cream/40"><td class="px-5 py-3 font-medium">James M.</td><td class="px-5 py-3">18–21 Oct</td><td class="px-5 py-3 hidden sm:table-cell">Cultural Retreat</td><td class="px-5 py-3">₹31,450</td><td class="px-5 py-3"><span class="badge badge-blue">Confirm / decline</span></td></tr>
-                <tr><td class="px-5 py-3 font-medium">Priya T.</td><td class="px-5 py-3">24–26 Oct</td><td class="px-5 py-3 hidden sm:table-cell">Stay Only</td><td class="px-5 py-3">₹14,560</td><td class="px-5 py-3"><span class="badge badge-green">Confirmed</span></td></tr>
-                <tr><td class="px-5 py-3 font-medium">Vikram D.</td><td class="px-5 py-3">1–3 Nov</td><td class="px-5 py-3 hidden sm:table-cell">Romantic Escape</td><td class="px-5 py-3">₹27,300</td><td class="px-5 py-3"><span class="badge badge-green">Confirmed</span></td></tr>
-              </tbody>
+      <!-- ============ BOOKINGS ============ -->
+      <section data-panel="bookings" hidden>
+        <div class="flex flex-wrap items-center gap-3 mb-4">
+          <div class="seg" id="bkSeg">
+            <button data-sub="upcoming" class="on">Upcoming</button>
+            <button data-sub="active">Active Stays</button>
+            <button data-sub="past">Past Track Record</button>
+          </div>
+          <button class="btn btn-p ml-auto" id="addBooking"><i data-lucide="plus" class="w-4 h-4"></i> Add booking</button>
+        </div>
+
+        <!-- past-only summary -->
+        <div id="pastStats" class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4" hidden>
+          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Completed stays</div><div class="font-serif text-2xl text-terra mt-1" id="pStays">–</div></div>
+          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Revenue collected</div><div class="font-serif text-2xl text-terra mt-1" id="pRevenue">–</div></div>
+          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Avg. length of stay</div><div class="font-serif text-2xl text-terra mt-1" id="pAvg">–</div></div>
+          <div class="card p-4 flex flex-col justify-center">
+            <button class="btn btn-o" id="exportCsv"><i data-lucide="download" class="w-4 h-4"></i> Export to CSV</button>
+            <p class="text-[10px] text-muted mt-1.5">For tax &amp; accounting</p>
+          </div>
+        </div>
+
+        <div class="card overflow-hidden">
+          <div class="overflow-x-auto">
+            <table>
+              <thead><tr id="bkHead"></tr></thead>
+              <tbody id="bkBody"></tbody>
             </table>
           </div>
-          <p class="text-xs text-muted mt-3">This is your "Booking Receiving &amp; confirmation" role — approve requests, block dates, and the website calendar updates instantly.</p>
-        </section>
+          <div id="bkEmpty" class="p-10 text-center text-sm text-muted" hidden>Nothing here yet.</div>
+        </div>
+      </section>
 
-        <!-- LEADS -->
-        <section data-panel="leads" class="hidden">
-          <div class="grid md:grid-cols-4 gap-4">
-            <div class="bg-white rounded-xl border border-[#eee5d9] p-4">
-              <div class="text-sm font-semibold mb-3 flex justify-between">New <span class="badge badge-blue">4</span></div>
-              <div class="space-y-2">
-                <div class="border border-[#eee5d9] rounded-lg p-3 text-sm"><div class="font-medium">Meera J.</div><div class="text-xs text-muted">Wants Dec dates · WhatsApp</div></div>
-                <div class="border border-[#eee5d9] rounded-lg p-3 text-sm"><div class="font-medium">Arjun P.</div><div class="text-xs text-muted">Group of 6 · enquiry form</div></div>
-              </div>
-            </div>
-            <div class="bg-white rounded-xl border border-[#eee5d9] p-4">
-              <div class="text-sm font-semibold mb-3 flex justify-between">Contacted <span class="badge badge-amber">3</span></div>
-              <div class="space-y-2"><div class="border border-[#eee5d9] rounded-lg p-3 text-sm"><div class="font-medium">Sara N.</div><div class="text-xs text-muted">Sent quote · follow up 27 Sep</div></div></div>
-            </div>
-            <div class="bg-white rounded-xl border border-[#eee5d9] p-4">
-              <div class="text-sm font-semibold mb-3 flex justify-between">Quoted <span class="badge badge-amber">2</span></div>
-              <div class="space-y-2"><div class="border border-[#eee5d9] rounded-lg p-3 text-sm"><div class="font-medium">Deepak R.</div><div class="text-xs text-muted">₹22k · awaiting reply</div></div></div>
-            </div>
-            <div class="bg-white rounded-xl border border-[#eee5d9] p-4">
-              <div class="text-sm font-semibold mb-3 flex justify-between">Booked <span class="badge badge-green">5</span></div>
-              <div class="space-y-2"><div class="border border-[#eee5d9] rounded-lg p-3 text-sm"><div class="font-medium">Ananya K.</div><div class="text-xs text-muted">Converted · ₹28,853</div></div></div>
-            </div>
-          </div>
-          <p class="text-xs text-muted mt-3">Every enquiry &amp; callback request is captured here — drag through the pipeline, with WhatsApp &amp; email history on each lead.</p>
-        </section>
-
-        <!-- CONTENT -->
-        <section data-panel="content" class="hidden">
-          <div class="bg-white rounded-xl border border-[#eee5d9] p-6 max-w-3xl">
-            <h3 class="font-semibold mb-1">Edit: Home — Hero section</h3>
-            <p class="text-xs text-muted mb-5">Change any text on the site here. No coding — just type and save.</p>
-            <label class="block text-sm font-semibold mb-1">Headline</label>
-            <input class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5 mb-4" value="Wake up to the Amber Fort." />
-            <label class="block text-sm font-semibold mb-1">Description</label>
-            <textarea rows="3" class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5 mb-4">A truly royal experience in the Pink City — where Rajasthani heritage charm meets every modern comfort, framed by spectacular views of the historic Amber Fort.</textarea>
-            <div class="flex gap-3">
-              <button class="btn btn-primary text-sm" onclick="document.getElementById('savedToast').classList.remove('hidden'); setTimeout(function(){document.getElementById('savedToast').classList.add('hidden');},1800);">Save changes</button>
-              <button class="btn btn-outline text-sm">Preview</button>
-            </div>
-          </div>
-          <div class="mt-5 grid sm:grid-cols-3 gap-3 max-w-3xl">
-            <div class="bg-white rounded-lg border border-[#eee5d9] px-4 py-3 text-sm flex justify-between items-center">Home page <span class="text-xs text-terra">Edit</span></div>
-            <div class="bg-white rounded-lg border border-[#eee5d9] px-4 py-3 text-sm flex justify-between items-center">The Suite <span class="text-xs text-terra">Edit</span></div>
-            <div class="bg-white rounded-lg border border-[#eee5d9] px-4 py-3 text-sm flex justify-between items-center">About / Location <span class="text-xs text-terra">Edit</span></div>
-          </div>
-        </section>
-
-        <!-- MEDIA -->
-        <section data-panel="media" class="hidden">
-          <div class="bg-white rounded-xl border border-[#eee5d9] p-6">
+      <!-- ============ CALENDAR ============ -->
+      <section data-panel="calendar" hidden>
+        <div class="grid lg:grid-cols-[1.6fr_1fr] gap-5 items-start">
+          <div class="card p-5">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="font-semibold">Photo gallery</h3>
-              <button class="btn btn-primary text-sm">+ Upload photos</button>
+              <h3 class="font-serif text-lg" id="calMonth">–</h3>
+              <div class="flex gap-2">
+                <button class="btn btn-g" id="calPrev"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                <button class="btn btn-g" id="calToday">Today</button>
+                <button class="btn btn-g" id="calNext"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+              </div>
             </div>
-            <p class="text-xs text-muted mb-4">Drag to reorder · click to remove · toggle which show on the site. Changes go live instantly.</p>
-            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3" id="mediaGrid"></div>
-          </div>
-          <div class="bg-white rounded-xl border border-[#eee5d9] p-6 mt-5">
-            <div class="flex items-center justify-between mb-4"><h3 class="font-semibold">Reel library</h3><button class="btn btn-outline text-sm">+ Add reel</button></div>
-            <div class="flex gap-3 overflow-x-auto no-scrollbar">
-              <div class="w-24 aspect-[9/16] rounded-lg overflow-hidden shrink-0"><img src="assets/img/p1.jpg" class="w-full h-full object-cover" alt=""></div>
-              <div class="w-24 aspect-[9/16] rounded-lg overflow-hidden shrink-0"><img src="assets/img/p8.jpg" class="w-full h-full object-cover" alt=""></div>
-              <div class="w-24 aspect-[9/16] rounded-lg overflow-hidden shrink-0"><img src="assets/img/p7.jpg" class="w-full h-full object-cover" alt=""></div>
-              <div class="w-24 aspect-[9/16] rounded-lg border-2 border-dashed border-[#e6d8c6] grid place-items-center text-2xl text-muted shrink-0">+</div>
+            <div class="cal" id="calGrid"></div>
+            <div class="flex flex-wrap gap-4 mt-4 text-[11px] text-muted">
+              <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-[#e9f6ec] border border-[#cce8d5]"></span> Available</span>
+              <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-[#fdeaea] border border-[#f3cfcf]"></span> Confirmed reservation</span>
+              <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-[#e9e7e3] border border-[#dcd7cf]"></span> Host / maintenance block</span>
             </div>
           </div>
-        </section>
+          <div class="card p-5">
+            <h3 class="font-serif text-lg mb-1">Manual blocking</h3>
+            <p class="text-xs text-muted mb-4">Click a start date, then an end date on the calendar. Use this for offline bookings, Airbnb sync or maintenance.</p>
+            <div class="bg-cream rounded-lg p-3 text-sm mb-4">
+              <div class="flex justify-between"><span class="text-muted">From</span><b id="selFrom">—</b></div>
+              <div class="flex justify-between mt-1"><span class="text-muted">To</span><b id="selTo">—</b></div>
+              <div class="flex justify-between mt-1"><span class="text-muted">Nights</span><b id="selNights">—</b></div>
+            </div>
+            <label class="lbl">Reason</label>
+            <select class="inp mb-3" id="blockReason">
+              <option value="offline">Offline / direct booking</option>
+              <option value="airbnb">Airbnb / OTA sync</option>
+              <option value="maintenance">Maintenance</option>
+              <option value="personal">Personal use</option>
+            </select>
+            <div class="flex gap-2">
+              <button class="btn btn-p flex-1" id="blockBtn" disabled><i data-lucide="lock" class="w-4 h-4"></i> Block dates</button>
+              <button class="btn btn-g" id="clearSel">Clear</button>
+            </div>
+            <button class="btn btn-d w-full mt-2" id="unblockBtn" disabled><i data-lucide="unlock" class="w-4 h-4"></i> Unblock selected</button>
+            <p class="text-[11px] text-muted mt-3">Blocked dates immediately show as unavailable on the public booking calendar.</p>
+          </div>
+        </div>
+      </section>
 
-        <!-- PRICING -->
-        <section data-panel="pricing" class="hidden">
-          <div class="bg-white rounded-xl border border-[#eee5d9] p-6 max-w-3xl">
-            <h3 class="font-semibold mb-4">Base pricing</h3>
-            <div class="grid sm:grid-cols-3 gap-4 mb-6">
-              <div><label class="block text-xs text-muted mb-1">Weekday rate / night</label><input class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" value="₹6,500" /></div>
-              <div><label class="block text-xs text-muted mb-1">Weekend rate / night</label><input class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" value="₹8,125" /></div>
-              <div><label class="block text-xs text-muted mb-1">GST %</label><input class="w-full border border-[#e6d8c6] rounded-lg px-3 py-2.5" value="12%" /></div>
+      <!-- ============ WHATSAPP QUEUE ============ -->
+      <section data-panel="whatsapp" hidden>
+        <div class="grid xl:grid-cols-[1.35fr_1fr] gap-5 items-start">
+          <div class="card overflow-hidden">
+            <div class="p-4 border-b border-[#f1e9dd] flex items-center justify-between">
+              <div><h3 class="font-serif text-lg">Dispatch queue</h3><p class="text-xs text-muted">Bookings and leads awaiting a message</p></div>
+              <i data-lucide="send" class="w-5 h-5 text-terra"></i>
             </div>
-            <h3 class="font-semibold mb-3">Packages</h3>
-            <div class="space-y-2">
-              <div class="flex items-center justify-between border border-[#eee5d9] rounded-lg px-4 py-3 text-sm"><span>Stay + Local Guide</span><span class="flex items-center gap-3"><b>+₹1,500</b><span class="badge badge-green">On</span></span></div>
-              <div class="flex items-center justify-between border border-[#eee5d9] rounded-lg px-4 py-3 text-sm"><span>Romantic Escape</span><span class="flex items-center gap-3"><b>+₹2,500</b><span class="badge badge-green">On</span></span></div>
-              <div class="flex items-center justify-between border border-[#eee5d9] rounded-lg px-4 py-3 text-sm"><span>Cultural Retreat</span><span class="flex items-center gap-3"><b>+₹3,200</b><span class="badge badge-green">On</span></span></div>
-              <div class="flex items-center justify-between border border-[#eee5d9] rounded-lg px-4 py-3 text-sm text-muted"><span>Family Getaway</span><span class="flex items-center gap-3"><b>+₹2,800</b><span class="badge" style="background:#eee;color:#888">Off</span></span></div>
-            </div>
-            <div class="mt-5"><button class="btn btn-primary text-sm" onclick="document.getElementById('savedToast').classList.remove('hidden'); setTimeout(function(){document.getElementById('savedToast').classList.add('hidden');},1800);">Save pricing</button></div>
+            <div id="queue" class="divide-y divide-[#f1e9dd] max-h-[70vh] overflow-y-auto"></div>
+            <div id="queueEmpty" class="p-10 text-center text-sm text-muted" hidden>Queue is clear.</div>
           </div>
-        </section>
-
-        <!-- REVIEWS -->
-        <section data-panel="reviews" class="hidden">
-          <div class="bg-white rounded-xl border border-[#eee5d9] p-6 max-w-3xl">
-            <h3 class="font-semibold mb-4">Reviews — approve before publishing</h3>
+          <div class="card p-5">
+            <h3 class="font-serif text-lg mb-1">Template editor</h3>
+            <p class="text-xs text-muted mb-3">
+              Variables:
+              <code class="bg-cream px-1 rounded">{{name}}</code>
+              <code class="bg-cream px-1 rounded">{{bookingId}}</code>
+              <code class="bg-cream px-1 rounded">{{checkIn}}</code>
+              <code class="bg-cream px-1 rounded">{{checkOut}}</code>
+              <code class="bg-cream px-1 rounded">{{balanceDue}}</code>
+              <code class="bg-cream px-1 rounded">{{mapLink}}</code>
+            </p>
             <div class="space-y-3">
-              <div class="border border-[#eee5d9] rounded-lg p-4">
-                <div class="flex justify-between items-start mb-1"><div class="font-medium text-sm">Meera J. <span class="text-gold">★★★★★</span></div><span class="badge badge-amber">Pending</span></div>
-                <p class="text-sm text-muted mb-3">"Absolutely stunning stay, the views are unreal and hosts so kind."</p>
-                <div class="flex gap-2"><button class="btn btn-primary text-xs py-1.5 px-3">Approve</button><button class="btn btn-outline text-xs py-1.5 px-3">Hide</button></div>
-              </div>
-              <div class="border border-[#eee5d9] rounded-lg p-4 opacity-70">
-                <div class="flex justify-between items-start mb-1"><div class="font-medium text-sm">James M. <span class="text-gold">★★★★★</span></div><span class="badge badge-green">Published</span></div>
-                <p class="text-sm text-muted">"A serene cultural retreat. The folk evening was the highlight."</p>
-              </div>
+              <div><label class="lbl">Welcome / payment acknowledgement</label><textarea class="inp" rows="4" id="tplWelcome"></textarea></div>
+              <div><label class="lbl">Booking confirmation</label><textarea class="inp" rows="4" id="tplConfirm"></textarea></div>
+              <div><label class="lbl">Amer arrival &amp; 50 m map pin</label><textarea class="inp" rows="4" id="tplArrival"></textarea></div>
+              <div><label class="lbl">Post-checkout review request</label><textarea class="inp" rows="4" id="tplReview"></textarea></div>
+            </div>
+            <div class="flex gap-2 mt-4">
+              <button class="btn btn-p" id="saveTpl"><i data-lucide="save" class="w-4 h-4"></i> Save templates</button>
+              <button class="btn btn-g" id="resetTpl">Restore defaults</button>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <!-- SETTINGS -->
-        <section data-panel="settings" class="hidden">
-          <div class="bg-white rounded-xl border border-[#eee5d9] p-6 max-w-3xl space-y-5">
-            <div><h3 class="font-semibold mb-3">Team &amp; roles</h3>
-              <div class="space-y-2 text-sm">
-                <div class="flex justify-between items-center border border-[#eee5d9] rounded-lg px-4 py-3"><span>Owner (you)</span><span class="badge badge-green">Super Admin</span></div>
-                <div class="flex justify-between items-center border border-[#eee5d9] rounded-lg px-4 py-3"><span>Booking Manager</span><span class="badge badge-blue">Bookings + Leads</span></div>
-                <div class="flex justify-between items-center border border-[#eee5d9] rounded-lg px-4 py-3"><span>Content Editor</span><span class="badge badge-amber">Content + Media</span></div>
-              </div>
-            </div>
-            <div><h3 class="font-semibold mb-3">Integrations</h3>
-              <div class="grid sm:grid-cols-2 gap-3 text-sm">
-                <div class="flex justify-between items-center border border-[#eee5d9] rounded-lg px-4 py-3"><span>💳 Razorpay</span><span class="badge badge-green">Connected</span></div>
-                <div class="flex justify-between items-center border border-[#eee5d9] rounded-lg px-4 py-3"><span>💬 WhatsApp</span><span class="badge badge-green">Connected</span></div>
-                <div class="flex justify-between items-center border border-[#eee5d9] rounded-lg px-4 py-3"><span>✉️ Email (Brevo)</span><span class="badge badge-green">Connected</span></div>
-                <div class="flex justify-between items-center border border-[#eee5d9] rounded-lg px-4 py-3"><span>📊 Google Analytics</span><span class="badge badge-amber">Setup</span></div>
-              </div>
+      <!-- ============ TARIFF ============ -->
+      <section data-panel="pricing" hidden>
+        <div class="card p-6 max-w-2xl">
+          <h3 class="font-serif text-xl mb-1">Property tariff</h3>
+          <p class="text-xs text-muted mb-5">One unit, entire private homestay. Base rate includes 2 guests.</p>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div><label class="lbl">Base weekday price (Mon–Thu night)</label><input class="inp" type="number" min="0" id="pWeekday" placeholder="6500" /></div>
+            <div><label class="lbl">Weekend price (Fri–Sun night)</label><input class="inp" type="number" min="0" id="pWeekend" placeholder="8500" /></div>
+            <div><label class="lbl">Peak season / festival surcharge</label><input class="inp" type="number" min="0" id="pPeak" placeholder="2000" /></div>
+            <div><label class="lbl">Extra guest mattress (per guest / night above 2)</label><input class="inp" type="number" min="0" id="pExtra" placeholder="1200" /></div>
+          </div>
+          <div class="mt-5 bg-cream rounded-lg p-4">
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" id="pTaxOn" class="w-4 h-4 accent-[#A0472A]" />
+              <span class="text-sm font-semibold">Apply tax / service fee to quotes</span>
+            </label>
+            <div class="mt-3" id="pTaxWrap">
+              <label class="lbl">Tax / service fee %</label>
+              <input class="inp max-w-[160px]" type="number" min="0" max="100" step="0.5" id="pTaxPct" placeholder="12" />
             </div>
           </div>
-        </section>
+          <div class="flex items-center gap-3 mt-5">
+            <button class="btn btn-p" id="savePricing"><i data-lucide="save" class="w-4 h-4"></i> Save tariff</button>
+            <span class="text-xs text-muted" id="pricingMeta"></span>
+          </div>
+        </div>
+      </section>
 
+      <!-- ============ PACKAGES ============ -->
+      <section data-panel="packages" hidden>
+        <div class="grid lg:grid-cols-[1fr_380px] gap-5 items-start">
+          <div class="card overflow-hidden">
+            <div class="p-4 border-b border-[#f1e9dd]"><h3 class="font-serif text-lg">Curated experiences</h3><p class="text-xs text-muted">Changes appear on the booking page immediately.</p></div>
+            <div id="pkgList" class="divide-y divide-[#f1e9dd]"></div>
+            <div id="pkgEmpty" class="p-10 text-center text-sm text-muted" hidden>No packages yet — add your first experience.</div>
+          </div>
+          <div class="card p-5">
+            <h3 class="font-serif text-lg mb-4" id="pkgFormTitle">Add an experience</h3>
+            <input type="hidden" id="pkgId" />
+            <div class="space-y-3">
+              <div><label class="lbl">Title</label><input class="inp" id="pkgTitle" placeholder="Amer Sunrise &amp; Stepwell Heritage Walk" /></div>
+              <div><label class="lbl">Description</label><textarea class="inp" rows="3" id="pkgDesc" placeholder="A guided dawn walk to the fort and Panna Meena ka Kund…"></textarea></div>
+              <div class="grid grid-cols-2 gap-3">
+                <div><label class="lbl">Price (₹)</label><input class="inp" type="number" min="0" id="pkgPrice" placeholder="1500" /></div>
+                <div><label class="lbl">Per</label>
+                  <select class="inp" id="pkgUnit"><option value="stay">stay</option><option value="night">night</option><option value="guest">guest</option></select>
+                </div>
+              </div>
+              <label class="flex items-center gap-2.5 cursor-pointer"><input type="checkbox" id="pkgActive" class="w-4 h-4 accent-[#A0472A]" checked /><span class="text-sm">Show on booking page</span></label>
+            </div>
+            <div class="flex gap-2 mt-4">
+              <button class="btn btn-p flex-1" id="pkgSave"><i data-lucide="save" class="w-4 h-4"></i> Save</button>
+              <button class="btn btn-g" id="pkgCancel" hidden>Cancel</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ANALYTICS ============ -->
+      <section data-panel="analytics" hidden>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Total visits</div><div class="font-serif text-3xl text-terra mt-1" id="aVisits">–</div></div>
+          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Instagram clicks</div><div class="font-serif text-3xl text-terra mt-1" id="aIg">–</div></div>
+          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Waitlist leads</div><div class="font-serif text-3xl text-terra mt-1" id="aLeads">–</div></div>
+          <div class="card p-4"><div class="text-[11px] uppercase tracking-wider text-muted font-semibold">Confirmed revenue</div><div class="font-serif text-3xl text-terra mt-1" id="aRevenue">–</div></div>
+        </div>
+        <div class="card overflow-hidden">
+          <div class="p-4 border-b border-[#f1e9dd] flex items-center justify-between">
+            <h3 class="font-serif text-lg">Recent visits</h3>
+            <span class="text-xs text-muted" id="aNote">Live from Firestore</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table>
+              <thead><tr><th>When</th><th>Source</th><th>Device</th><th>Page</th><th>Referrer</th></tr></thead>
+              <tbody id="aBody"></tbody>
+            </table>
+          </div>
+          <div id="aEmpty" class="p-10 text-center text-sm text-muted" hidden>No visits recorded yet.</div>
+        </div>
+      </section>
+
+      <!-- ============ TEAM & ROLES ============ -->
+      <section data-panel="team" hidden>
+        <div class="card p-6 max-w-3xl">
+          <h3 class="font-serif text-xl mb-1">Team &amp; roles</h3>
+          <p class="text-xs text-muted mb-5">Who can access this console, and what they can do.</p>
+          <div class="overflow-x-auto">
+            <table>
+              <thead><tr><th>Email</th><th>Name</th><th>Role</th><th>Access</th></tr></thead>
+              <tbody id="teamBody"></tbody>
+            </table>
+          </div>
+          <div class="mt-6 bg-cream rounded-lg p-4 text-sm leading-relaxed">
+            <b class="font-serif">Adding a team member</b>
+            <ol class="list-decimal ml-5 mt-2 space-y-1 text-muted">
+              <li>Firebase console → <b>Authentication → Users → Add user</b> (email + password).</li>
+              <li>Copy the new user's <b>UID</b>.</li>
+              <li>Firestore → collection <code class="bg-white px-1 rounded">users</code> → document ID = that UID → fields
+                  <code class="bg-white px-1 rounded">role</code> (<code>super_admin</code> or <code>manager</code>),
+                  <code class="bg-white px-1 rounded">name</code>, <code class="bg-white px-1 rounded">email</code>.</li>
+            </ol>
+            <p class="text-xs text-muted mt-3">Roles are deliberately <b>not</b> editable from this page — if the browser could change roles, anyone signed in could promote themselves. The security rules reject any client write to <code class="bg-white px-1 rounded">users</code>.</p>
+          </div>
+          <div class="mt-4 grid sm:grid-cols-2 gap-4 text-sm">
+            <div class="border border-[#eee5d9] rounded-lg p-4">
+              <div class="font-semibold text-terra mb-1">super_admin</div>
+              <p class="text-xs text-muted">Everything: site mode, tariff, packages, financials, team, bookings, calendar, WhatsApp.</p>
+            </div>
+            <div class="border border-[#eee5d9] rounded-lg p-4">
+              <div class="font-semibold text-terra mb-1">manager</div>
+              <p class="text-xs text-muted">Operations only: bookings, calendar availability and the WhatsApp queue.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- ================= BOOKING MODAL ================= -->
+<div class="modal" id="bkModal">
+  <div class="bg-white rounded-xl w-full max-w-lg max-h-[92vh] overflow-y-auto">
+    <div class="px-5 py-4 border-b border-[#f1e9dd] flex items-center justify-between sticky top-0 bg-white">
+      <h3 class="font-serif text-lg" id="bkModalTitle">Add booking</h3>
+      <button id="bkModalClose" class="text-muted hover:text-ink"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <div class="p-5 space-y-3">
+      <input type="hidden" id="fId" />
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div><label class="lbl">Guest name *</label><input class="inp" id="fName" /></div>
+        <div><label class="lbl">Phone (WhatsApp) *</label><input class="inp" id="fPhone" inputmode="tel" placeholder="9461884005" /></div>
+        <div><label class="lbl">Check-in *</label><input class="inp" type="date" id="fIn" /></div>
+        <div><label class="lbl">Check-out *</label><input class="inp" type="date" id="fOut" /></div>
+        <div><label class="lbl">Guests</label><input class="inp" type="number" min="1" max="3" id="fGuests" value="2" /></div>
+        <div><label class="lbl">Package</label><select class="inp" id="fPkg"><option value="">Stay only</option></select></div>
+        <div><label class="lbl">Total amount (₹)</label><input class="inp" type="number" min="0" id="fTotal" /></div>
+        <div><label class="lbl">Advance paid (₹)</label><input class="inp" type="number" min="0" id="fAdv" value="0" /></div>
+        <div><label class="lbl">Payment UTR / ref</label><input class="inp" id="fUtr" /></div>
+        <div><label class="lbl">Source</label>
+          <select class="inp" id="fSource"><option value="direct">Direct / WhatsApp</option><option value="website">Website</option><option value="airbnb">Airbnb</option><option value="instagram">Instagram</option><option value="walkin">Walk-in</option></select>
+        </div>
       </div>
-    </main>
+      <div><label class="lbl">Notes</label><textarea class="inp" rows="2" id="fNotes"></textarea></div>
+      <div class="flex flex-wrap gap-4 pt-1">
+        <label class="flex items-center gap-2 cursor-pointer text-sm"><input type="checkbox" id="fUtrOk" class="w-4 h-4 accent-[#A0472A]" /> UTR verified</label>
+        <label class="flex items-center gap-2 cursor-pointer text-sm"><input type="checkbox" id="fCheckedIn" class="w-4 h-4 accent-[#A0472A]" /> Checked in</label>
+        <label class="flex items-center gap-2 cursor-pointer text-sm"><input type="checkbox" id="fCancelled" class="w-4 h-4 accent-[#A0472A]" /> Cancelled</label>
+      </div>
+      <div class="bg-cream rounded-lg px-4 py-3 text-sm flex justify-between">
+        <span class="text-muted">Balance due</span><b id="fBalance">₹0</b>
+      </div>
+      <div id="bkFormErr" class="text-xs text-[#a12626] bg-[#fdeaea] rounded-lg px-3 py-2" hidden></div>
+    </div>
+    <div class="px-5 py-4 border-t border-[#f1e9dd] flex gap-2 sticky bottom-0 bg-white">
+      <button class="btn btn-p flex-1" id="bkSave"><i data-lucide="save" class="w-4 h-4"></i> Save booking</button>
+      <button class="btn btn-d" id="bkDelete" hidden><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+    </div>
   </div>
+</div>
 
-  <!-- saved toast -->
-  <div id="savedToast" class="hidden fixed bottom-6 right-6 bg-ink text-white px-5 py-3 rounded-lg shadow-lg text-sm z-[80]">✓ Saved — your website is updated instantly.</div>
+<div class="toast" id="toast"></div>
 
-  <script src="assets/app.js"></script>
-  <script>
-    // admin tab switching
-    (function(){
-      var links = document.querySelectorAll('.admin-side a[data-tab]');
-      var panels = document.querySelectorAll('[data-panel]');
-      var titles = {dashboard:'Dashboard',bookings:'Bookings',leads:'Leads / CRM',content:'Content & Pages',media:'Photos & Reels',pricing:'Pricing & Packages',reviews:'Reviews',settings:'Settings'};
-      links.forEach(function(a){
-        a.addEventListener('click', function(){
-          var t = a.getAttribute('data-tab');
-          links.forEach(function(x){x.classList.remove('active');}); a.classList.add('active');
-          panels.forEach(function(p){ p.classList.toggle('hidden', p.getAttribute('data-panel') !== t); });
-          document.getElementById('pageTitle').textContent = titles[t] || '';
-          window.scrollTo({top:0,behavior:'smooth'});
-        });
-      });
-      // build media grid from p1..p10
-      var g = document.getElementById('mediaGrid');
-      if (g){ for(var i=1;i<=10;i++){ g.innerHTML += '<div class="relative group aspect-square rounded-lg overflow-hidden border border-[#eee5d9]"><img src="assets/img/p'+i+'.jpg" class="w-full h-full object-cover" alt=""><span class="absolute top-1 right-1 w-5 h-5 rounded-full bg-white/90 text-xs grid place-items-center opacity-0 group-hover:opacity-100 cursor-pointer">✕</span></div>'; } }
-    })();
-  </script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, addDoc, collection,
+         onSnapshot, query, orderBy, limit, serverTimestamp, writeBatch }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ---------------- config ---------------- */
+const firebaseConfig = {
+  apiKey: "AIzaSyB-WSDavLU99Tw-P95wFFO7KX_f50Z0fOo",
+  authDomain: "padharo-house.firebaseapp.com",
+  projectId: "padharo-house",
+  storageBucket: "padharo-house.firebasestorage.app",
+  messagingSenderId: "357110206597",
+  appId: "1:357110206597:web:4826cfc4903f69677d99ec"
+};
+const MAP_LINK = "https://www.google.com/maps/search/?api=1&query=26.987683983961603,75.8550010443521";
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* ---------------- helpers ---------------- */
+const $ = id => document.getElementById(id);
+const MS = 86400000;
+const INR = n => '₹' + Math.round(Number(n) || 0).toLocaleString('en-IN');
+const iso = d => { const t = new Date(d); t.setHours(12,0,0,0);
+  return t.getFullYear() + '-' + String(t.getMonth()+1).padStart(2,'0') + '-' + String(t.getDate()).padStart(2,'0'); };
+const today0 = () => { const d = new Date(); d.setHours(0,0,0,0); return d; };
+const parseISO = s => { const [y,m,d] = String(s||'').split('-').map(Number);
+  return (y && m && d) ? new Date(y, m-1, d) : null; };
+const fmtD = s => { const d = parseISO(s); return d ? d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : '—'; };
+const fmtShort = s => { const d = parseISO(s); return d ? d.toLocaleDateString('en-IN',{day:'numeric',month:'short'}) : '—'; };
+const nightsBetween = (a,b) => { const x = parseISO(a), y = parseISO(b);
+  return (x && y) ? Math.max(0, Math.round((y-x)/MS)) : 0; };
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const waNumber = p => { let d = String(p||'').replace(/\D/g,'');
+  if (d.length === 10) d = '91' + d; if (d.startsWith('0')) d = '91' + d.slice(1); return d; };
+const icons = () => { if (window.lucide) try { window.lucide.createIcons(); } catch(e){} };
+let toastT;
+function toast(msg){ const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(()=>t.classList.remove('show'), 2600); }
+function fail(e, what){ console.error(what, e);
+  toast((e && e.code === 'permission-denied') ? 'Permission denied — check your role' : ('Could not ' + what)); }
+
+/* ---------------- state ---------------- */
+let ME = { uid:null, email:null, role:null };
+let BOOKINGS = [], LEADS = [], PACKAGES = [], VISITS = [];
+let BLOCKED = new Map();           // iso -> {reason}
+let PRICING = {}, TEMPLATES = {};
+let calView = (()=>{ const d = today0(); d.setDate(1); return d; })();
+let selA = null, selB = null;
+let bkSub = 'upcoming';
+const unsubs = [];
+
+const DEFAULT_TPL = {
+  welcome:  "Khamma Ghani {{name}} 🙏\n\nThank you for choosing Padharo House — our exclusive single-suite heritage homestay right opposite the Amer Fort.\n\nWe have received your request (Ref {{bookingId}}).\nCheck-in: {{checkIn}}\nCheck-out: {{checkOut}}\nBalance due: {{balanceDue}}\n\nWe will confirm everything shortly. — Padharo House",
+  confirm:  "Your stay is CONFIRMED 🎉\n\n{{name}}, we are delighted to host you at Padharo House.\n\nBooking ref: {{bookingId}}\nCheck-in: {{checkIn}} (from 2 PM)\nCheck-out: {{checkOut}} (by 11 AM)\nBalance due at check-in: {{balanceDue}}\n\nThe entire house is yours — no other guests. See you in Amer!\n— Padharo House",
+  arrival:  "Reaching us is easy, {{name}} 📍\n\nPadharo House is hardly a 50 metre walk from the Amer Fort, in Amer, Jaipur.\n\nMap pin: {{mapLink}}\n\nIf your driver is unsure, ask for the lane opposite the Amer Fort and call us — we will walk out to meet you. Safe travels!\n— Padharo House",
+  review:   "It was a joy hosting you, {{name}} 🙏\n\nThank you for staying at Padharo House. If the Amer Fort views and our hospitality made your Jaipur trip special, would you share a few words as a review? It genuinely helps a brand-new homestay like ours.\n\nWe would love to welcome you back.\n— Padharo House"
+};
+
+/* =========================================================
+   1. LOGIN GATE + ROLES
+   ========================================================= */
+$('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = $('loginBtn'), err = $('loginErr');
+  err.hidden = true; btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Signing in…';
+  try {
+    await signInWithEmailAndPassword(auth, $('email').value.trim(), $('pass').value);
+  } catch (ex) {
+    const map = {
+      'auth/invalid-credential':'Incorrect email or password.',
+      'auth/invalid-email':'That email address is not valid.',
+      'auth/user-not-found':'No account with that email.',
+      'auth/wrong-password':'Incorrect password.',
+      'auth/too-many-requests':'Too many attempts — please wait a moment.',
+      'auth/network-request-failed':'Network problem — check your connection.',
+      'auth/operation-not-allowed':'Email/password sign-in is not enabled in Firebase yet.'
+    };
+    err.textContent = map[ex.code] || ('Sign-in failed: ' + (ex.code || ex.message));
+    err.hidden = false;
+  } finally {
+    btn.disabled = false; btn.innerHTML = '<i data-lucide="log-in" class="w-4 h-4"></i> Sign in'; icons();
+  }
+});
+$('signOut').addEventListener('click', () => signOut(auth));
+
+onAuthStateChanged(auth, async user => {
+  if (!user) { teardown(); $('gate').hidden = false; $('app').hidden = true; return; }
+  // the signed-in user must have a role document; the rules enforce this too
+  let role = null, name = '';
+  try {
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    if (snap.exists()) { role = snap.data().role || null; name = snap.data().name || ''; }
+  } catch (e) { console.warn('role lookup failed', e); }
+
+  if (role !== 'super_admin' && role !== 'manager') {
+    $('loginErr').innerHTML = 'Signed in, but no role is assigned to this account.<br>' +
+      'A super admin must create <b>users/' + esc(user.uid) + '</b> with a <b>role</b> field.';
+    $('loginErr').hidden = false;
+    await signOut(auth);
+    return;
+  }
+  ME = { uid: user.uid, email: user.email, role, name };
+  $('userEmail').textContent = user.email;
+  $('userRole').textContent = role.replace('_',' ');
+  $('avatar').textContent = (name || user.email || '?').trim().charAt(0).toUpperCase();
+  applyRole();
+  $('gate').hidden = true; $('app').hidden = false;
+  icons();
+  boot();
+});
+
+function applyRole(){
+  const isSuper = ME.role === 'super_admin';
+  document.querySelectorAll('[data-role="super_admin"]').forEach(el => { el.hidden = !isSuper; });
+  // site-mode toggle is super-admin only
+  $('modeSeg').querySelectorAll('button').forEach(b => b.disabled = !isSuper);
+  $('modeSeg').style.opacity = isSuper ? '1' : '.55';
+  $('modeNote').hidden = isSuper;
+  if (!isSuper && ['pricing','packages','analytics','team'].includes(currentTab)) show('dashboard');
+}
+function teardown(){ while (unsubs.length) { try { unsubs.pop()(); } catch(e){} } }
+
+/* ---------------- navigation ---------------- */
+let currentTab = 'dashboard';
+const TITLES = {
+  dashboard:['Dashboard','Single-unit exclusive homestay · Amer, Jaipur'],
+  bookings:['Bookings','Upcoming, active and past stays'],
+  calendar:['Calendar','Availability and manual blocking'],
+  whatsapp:['WhatsApp Queue','Manual dispatch with saved templates'],
+  pricing:['Tariff','Nightly rates, surcharges and tax'],
+  packages:['Packages','Curated experiences shown at booking'],
+  analytics:['Traffic Analytics','Where your visitors come from'],
+  team:['Team & Roles','Console access']
+};
+function show(tab){
+  currentTab = tab;
+  document.querySelectorAll('[data-panel]').forEach(p => p.hidden = p.dataset.panel !== tab);
+  document.querySelectorAll('.side a').forEach(a => a.classList.toggle('active', a.dataset.tab === tab));
+  const t = TITLES[tab] || ['',''];
+  $('pageTitle').textContent = t[0]; $('pageSub').textContent = t[1];
+  if (tab === 'calendar') renderCalendar();
+  if (tab === 'bookings') renderBookings();
+  if (tab === 'whatsapp') renderQueue();
+  if (tab === 'analytics') renderAnalytics();
+  if (tab === 'team') renderTeam();
+  icons();
+}
+document.querySelectorAll('.side a').forEach(a => a.addEventListener('click', () => {
+  show(a.dataset.tab);
+  if (window.innerWidth < 768) document.querySelector('aside').classList.add('hidden');
+}));
+$('mobMenu').addEventListener('click', () => {
+  const s = document.querySelector('aside');
+  s.classList.toggle('hidden'); s.classList.toggle('flex');
+});
+
+/* ---------------- SITE MODE TOGGLE ---------------- */
+function paintMode(mode){
+  const live = mode !== 'opening_soon';
+  $('modeLabel').textContent = live ? 'Full live website' : 'Opening Soon';
+  $('modeSeg').querySelectorAll('button').forEach(b => {
+    const on = b.dataset.mode === (live ? 'live' : 'opening_soon');
+    b.classList.toggle('on', on);
+    b.classList.toggle('liveon', on && live);
+  });
+}
+$('modeSeg').addEventListener('click', async e => {
+  const b = e.target.closest('button'); if (!b || b.disabled) return;
+  try {
+    await setDoc(doc(db,'config','site_settings'),
+      { siteMode: b.dataset.mode, updatedAt: serverTimestamp(), updatedBy: ME.email }, { merge:true });
+    toast(b.dataset.mode === 'live' ? 'Website is now LIVE' : 'Website shows Opening Soon');
+  } catch (ex) { fail(ex, 'change the website mode'); }
+});
+
+/* =========================================================
+   BOOT — live listeners
+   ========================================================= */
+function boot(){
+  teardown();
+
+  unsubs.push(onSnapshot(doc(db,'config','site_settings'),
+    s => paintMode(s.exists() ? s.data().siteMode : 'live'),
+    e => console.warn('site_settings', e)));
+
+  unsubs.push(onSnapshot(doc(db,'property','pricing'), s => {
+    PRICING = s.exists() ? s.data() : {};
+    $('pWeekday').value = PRICING.baseWeekday ?? '';
+    $('pWeekend').value = PRICING.weekend ?? '';
+    $('pPeak').value    = PRICING.peakSurcharge ?? '';
+    $('pExtra').value   = PRICING.extraGuestCharge ?? '';
+    $('pTaxPct').value  = PRICING.taxPercent ?? '';
+    $('pTaxOn').checked = !!PRICING.taxEnabled;
+    $('pTaxWrap').style.opacity = PRICING.taxEnabled ? '1' : '.5';
+    $('pricingMeta').textContent = PRICING.updatedBy ? ('Last saved by ' + PRICING.updatedBy) : '';
+  }, e => console.warn('pricing', e)));
+
+  unsubs.push(onSnapshot(collection(db,'packages'), s => {
+    PACKAGES = s.docs.map(d => ({ id:d.id, ...d.data() }))
+      .sort((a,b) => (a.order??0)-(b.order??0) || String(a.title||'').localeCompare(String(b.title||'')));
+    renderPackages(); fillPkgSelect();
+  }, e => console.warn('packages', e)));
+
+  unsubs.push(onSnapshot(collection(db,'bookings'), s => {
+    BOOKINGS = s.docs.map(d => ({ id:d.id, ...d.data() }));
+    renderBookings(); renderDash(); renderQueue(); renderCalendar(); renderAnalytics();
+  }, e => console.warn('bookings', e)));
+
+  unsubs.push(onSnapshot(collection(db,'blocked_dates'), s => {
+    BLOCKED = new Map(s.docs.map(d => [d.id, d.data()]));
+    renderCalendar();
+  }, e => console.warn('blocked_dates', e)));
+
+  unsubs.push(onSnapshot(collection(db,'leads'), s => {
+    LEADS = s.docs.map(d => ({ id:d.id, ...d.data() }));
+    renderQueue(); renderAnalytics();
+  }, e => console.warn('leads', e)));
+
+  unsubs.push(onSnapshot(query(collection(db,'traffic_analytics'), orderBy('date','desc'), limit(200)), s => {
+    VISITS = s.docs.map(d => ({ id:d.id, ...d.data() }));
+    renderAnalytics();
+  }, e => { console.warn('traffic_analytics', e); $('aNote').textContent = 'Needs a Firestore index or permission'; }));
+
+  unsubs.push(onSnapshot(doc(db,'templates','whatsapp'), s => {
+    TEMPLATES = s.exists() ? s.data() : {};
+    $('tplWelcome').value = TEMPLATES.welcome ?? DEFAULT_TPL.welcome;
+    $('tplConfirm').value = TEMPLATES.confirm ?? DEFAULT_TPL.confirm;
+    $('tplArrival').value = TEMPLATES.arrival ?? DEFAULT_TPL.arrival;
+    $('tplReview').value  = TEMPLATES.review  ?? DEFAULT_TPL.review;
+  }, e => console.warn('templates', e)));
+
+  if (ME.role === 'super_admin') {
+    unsubs.push(onSnapshot(collection(db,'users'), s => {
+      TEAM = s.docs.map(d => ({ id:d.id, ...d.data() })); renderTeam();
+    }, e => console.warn('users', e)));
+  }
+  show(currentTab);
+}
+
+/* =========================================================
+   2a. TARIFF
+   ========================================================= */
+$('pTaxOn').addEventListener('change', e => { $('pTaxWrap').style.opacity = e.target.checked ? '1' : '.5'; });
+$('savePricing').addEventListener('click', async () => {
+  const num = v => v === '' ? 0 : Math.max(0, Number(v) || 0);
+  try {
+    await setDoc(doc(db,'property','pricing'), {
+      baseWeekday: num($('pWeekday').value),
+      weekend: num($('pWeekend').value),
+      peakSurcharge: num($('pPeak').value),
+      extraGuestCharge: num($('pExtra').value),
+      taxPercent: num($('pTaxPct').value),
+      taxEnabled: $('pTaxOn').checked,
+      updatedAt: serverTimestamp(), updatedBy: ME.email
+    }, { merge:true });
+    toast('Tariff saved');
+  } catch (ex) { fail(ex, 'save the tariff'); }
+});
+
+/* =========================================================
+   2b. PACKAGES CRUD
+   ========================================================= */
+function renderPackages(){
+  const box = $('pkgList');
+  $('pkgEmpty').hidden = PACKAGES.length > 0;
+  box.innerHTML = PACKAGES.map(p => `
+    <div class="p-4 flex items-start gap-3">
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2 flex-wrap">
+          <b class="font-serif">${esc(p.title)}</b>
+          <span class="bdg ${p.active ? 'bdg-green' : 'bdg-gray'}">${p.active ? 'Live' : 'Hidden'}</span>
+        </div>
+        <p class="text-xs text-muted mt-1">${esc(p.description || '')}</p>
+        <div class="text-sm text-terra font-semibold mt-1.5">${INR(p.price)} <span class="text-xs text-muted font-normal">/ ${esc(p.unit || 'stay')}</span></div>
+      </div>
+      <div class="flex gap-1.5 shrink-0">
+        <button class="btn btn-g" data-pkg-edit="${p.id}"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+        <button class="btn btn-d" data-pkg-del="${p.id}"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+      </div>
+    </div>`).join('');
+  box.querySelectorAll('[data-pkg-edit]').forEach(b => b.addEventListener('click', () => editPkg(b.dataset.pkgEdit)));
+  box.querySelectorAll('[data-pkg-del]').forEach(b => b.addEventListener('click', () => delPkg(b.dataset.pkgDel)));
+  icons();
+}
+function fillPkgSelect(){
+  const sel = $('fPkg'), cur = sel.value;
+  sel.innerHTML = '<option value="">Stay only</option>' +
+    PACKAGES.map(p => `<option value="${esc(p.id)}">${esc(p.title)}</option>`).join('');
+  sel.value = cur;
+}
+function clearPkgForm(){
+  $('pkgId').value=''; $('pkgTitle').value=''; $('pkgDesc').value=''; $('pkgPrice').value='';
+  $('pkgUnit').value='stay'; $('pkgActive').checked=true;
+  $('pkgFormTitle').textContent='Add an experience'; $('pkgCancel').hidden=true;
+}
+function editPkg(id){
+  const p = PACKAGES.find(x => x.id === id); if (!p) return;
+  $('pkgId').value=p.id; $('pkgTitle').value=p.title||''; $('pkgDesc').value=p.description||'';
+  $('pkgPrice').value=p.price??''; $('pkgUnit').value=p.unit||'stay'; $('pkgActive').checked=!!p.active;
+  $('pkgFormTitle').textContent='Edit experience'; $('pkgCancel').hidden=false;
+  $('pkgTitle').focus();
+}
+$('pkgCancel').addEventListener('click', clearPkgForm);
+$('pkgSave').addEventListener('click', async () => {
+  const title = $('pkgTitle').value.trim();
+  if (!title) { toast('Give the experience a title'); return; }
+  const data = {
+    title,
+    description: $('pkgDesc').value.trim(),
+    price: Math.max(0, Number($('pkgPrice').value) || 0),
+    unit: $('pkgUnit').value,
+    active: $('pkgActive').checked,
+    order: PACKAGES.length,
+    updatedAt: serverTimestamp(), updatedBy: ME.email
+  };
+  try {
+    const id = $('pkgId').value;
+    if (id) { delete data.order; await updateDoc(doc(db,'packages',id), data); toast('Experience updated'); }
+    else { await addDoc(collection(db,'packages'), { ...data, createdAt: serverTimestamp() }); toast('Experience added'); }
+    clearPkgForm();
+  } catch (ex) { fail(ex, 'save the experience'); }
+});
+async function delPkg(id){
+  const p = PACKAGES.find(x => x.id === id);
+  if (!confirm('Delete "' + (p ? p.title : 'this experience') + '"? This removes it from the booking page.')) return;
+  try { await deleteDoc(doc(db,'packages',id)); toast('Experience deleted'); }
+  catch (ex) { fail(ex, 'delete the experience'); }
+}
+
+/* =========================================================
+   3. CALENDAR + MANUAL BLOCKING
+   ========================================================= */
+function bookedDates(){
+  const s = new Map();
+  BOOKINGS.filter(b => !b.cancelled).forEach(b => {
+    const n = nightsBetween(b.checkIn, b.checkOut);
+    const start = parseISO(b.checkIn); if (!start) return;
+    for (let i = 0; i < Math.max(1, n); i++) {
+      const d = new Date(start.getTime() + i*MS);
+      s.set(iso(d), b);
+    }
+  });
+  return s;
+}
+const REASON_LABEL = { offline:'Offline', airbnb:'Airbnb', maintenance:'Maint.', personal:'Personal' };
+function renderCalendar(){
+  const grid = $('calGrid'); if (!grid) return;
+  const booked = bookedDates();
+  const y = calView.getFullYear(), m = calView.getMonth();
+  $('calMonth').textContent = calView.toLocaleDateString('en-IN',{month:'long',year:'numeric'});
+  const first = new Date(y,m,1), days = new Date(y,m+1,0).getDate(), pad = first.getDay();
+  const t0 = today0();
+  let html = ['S','M','T','W','T','F','S'].map(d => `<div class="dow">${d}</div>`).join('');
+  for (let i=0;i<pad;i++) html += '<div class="cd pad"></div>';
+  for (let d=1; d<=days; d++){
+    const date = new Date(y,m,d), k = iso(date);
+    let cls = 'cd', note = '';
+    if (booked.has(k)) { cls += ' booked'; note = 'Guest'; }
+    else if (BLOCKED.has(k)) {
+      const r = BLOCKED.get(k).reason;
+      cls += ' blocked'; note = REASON_LABEL[r] || 'Blocked';
+    }
+    else if (date < t0) { cls += ' past'; }
+    else { cls += ' avail'; }
+    if (+date === +t0) cls += ' today';
+    if (selA && selB && date >= selA && date <= selB) cls += ' sel';
+    else if (selA && +date === +selA) cls += ' sel';
+    const clickable = !booked.has(k) && date >= t0;
+    html += `<div class="${cls}" ${clickable ? `data-d="${k}"` : ''}>${d}${note ? `<small>${esc(note)}</small>` : ''}</div>`;
+  }
+  grid.innerHTML = html;
+  grid.querySelectorAll('[data-d]').forEach(el => el.addEventListener('click', () => pickDate(parseISO(el.dataset.d))));
+  paintSel();
+}
+function pickDate(d){
+  if (!d) return;
+  if (!selA || (selA && selB)) { selA = d; selB = null; }
+  else if (d < selA) { selA = d; }
+  else { selB = d; }
+  renderCalendar();
+}
+function paintSel(){
+  $('selFrom').textContent = selA ? fmtD(iso(selA)) : '—';
+  $('selTo').textContent = selB ? fmtD(iso(selB)) : '—';
+  const n = (selA && selB) ? Math.round((selB-selA)/MS) + 1 : (selA ? 1 : 0);
+  $('selNights').textContent = n ? (n + (n>1?' days':' day')) : '—';
+  const any = !!selA;
+  $('blockBtn').disabled = !any;
+  const sel = selectedRange();
+  $('unblockBtn').disabled = !sel.some(k => BLOCKED.has(k));
+}
+function selectedRange(){
+  if (!selA) return [];
+  const end = selB || selA, out = [];
+  for (let t = +selA; t <= +end; t += MS) out.push(iso(new Date(t)));
+  return out;
+}
+$('calPrev').addEventListener('click', () => { calView.setMonth(calView.getMonth()-1); renderCalendar(); });
+$('calNext').addEventListener('click', () => { calView.setMonth(calView.getMonth()+1); renderCalendar(); });
+$('calToday').addEventListener('click', () => { calView = today0(); calView.setDate(1); renderCalendar(); });
+$('clearSel').addEventListener('click', () => { selA = selB = null; renderCalendar(); });
+$('blockBtn').addEventListener('click', async () => {
+  const days = selectedRange(); if (!days.length) return;
+  try {
+    const batch = writeBatch(db);
+    const reason = $('blockReason').value;
+    days.forEach(k => batch.set(doc(db,'blocked_dates',k),
+      { date:k, reason, blockedBy: ME.email, createdAt: serverTimestamp() }));
+    await batch.commit();
+    toast(days.length + ' date(s) blocked');
+    selA = selB = null; renderCalendar();
+  } catch (ex) { fail(ex, 'block those dates'); }
+});
+$('unblockBtn').addEventListener('click', async () => {
+  const days = selectedRange().filter(k => BLOCKED.has(k)); if (!days.length) return;
+  try {
+    const batch = writeBatch(db);
+    days.forEach(k => batch.delete(doc(db,'blocked_dates',k)));
+    await batch.commit();
+    toast(days.length + ' date(s) unblocked');
+    selA = selB = null; renderCalendar();
+  } catch (ex) { fail(ex, 'unblock those dates'); }
+});
+
+/* =========================================================
+   4. BOOKINGS — upcoming / active / past
+   ========================================================= */
+function phaseOf(b){
+  if (b.cancelled) return 'cancelled';
+  const t0 = today0(), ci = parseISO(b.checkIn), co = parseISO(b.checkOut);
+  if (!ci || !co) return 'upcoming';
+  if (co <= t0) return 'past';
+  if (ci <= t0 && t0 < co) return 'active';
+  return 'upcoming';
+}
+const balanceOf = b => Math.max(0, (Number(b.totalAmount)||0) - (Number(b.advancePaid)||0));
+
+$('bkSeg').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  bkSub = b.dataset.sub;
+  $('bkSeg').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+  renderBookings();
+});
+
+function renderBookings(){
+  const body = $('bkBody'); if (!body) return;
+  // cancelled bookings stay visible in the Past ledger so they are never lost
+  const inSub = b => bkSub === 'past'
+    ? (phaseOf(b) === 'past' || phaseOf(b) === 'cancelled')
+    : phaseOf(b) === bkSub;
+  const rows = BOOKINGS.filter(inSub)
+    .sort((a,b) => String(a.checkIn||'').localeCompare(String(b.checkIn||'')) * (bkSub === 'past' ? -1 : 1));
+  $('pastStats').hidden = bkSub !== 'past';
+  $('bkEmpty').hidden = rows.length > 0;
+
+  const head = bkSub === 'past'
+    ? ['Guest','Stay','Nights','Total','Collected','Source','']
+    : ['Guest','Phone','Check-in','Check-out','Total','Advance','Balance','Status',''];
+  $('bkHead').innerHTML = head.map(h => `<th>${h}</th>`).join('');
+
+  body.innerHTML = rows.map(b => {
+    const n = nightsBetween(b.checkIn, b.checkOut), bal = balanceOf(b);
+    if (bkSub === 'past') return `<tr>
+      <td><b>${esc(b.guestName)}</b>${b.cancelled ? ' <span class="bdg bdg-red">Cancelled</span>' : ''}<div class="text-[11px] text-muted">${esc(b.bookingId||b.id.slice(0,6))}</div></td>
+      <td>${fmtShort(b.checkIn)} → ${fmtShort(b.checkOut)}</td>
+      <td>${n}</td>
+      <td>${INR(b.totalAmount)}</td>
+      <td><b>${INR(b.advancePaid)}</b>${(bal>0 && !b.cancelled)?`<div class="text-[11px] text-[#a12626]">${INR(bal)} unpaid</div>`:''}</td>
+      <td><span class="bdg bdg-gray">${esc(b.source||'direct')}</span></td>
+      <td><button class="btn btn-g" data-edit="${b.id}"><i data-lucide="pencil" class="w-4 h-4"></i></button></td>
+    </tr>`;
+    return `<tr>
+      <td><b>${esc(b.guestName)}</b><div class="text-[11px] text-muted">${esc(b.bookingId||b.id.slice(0,6))} · ${n} night${n>1?'s':''} · ${esc(b.guests||2)} guests</div></td>
+      <td><a class="text-terra font-semibold" href="https://wa.me/${waNumber(b.phone)}" target="_blank" rel="noopener">${esc(b.phone)}</a></td>
+      <td>${fmtShort(b.checkIn)}</td>
+      <td>${fmtShort(b.checkOut)}</td>
+      <td>${INR(b.totalAmount)}</td>
+      <td>${INR(b.advancePaid)}</td>
+      <td>${bal > 0 ? `<b class="text-[#a12626]">${INR(bal)}</b>` : '<span class="bdg bdg-green">Paid</span>'}</td>
+      <td>
+        ${b.checkedIn ? '<span class="bdg bdg-blue">Checked in</span>' : ''}
+        ${b.utrVerified ? '<span class="bdg bdg-green">UTR ok</span>' : '<span class="bdg bdg-amber">UTR?</span>'}
+      </td>
+      <td>
+        <div class="flex gap-1.5">
+          ${!b.checkedIn ? `<button class="btn btn-o" data-checkin="${b.id}">Check-in</button>` : ''}
+          ${!b.utrVerified ? `<button class="btn btn-g" data-utr="${b.id}">Verify UTR</button>` : ''}
+          <button class="btn btn-g" data-edit="${b.id}"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  body.querySelectorAll('[data-edit]').forEach(x => x.addEventListener('click', () => openBooking(x.dataset.edit)));
+  body.querySelectorAll('[data-checkin]').forEach(x => x.addEventListener('click', () => markCheckedIn(x.dataset.checkin)));
+  body.querySelectorAll('[data-utr]').forEach(x => x.addEventListener('click', () => verifyUtr(x.dataset.utr)));
+
+  // past ledger stats
+  const past = BOOKINGS.filter(b => phaseOf(b) === 'past');
+  $('pStays').textContent = past.length;
+  $('pRevenue').textContent = INR(past.reduce((s,b) => s + (Number(b.advancePaid)||0), 0));
+  const totN = past.reduce((s,b) => s + nightsBetween(b.checkIn,b.checkOut), 0);
+  $('pAvg').textContent = past.length ? (totN/past.length).toFixed(1) + ' nights' : '—';
+  icons();
+}
+async function markCheckedIn(id){
+  try { await updateDoc(doc(db,'bookings',id), { checkedIn:true, checkedInAt: serverTimestamp() }); toast('Marked checked-in'); }
+  catch (ex) { fail(ex, 'mark that check-in'); }
+}
+async function verifyUtr(id){
+  const b = BOOKINGS.find(x => x.id === id); if (!b) return;
+  let utr = b.utr;
+  if (!utr) { utr = prompt('Payment UTR / reference for ' + b.guestName + ':'); if (!utr) return; }
+  try {
+    await updateDoc(doc(db,'bookings',id),
+      { utr: String(utr).trim(), utrVerified:true, utrVerifiedAt: serverTimestamp(), utrVerifiedBy: ME.email });
+    toast('Payment verified');
+  } catch (ex) { fail(ex, 'verify that payment'); }
+}
+
+/* ---- booking modal ---- */
+function openBooking(id){
+  const b = id ? BOOKINGS.find(x => x.id === id) : null;
+  $('bkFormErr').hidden = true;
+  $('bkModalTitle').textContent = b ? 'Edit booking' : 'Add booking';
+  $('fId').value = b ? b.id : '';
+  $('fName').value = b?.guestName || '';
+  $('fPhone').value = b?.phone || '';
+  $('fIn').value = b?.checkIn || '';
+  $('fOut').value = b?.checkOut || '';
+  $('fGuests').value = b?.guests || 2;
+  $('fTotal').value = b?.totalAmount ?? '';
+  $('fAdv').value = b?.advancePaid ?? 0;
+  $('fUtr').value = b?.utr || '';
+  $('fSource').value = b?.source || 'direct';
+  $('fNotes').value = b?.notes || '';
+  $('fUtrOk').checked = !!b?.utrVerified;
+  $('fCheckedIn').checked = !!b?.checkedIn;
+  $('fCancelled').checked = !!b?.cancelled;
+  fillPkgSelect(); $('fPkg').value = b?.packageId || '';
+  $('bkDelete').hidden = !(b && ME.role === 'super_admin');
+  calcBalance();
+  $('bkModal').classList.add('open'); icons();
+}
+function calcBalance(){
+  const bal = Math.max(0, (Number($('fTotal').value)||0) - (Number($('fAdv').value)||0));
+  $('fBalance').textContent = INR(bal);
+}
+['fTotal','fAdv'].forEach(k => $(k).addEventListener('input', calcBalance));
+$('addBooking').addEventListener('click', () => openBooking(null));
+$('bkModalClose').addEventListener('click', () => $('bkModal').classList.remove('open'));
+$('bkModal').addEventListener('click', e => { if (e.target === $('bkModal')) $('bkModal').classList.remove('open'); });
+
+$('bkSave').addEventListener('click', async () => {
+  const err = $('bkFormErr');
+  const name = $('fName').value.trim(), phone = $('fPhone').value.trim();
+  const ci = $('fIn').value, co = $('fOut').value;
+  if (!name || !phone || !ci || !co) { err.textContent = 'Guest name, phone, check-in and check-out are required.'; err.hidden = false; return; }
+  if (nightsBetween(ci,co) < 1) { err.textContent = 'Check-out must be at least one night after check-in.'; err.hidden = false; return; }
+  err.hidden = true;
+
+  const id = $('fId').value;
+  const pkg = PACKAGES.find(p => p.id === $('fPkg').value);
+  const data = {
+    guestName: name, phone,
+    checkIn: ci, checkOut: co,
+    nights: nightsBetween(ci,co),
+    guests: Math.max(1, Number($('fGuests').value) || 2),
+    totalAmount: Math.max(0, Number($('fTotal').value) || 0),
+    advancePaid: Math.max(0, Number($('fAdv').value) || 0),
+    utr: $('fUtr').value.trim(),
+    utrVerified: $('fUtrOk').checked,
+    checkedIn: $('fCheckedIn').checked,
+    cancelled: $('fCancelled').checked,
+    packageId: $('fPkg').value || '',
+    packageTitle: pkg ? pkg.title : '',
+    source: $('fSource').value,
+    notes: $('fNotes').value.trim(),
+    updatedAt: serverTimestamp(), updatedBy: ME.email
+  };
+  try {
+    if (id) { await updateDoc(doc(db,'bookings',id), data); toast('Booking updated'); }
+    else {
+      data.bookingId = 'PH' + iso(new Date()).replace(/-/g,'').slice(2) + '-' +
+        Math.random().toString(36).slice(2,5).toUpperCase();
+      data.createdAt = serverTimestamp(); data.dispatch = {};
+      await addDoc(collection(db,'bookings'), data); toast('Booking added');
+    }
+    $('bkModal').classList.remove('open');
+  } catch (ex) { fail(ex, 'save the booking'); }
+});
+$('bkDelete').addEventListener('click', async () => {
+  const id = $('fId').value; if (!id) return;
+  if (!confirm('Delete this booking permanently? Consider marking it Cancelled instead, so it stays in your records.')) return;
+  try { await deleteDoc(doc(db,'bookings',id)); $('bkModal').classList.remove('open'); toast('Booking deleted'); }
+  catch (ex) { fail(ex, 'delete the booking'); }
+});
+
+/* ---- CSV export (past ledger) ---- */
+$('exportCsv').addEventListener('click', () => {
+  const past = BOOKINGS.filter(b => ['past','cancelled'].includes(phaseOf(b)))
+    .sort((a,b) => String(a.checkIn||'').localeCompare(String(b.checkIn||'')));
+  if (!past.length) { toast('No completed stays to export'); return; }
+  const cols = ['Booking ID','Status','Guest','Phone','Check-in','Check-out','Nights','Guests','Package','Total','Collected','Balance','UTR','Source','Notes'];
+  const cell = v => { const s = String(v==null?'':v).replace(/"/g,'""'); return /[",\n]/.test(s) ? `"${s}"` : s; };
+  const lines = [cols.join(',')].concat(past.map(b => [
+    b.bookingId||b.id, b.cancelled ? 'Cancelled' : 'Completed', b.guestName, b.phone, b.checkIn, b.checkOut,
+    nightsBetween(b.checkIn,b.checkOut), b.guests||'', b.packageTitle||'',
+    b.totalAmount||0, b.advancePaid||0, balanceOf(b), b.utr||'', b.source||'', b.notes||''
+  ].map(cell).join(',')));
+  const done = past.filter(b => !b.cancelled);
+  const totalT = done.reduce((s,b)=>s+(Number(b.totalAmount)||0),0);
+  const totalC = done.reduce((s,b)=>s+(Number(b.advancePaid)||0),0);
+  lines.push('', ['TOTALS (completed only)','','','','','',
+    done.reduce((s,b)=>s+nightsBetween(b.checkIn,b.checkOut),0),'','',
+    totalT, totalC, totalT-totalC,'','',''].map(cell).join(','));
+  const blob = new Blob(['﻿' + lines.join('\r\n')], { type:'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'padharo-house-past-bookings-' + iso(new Date()) + '.csv';
+  a.click(); URL.revokeObjectURL(a.href);
+  toast('CSV downloaded');
+});
+
+/* =========================================================
+   5. WHATSAPP DISPATCH QUEUE
+   ========================================================= */
+const TPL_KEY = { welcome:'tplWelcome', confirm:'tplConfirm', arrival:'tplArrival', review:'tplReview' };
+const TPL_LABEL = { welcome:'Welcome / Payment Ack', confirm:'Booking Confirmation', arrival:'Amer Arrival & 50 m Map Pin', review:'Post-Checkout Review Request' };
+
+function fillTemplate(key, rec){
+  const raw = $(TPL_KEY[key]).value || DEFAULT_TPL[key] || '';
+  const bal = rec.totalAmount != null ? INR(balanceOf(rec)) : '—';
+  return raw
+    .replace(/\{\{name\}\}/g, rec.guestName || rec.name || 'there')
+    .replace(/\{\{bookingId\}\}/g, rec.bookingId || (rec.id ? rec.id.slice(0,6).toUpperCase() : '—'))
+    .replace(/\{\{checkIn\}\}/g, rec.checkIn ? fmtD(rec.checkIn) : (rec.dates || '—'))
+    .replace(/\{\{checkOut\}\}/g, rec.checkOut ? fmtD(rec.checkOut) : '—')
+    .replace(/\{\{balanceDue\}\}/g, bal)
+    .replace(/\{\{mapLink\}\}/g, MAP_LINK);
+}
+async function dispatch(kind, key, id){
+  const rec = kind === 'booking' ? BOOKINGS.find(b => b.id === id) : LEADS.find(l => l.id === id);
+  if (!rec) return;
+  const num = waNumber(rec.phone);
+  if (!num || num.length < 11) { toast('That contact has no usable phone number'); return; }
+  window.open('https://wa.me/' + num + '?text=' + encodeURIComponent(fillTemplate(key, rec)), '_blank');
+  try {
+    await updateDoc(doc(db, kind === 'booking' ? 'bookings' : 'leads', id),
+      { ['dispatch.' + key]: serverTimestamp(), ['dispatch.' + key + 'By']: ME.email });
+  } catch (ex) { console.warn('dispatch log failed', ex); }
+}
+function dispatchRow(kind, rec){
+  const sent = rec.dispatch || {};
+  const when = k => {
+    const v = sent[k];
+    if (!v) return '';
+    const d = v.toDate ? v.toDate() : new Date(v);
+    return `<span class="text-[10px] text-muted block mt-0.5">sent ${d.toLocaleDateString('en-IN',{day:'numeric',month:'short'})}</span>`;
+  };
+  const btn = (k, cls) => `<button class="btn ${cls} text-left" data-disp="${k}" data-kind="${kind}" data-id="${rec.id}">
+      ${esc(TPL_LABEL[k])}${when(k)}</button>`;
+  const sub = kind === 'booking'
+    ? `${fmtShort(rec.checkIn)} → ${fmtShort(rec.checkOut)} · ${INR(rec.totalAmount)} · bal ${INR(balanceOf(rec))}`
+    : `Lead${rec.dates ? ' · ' + esc(rec.dates) : ''}${rec.source ? ' · ' + esc(rec.source) : ''}`;
+  return `<div class="p-4">
+    <div class="flex items-start justify-between gap-3 flex-wrap">
+      <div class="min-w-0">
+        <div class="flex items-center gap-2 flex-wrap">
+          <b>${esc(rec.guestName || rec.name || 'Unnamed')}</b>
+          <span class="bdg ${kind === 'booking' ? 'bdg-blue' : 'bdg-amber'}">${kind === 'booking' ? 'Booking' : 'Lead'}</span>
+          ${kind === 'booking' ? `<span class="bdg bdg-gray">${esc(phaseOf(rec))}</span>` : ''}
+        </div>
+        <div class="text-xs text-muted mt-1">${esc(rec.phone || 'no phone')} · ${sub}</div>
+      </div>
+      <a class="btn btn-g" href="https://wa.me/${waNumber(rec.phone)}" target="_blank" rel="noopener"><i data-lucide="message-circle" class="w-4 h-4"></i> Open chat</a>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-2 mt-3">
+      ${btn('welcome','btn-o')}${btn('confirm','btn-p')}${btn('arrival','btn-o')}${btn('review','btn-g')}
+    </div>
+  </div>`;
+}
+function renderQueue(){
+  const box = $('queue'); if (!box) return;
+  const bk = BOOKINGS.filter(b => !b.cancelled)
+    .sort((a,b) => String(a.checkIn||'').localeCompare(String(b.checkIn||'')));
+  const ld = LEADS.slice().sort((a,b) => {
+    const t = x => x.createdAt?.toDate ? +x.createdAt.toDate() : 0; return t(b) - t(a);
+  });
+  $('queueEmpty').hidden = (bk.length + ld.length) > 0;
+  box.innerHTML = bk.map(b => dispatchRow('booking', b)).join('') + ld.map(l => dispatchRow('lead', l)).join('');
+  box.querySelectorAll('[data-disp]').forEach(b => b.addEventListener('click',
+    () => dispatch(b.dataset.kind, b.dataset.disp, b.dataset.id)));
+  icons();
+}
+$('saveTpl').addEventListener('click', async () => {
+  try {
+    await setDoc(doc(db,'templates','whatsapp'), {
+      welcome: $('tplWelcome').value, confirm: $('tplConfirm').value,
+      arrival: $('tplArrival').value, review: $('tplReview').value,
+      updatedAt: serverTimestamp(), updatedBy: ME.email
+    }, { merge:true });
+    toast('Templates saved');
+  } catch (ex) { fail(ex, 'save the templates'); }
+});
+$('resetTpl').addEventListener('click', () => {
+  $('tplWelcome').value = DEFAULT_TPL.welcome; $('tplConfirm').value = DEFAULT_TPL.confirm;
+  $('tplArrival').value = DEFAULT_TPL.arrival; $('tplReview').value = DEFAULT_TPL.review;
+  toast('Defaults restored — press Save to keep them');
+});
+
+/* =========================================================
+   6. TRAFFIC ANALYTICS
+   ========================================================= */
+function renderAnalytics(){
+  if (!$('aBody')) return;
+  const igClicks = VISITS.filter(v =>
+    String(v.utm_source||'').toLowerCase() === 'instagram' ||
+    String(v.ref||'').toLowerCase() === 'ig' ||
+    /instagram/i.test(String(v.referrer||''))).length;
+  $('aVisits').textContent = VISITS.length;
+  $('aIg').textContent = igClicks;
+  $('aLeads').textContent = LEADS.length;
+  $('aRevenue').textContent = INR(BOOKINGS.filter(b => !b.cancelled)
+    .reduce((s,b) => s + (Number(b.advancePaid)||0), 0));
+  $('aEmpty').hidden = VISITS.length > 0;
+  $('aBody').innerHTML = VISITS.slice(0,60).map(v => {
+    const d = v.date?.toDate ? v.date.toDate() : null;
+    const src = v.utm_source || v.ref || (/instagram/i.test(String(v.referrer||'')) ? 'instagram' : 'direct');
+    return `<tr>
+      <td>${d ? d.toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '—'}</td>
+      <td><span class="bdg ${/insta/i.test(src) ? 'bdg-amber' : 'bdg-gray'}">${esc(src)}</span></td>
+      <td>${esc(v.device || '—')}</td>
+      <td class="text-muted">${esc(v.path || '/')}</td>
+      <td class="text-muted truncate max-w-[220px]">${esc(v.referrer || 'direct')}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ---------------- dashboard ---------------- */
+function renderDash(){
+  if (!$('kUpcoming')) return;
+  const up = BOOKINGS.filter(b => phaseOf(b) === 'upcoming');
+  const act = BOOKINGS.filter(b => phaseOf(b) === 'active');
+  $('kUpcoming').textContent = up.length;
+  $('kActive').textContent = act.length;
+  $('kBalance').textContent = INR(BOOKINGS.filter(b => !b.cancelled && phaseOf(b) !== 'past')
+    .reduce((s,b) => s + balanceOf(b), 0));
+  $('kCollected').textContent = INR(BOOKINGS.filter(b => !b.cancelled)
+    .reduce((s,b) => s + (Number(b.advancePaid)||0), 0));
+
+  const next = up.sort((a,b) => String(a.checkIn||'').localeCompare(String(b.checkIn||''))).slice(0,5);
+  $('dashNext').innerHTML = next.length ? next.map(b => `
+    <div class="flex items-center justify-between gap-3 border-b border-[#f4ece1] pb-2 last:border-0">
+      <div><b class="text-ink">${esc(b.guestName)}</b><div class="text-xs">${fmtD(b.checkIn)} · ${nightsBetween(b.checkIn,b.checkOut)} night(s)</div></div>
+      <a class="btn btn-g" href="https://wa.me/${waNumber(b.phone)}" target="_blank" rel="noopener"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
+    </div>`).join('') : 'No upcoming bookings yet.';
+
+  const needs = [];
+  BOOKINGS.filter(b => !b.cancelled && phaseOf(b) !== 'past').forEach(b => {
+    if (!b.utrVerified) needs.push(`Verify payment for <b class="text-ink">${esc(b.guestName)}</b>`);
+    if (balanceOf(b) > 0 && phaseOf(b) === 'active') needs.push(`Collect ${INR(balanceOf(b))} from <b class="text-ink">${esc(b.guestName)}</b>`);
+    if (phaseOf(b) === 'active' && !b.checkedIn) needs.push(`Mark <b class="text-ink">${esc(b.guestName)}</b> as checked in`);
+  });
+  LEADS.filter(l => !(l.dispatch||{}).welcome).forEach(l => needs.push(`Reply to lead <b class="text-ink">${esc(l.name||'Unnamed')}</b>`));
+  $('dashAction').innerHTML = needs.length
+    ? needs.slice(0,8).map(n => `<div class="flex gap-2"><i data-lucide="dot" class="w-4 h-4 text-terra shrink-0"></i><span>${n}</span></div>`).join('')
+    : 'Nothing needs attention. 🎉';
+  icons();
+}
+
+/* ---------------- team ---------------- */
+let TEAM = [];
+function renderTeam(){
+  if (!$('teamBody')) return;
+  $('teamBody').innerHTML = TEAM.length ? TEAM.map(u => `<tr>
+      <td><b>${esc(u.email || u.id)}</b></td>
+      <td>${esc(u.name || '—')}</td>
+      <td><span class="bdg ${u.role === 'super_admin' ? 'bdg-green' : 'bdg-blue'}">${esc(u.role || 'none')}</span></td>
+      <td class="text-muted text-xs">${u.role === 'super_admin' ? 'Full access' : 'Bookings, calendar, WhatsApp'}</td>
+    </tr>`).join('')
+    : '<tr><td colspan="4" class="text-center text-muted py-8">No user documents found in <code>users</code>.</td></tr>';
+  icons();
+}
+
+icons();
+</script>
 </body>
 </html>
